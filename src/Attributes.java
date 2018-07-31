@@ -1,5 +1,18 @@
 public class Attributes {
-    //Todo Health Rating, Armor Class, Attack Rating and other attributes that players and creatures possess. used by the player and
-    // creaters class
+
+    public String Name;
+    public int TotalHealth;
+    public int CurrentHealth;
+    public int Defence;
+    public int Offence;
+    public short damageDie = 4;
+    public short numDamageDie = 1;
+    public String NameHealth;
+    public String NameDefence;
+    public String NameOffence;
+
+    public Attributes(String name){
+        Name = name;
+    }
 
 }
