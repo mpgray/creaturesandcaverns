@@ -2,73 +2,96 @@ import java.util.HashMap;
 
 public class ActorPresets {
 
-    public static HashMap<String, Actor> library;
-    private static String name;
-    private static int hitPoints;
-    private static int armorClass;
-    private static int damageDie;
-    private static int numDamageDice;
+    public HashMap<String, Actor> playerPresets = new HashMap<>();
+    public HashMap<String, Actor> creatures = new HashMap<>();
 
-    private ActorPresets(){
+    private String type;
+    private int hitPoints;
+    private int armorClass;
+    private int damageDie;
+    private int numDamageDice;
+    private String attackName;
+    private String defenseName;
+
+    public ActorPresets(){
+        fighter();
+        rogue();
+        mage();
+        rat();
+        bear();
+        dragon();
     }
 
-    private static void fighter(){
-        name = "Fighter";
+    private void fighter(){
+        type = "Fighter";
         hitPoints = 50;
         armorClass = 18;
         damageDie = 12;
         numDamageDice = 1;
-        Actor fighter = new Actor(name, hitPoints, armorClass, damageDie, numDamageDice);
-        library.put(name, fighter);
+        attackName = "Thrust";
+        defenseName = "Armor";
+        Actor fighter = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName);
+        playerPresets.put(type, fighter);
     }
 
-    private static void rogue(){
-        name = "Rogue";
+    private void rogue(){
+        type = "Rogue";
         hitPoints = 40;
         armorClass = 15;
         damageDie = 8;
         numDamageDice = 2;
-        Actor rogue = new Actor(name, hitPoints, armorClass, damageDie, numDamageDice);
-        library.put(name, rogue);
+        attackName = "Backstab";
+        defenseName = "Dodge";
+        Actor rogue = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName);
+        playerPresets.put(type, rogue);
     }
 
-    private static void mage(){
-        name = "Mage";
+    private void mage(){
+        type = "Mage";
         hitPoints = 30;
         armorClass = 12;
         damageDie = 6;
         numDamageDice = 3;
-        Actor mage = new Actor(name, hitPoints, armorClass, damageDie, numDamageDice);
+        attackName = "Magic Missile";
+        defenseName = "Magic Armor";
+        Actor mage = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName);
+        playerPresets.put(type, mage);
     }
 
-    private static void rat(){
-        name = "Rat";
+    private void rat(){
+        type = "Rat";
         hitPoints = 8;
         armorClass = 8;
         damageDie = 4;
         numDamageDice = 1;
-        Actor rat = new Actor(name, hitPoints, armorClass, damageDie, numDamageDice);
-        library.put(name, rat);
+        attackName = "Bite";
+        defenseName = "Dodge";
+        Actor rat = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName);
+        creatures.put(type, rat);
     }
 
-    private static void bear(){
-        name = "Bear";
+    private void bear(){
+        type = "Bear";
         hitPoints = 40;
         armorClass = 10;
         damageDie = 8;
         numDamageDice = 1;
-        Actor bear = new Actor(name, hitPoints, armorClass, damageDie, numDamageDice);
-        library.put(name, bear);
+        attackName = "Slash";
+        defenseName = "Fur Armor";
+        Actor bear = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName);
+        creatures.put(type, bear);
     }
 
-    private static void dragon(){
-        name = "Dragon";
+    private void dragon(){
+        type = "Dragon";
         hitPoints = 100;
         armorClass = 12;
         damageDie = 12;
         numDamageDice = 2;
-        Actor dragon = new Actor(name, hitPoints, armorClass, damageDie, numDamageDice);
-        library.put(name, dragon);
+        attackName = "Fire Breath";
+        defenseName = "Scale Armor";
+        Actor dragon = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName);
+        creatures.put(type, dragon);
     }
 
 }
