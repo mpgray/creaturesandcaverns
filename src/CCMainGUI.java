@@ -17,6 +17,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JScrollPane scrollChatTxt = new JScrollPane(chatFieldTXT,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     private JTextField submitFieldTXT = new JTextField(75);
     private JButton sendButton = new JButton("Send");
+    private String userName;
 
     public CCMainGUI() {
 
@@ -35,7 +36,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
 
         submitFieldTXT.setBounds(5, 577, 695, 25);
-        sendButton.setBounds(700, 577, 89, 23);
+        sendButton.setBounds(700, 577, 84, 23);
         scrollChatTxt.setBounds(5,465,780,110);
         chatFieldTXT.setEditable(false);
 
@@ -47,11 +48,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
 
     private String getUser() {
-        return JOptionPane.showInputDialog(
+        String username = JOptionPane.showInputDialog(
                 contentPane,
                 "Choose a screen name:",
                 "Screen name selection",
                 JOptionPane.PLAIN_MESSAGE);
+        chatFieldTXT.append("Your username is now " + username + "\n");
+        return username;
     }
 
     private String getServerAddress() {
@@ -60,37 +63,50 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return  serverName;
     }
 
-    public void run() {
-        System.out.println("Hi");
-        // Make connection and initialize streams
+    private boolean connectToServer(){
         String serverAddress = getServerAddress();
         Socket socket = null;
+
         try {
             socket = new Socket(serverAddress, serverPort);
             in = new BufferedReader(new InputStreamReader(
                     socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
-            // Process all messages from server, according to the protocol.
-            while (true) {
-                String line = in.readLine();
-                if (line.startsWith("SUBMITNAME")) {
-                    out.println(getUser());
-                } else if (line.startsWith("NAMEACCEPTED")) {
-                    submitFieldTXT.setEditable(true);
-                } else if (line.startsWith("MESSAGE")) {
-                    chatFieldTXT.append(line.substring(8) + "\n");
-                }
-            }
         } catch (IOException e) {
             e.printStackTrace();
+            chatFieldTXT.append("Could not connect to " + serverAddress + ". Continuing anyway for testing. \n");
+            return false;
         }
+        chatFieldTXT.append("Connected to " + serverAddress + "successfully.\n");
+        return true;
+    }
+
+    public void run() {
+        Game game = new Game();
+        boolean isConnected = connectToServer();
+        userName = getUser();
+        //Just a test//
+        ActorPresets actorPresets = new ActorPresets();
+        Actor player1 = actorPresets.playerPresets.get("Fighter");
+        game.addPlayer(userName, player1);
+        chatFieldTXT.append(player1.getType() + "\n");
+        chatFieldTXT.append(player1.getCurrentHitPoints() + "/");
+        chatFieldTXT.append(player1.getMaxHitPoints() + "\n Armor:");
+        chatFieldTXT.append(player1.getArmorClass() + "\n RollCheck: ");
+        chatFieldTXT.append(player1.attackRoll() + "\n");
+
+            // Process all messages from server, according to the protocol.
+            while (true) {
+                //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
+                //Put Handler here...
+            }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String text = submitFieldTXT.getText();
-        chatFieldTXT.append(": " + text + "\n");
+        chatFieldTXT.append(userName + ": " + text + "\n");
         submitFieldTXT.selectAll();
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
     }

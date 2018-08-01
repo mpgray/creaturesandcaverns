@@ -1,39 +1,25 @@
-import java.util.Random;
+import java.util.*;
 
 public class Game {
+    private HashMap<String, Actor> creaturePresets;
+    private TreeMap<String, Actor> players;
+    private Actor creature;
 
-    private Random rand = new Random();
+    public Game(){
+        creaturePresets = new ActorPresets().creatures;
+        players = new TreeMap<>();
+        players.put("Enemy Creature", randomMonster());
 
-    private int rollDie(int numSides){
-        return rand.nextInt(numSides) + 1;
-    }
-    private int rollDie(int numSides, int numDice){
-        int total = 0;
-        for(int i = 0; i < numDice; i++){
-            total += rand.nextInt(numSides) + 1;
-        }
-        return total;
     }
 
-    public String combat(Attributes attacker, Attributes defender){
-        int attack = attacker.Offence + this.rollDie(20);
-        int damage = 0;
-        String success = " misses ";
-        if (attack >= defender.Defence){
-            damage = rollDie(attacker.damageDie,attacker.numDamageDie);
-            defender.CurrentHealth -= damage;
-            success = attacker.NameOffence;
-        }
-        return "A " + attacker.Name +
-                " attacks for " + attack + " and " + success + " a " + defender.Name + "'s " + defender.NameDefence + " doing " + damage + " damage.";
+    public void addPlayer(String playerName, Actor playerType){
+        players.put(playerName, playerType);
     }
 
-    public boolean isDead(Attributes combatant){
-        if (combatant.CurrentHealth < 1){
-            return true;
-        }
-        return false;
-
+    public Actor randomMonster(){
+        Object[] creatureKeys = creaturePresets.keySet().toArray();
+        Object key = creatureKeys[new Random().nextInt(creatureKeys.length)];
+        return creaturePresets.get(key);
     }
 
 }
