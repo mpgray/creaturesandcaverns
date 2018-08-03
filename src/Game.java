@@ -8,7 +8,7 @@ public class Game {
     private Actor currentTarget;
     private boolean hit;
     private int damage;
-    
+
     public Game(){
         creaturePresets = new ActorPresets().creatures;
         playerPresets = new ActorPresets().playerPresets;
@@ -41,7 +41,12 @@ public class Game {
     public void addRandomMonster(){
         Object[] creatureKeys = creaturePresets.keySet().toArray();
         Object key = creatureKeys[new Random().nextInt(creatureKeys.length)];
-        players.put("Enemy Creature", creaturePresets.get(key));
+        players.put("Creature", creaturePresets.get(key));
+    }
+
+    public String[] getScoreBoard(){
+        //TODO Format current players and health/stats for display in gui
+        return null;
     }
 
 
