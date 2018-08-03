@@ -14,9 +14,11 @@ public class Actor implements Comparable<Actor>{
     private Die initiativeDie;
     private int proficiencyBonus;
     private int abilityModifier;
+    private int level;
 
-    public Actor(String type, int hitPoints, int armorClass, int damageDie, int numDamageDice, String attackName, String defenseName, int proficiencyBonus, int abilityModifier){
+    public Actor(String type, int level, int hitPoints, int armorClass, int damageDie, int numDamageDice, String attackName, String defenseName, int proficiencyBonus, int abilityModifier){
         this.type = type;
+        this.level = level;
         this.maxHitPoints = hitPoints;
         this.currentHitPoints = hitPoints;
         this.armorClass = armorClass;
@@ -85,9 +87,17 @@ public class Actor implements Comparable<Actor>{
         this.abilityModifier = abilityModifier;
     }
 
+    public int getLevel(){
+        return level;
+    }
+
+    public void setLevel(int level){
+        this.level = level;
+    }
+
 
     public int rollAttack(){
-        return attackDie.rollDie() + proficiencyBonus;
+        return attackDie.rollDie() + proficiencyBonus + abilityModifier;
     }
 
     public int rollDamage(){

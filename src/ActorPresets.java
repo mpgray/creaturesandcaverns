@@ -6,6 +6,7 @@ public class ActorPresets {
     public HashMap<String, Actor> creatures = new HashMap<>();
 
     private String type;
+    private int level;
     private int hitPoints;
     private int armorClass;
     private int damageDie;
@@ -27,6 +28,7 @@ public class ActorPresets {
 
     private void fighter(){
         type = "Fighter";
+        level = 1;
         hitPoints = 13;
         armorClass = 16;
         damageDie = 12;
@@ -35,12 +37,13 @@ public class ActorPresets {
         defenseName = "Armor";
         proficiencyBonus = 2;
         abilityModifier = 3;
-        Actor fighter = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        Actor fighter = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
         playerPresets.put(type, fighter);
     }
 
     private void rogue(){
         type = "Rogue";
+        level = 1;
         hitPoints = 10;
         armorClass = 14;
         damageDie = 6;
@@ -49,12 +52,13 @@ public class ActorPresets {
         defenseName = "Dodge";
         proficiencyBonus = 2;
         abilityModifier = 3;
-        Actor rogue = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        Actor rogue = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
         playerPresets.put(type, rogue);
     }
 
     private void mage(){
         type = "Mage";
+        level = 1;
         hitPoints = 8;
         armorClass = 12;
         damageDie = 4;
@@ -63,12 +67,13 @@ public class ActorPresets {
         defenseName = "Magic Armor";
         proficiencyBonus = 2;
         abilityModifier = 3;
-        Actor mage = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        Actor mage = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
         playerPresets.put(type, mage);
     }
 
     private void lion(){
         type = "Lion";
+        level = 1;
         hitPoints = 26;
         armorClass = 12;
         damageDie = 8;
@@ -77,12 +82,13 @@ public class ActorPresets {
         defenseName = "Natural Armor";
         proficiencyBonus = 5;
         abilityModifier = 3;
-        Actor lion = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        Actor lion = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
         creatures.put(type, lion);
     }
 
     private void bear(){
         type = "Bear";
+        level = 1;
         hitPoints = 34;
         armorClass = 11;
         damageDie = 6;
@@ -91,12 +97,13 @@ public class ActorPresets {
         defenseName = "Natural Armor";
         proficiencyBonus = 5;
         abilityModifier = 4;
-        Actor bear = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        Actor bear = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
         creatures.put(type, bear);
     }
 
     private void dragon(){
         type = "Dragon";
+        level = 2;
         hitPoints = 50;
         armorClass = 14;
         damageDie = 6;
@@ -105,12 +112,13 @@ public class ActorPresets {
         defenseName = "Scale Armor";
         proficiencyBonus = 5;
         abilityModifier = 3;
-        Actor dragon = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        Actor dragon = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
         creatures.put(type, dragon);
     }
 
     private void wolf(){
         type = "Wolf";
+        level = 1;
         hitPoints = 37;
         armorClass = 14;
         damageDie = 6;
@@ -119,7 +127,7 @@ public class ActorPresets {
         defenseName = "Natural Armor";
         proficiencyBonus = 5;
         abilityModifier = 3;
-        Actor wolf = new Actor(type, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        Actor wolf = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
         creatures.put(type, wolf);
     }
 
