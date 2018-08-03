@@ -1,8 +1,5 @@
-import org.json.JSONObject;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -97,7 +94,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         chatFieldTXT.append(player1.getCurrentHitPoints() + "/");
         chatFieldTXT.append(player1.getMaxHitPoints() + "\n Armor:");
         chatFieldTXT.append(player1.getArmorClass() + "\n RollCheck: ");
-        chatFieldTXT.append(player1.getAttackRoll() + "\n");
+        chatFieldTXT.append(player1.rollAttack() + "\n");
 
             // Process all messages from server, according to the protocol.
             while (true) {

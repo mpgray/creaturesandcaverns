@@ -13,6 +13,7 @@ public class Actor implements Comparable<Actor>{
     private List<Die> damageDice;
     private Die d20;
     private int proficiencyBonus;
+    private int abilityModifier;
 
     public Actor(String type, int hitPoints, int armorClass, int damageDie, int numDamageDice, String attackName, String defenseName){
         this.type = type;
@@ -22,6 +23,7 @@ public class Actor implements Comparable<Actor>{
         this.attackName = attackName;
         this.defenseName = defenseName;
         this.proficiencyBonus = 2;
+        this.abilityModifier = 3;
         this.d20 = new Die(20);
         this.damageDice = new ArrayList<>();
         for(int i = 0; i < numDamageDice; i++){
@@ -46,10 +48,6 @@ public class Actor implements Comparable<Actor>{
         return armorClass;
     }
 
-    public void setCurrentHitPoints(int currentHitPoints){
-        this.currentHitPoints = currentHitPoints;
-    }
-
     public String getAttackName(){
         return attackName;
     }
@@ -58,8 +56,20 @@ public class Actor implements Comparable<Actor>{
         return defenseName;
     }
 
+    public void setCurrentHitPoints(int currentHitPoints){
+        this.currentHitPoints = currentHitPoints;
+    }
+
     public int getProficiencyBonus(){
         return proficiencyBonus;
+    }
+
+    public void setProficiencyBonus(int proficiencyBonus){
+        this.proficiencyBonus = proficiencyBonus;
+    }
+
+    public int getAbilityModifier(){
+        return abilityModifier;
     }
 
     public int rollInitiative(){
@@ -70,16 +80,21 @@ public class Actor implements Comparable<Actor>{
         return initiative;
     }
 
-    public int getAttackRoll(){
+    public void setAbilityModifier(int abilityModifier){
+        this.abilityModifier = abilityModifier;
+    }
+
+
+    public int rollAttack(){
         return d20.rollDie() + proficiencyBonus;
     }
 
-    public int getDamageRoll(){
+    public int rollDamage(){
         int totalDamage = 0;
         for(Die d : damageDice){
             totalDamage += d.rollDie();
         }
-        return totalDamage;
+        return totalDamage + proficiencyBonus + abilityModifier;
     }
 
     @Override
