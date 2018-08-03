@@ -60,8 +60,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     private String getPlayerCharacter(){
         String[] options = new String[]{"Fighter", "Rogue", "Mage"};
-        int response = JOptionPane.showOptionDialog(contentPane, "Pick a Class!",
-                "Player Character", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+        int response = JOptionPane.showOptionDialog(contentPane, "Choose Your Character!",
+                "Player Character Selection", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
                 options, options[0]);
         switch(response){
             case 0 : return "Fighter";
