@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class Actor implements Comparable<Actor>{
 
@@ -10,8 +9,9 @@ public class Actor implements Comparable<Actor>{
     private int initiative;
     private String attackName;
     private String defenseName;
-    private List<Die> damageDice;
-    private Die d20;
+    private ArrayList<Die> damageDice;
+    private Die attackDie;
+    private Die initiativeDie;
     private int proficiencyBonus;
     private int abilityModifier;
 
@@ -24,7 +24,8 @@ public class Actor implements Comparable<Actor>{
         this.defenseName = defenseName;
         this.proficiencyBonus = 2;
         this.abilityModifier = 3;
-        this.d20 = new Die(20);
+        this.attackDie = new Die(20);
+        this.initiativeDie = new Die(20);
         this.damageDice = new ArrayList<>();
         for(int i = 0; i < numDamageDice; i++){
             damageDice.add(new Die(damageDie));
@@ -73,7 +74,7 @@ public class Actor implements Comparable<Actor>{
     }
 
     public int rollInitiative(){
-        return d20.rollDie();
+        return initiativeDie.rollDie();
     }
 
     public int getInitiative(){
@@ -86,7 +87,7 @@ public class Actor implements Comparable<Actor>{
 
 
     public int rollAttack(){
-        return d20.rollDie() + proficiencyBonus;
+        return attackDie.rollDie() + proficiencyBonus;
     }
 
     public int rollDamage(){
@@ -95,6 +96,25 @@ public class Actor implements Comparable<Actor>{
             totalDamage += d.rollDie();
         }
         return totalDamage + proficiencyBonus + abilityModifier;
+    }
+
+    public ArrayList<Die> getDamageDice(){
+        return damageDice;
+    }
+
+    public Die getAttackDie(){
+        return attackDie;
+    }
+
+    @Override
+    public String toString(){
+        return "Type: " + type + "\n"
+                + "HP: " + currentHitPoints + "/" + maxHitPoints + "\n"
+                + "Armor Class: " + armorClass + "\n"
+                + "Attack Type: " + attackName + "\n"
+                + "Defense Type: " + defenseName + "\n"
+                + "Proficiency Bonus: " + proficiencyBonus + "\n"
+                + "Ability Modifier: " + abilityModifier + "\n";
     }
 
     @Override

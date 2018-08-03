@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class Game {
-    private Map<String, Actor> creaturePresets;
-    private Map<String, Actor> playerPresets;
-    private Map<String, Actor> players;
+    private HashMap<String, Actor> creaturePresets;
+    private HashMap<String, Actor> playerPresets;
+    private TreeMap<String, Actor> players;
     private Actor currentPlayer;
     private Actor currentTarget;
     private boolean hit;
@@ -19,7 +19,7 @@ public class Game {
         players.put(playerName, playerPresets.get(playerType));
     }
 
-    public String battleReport(String playerName, String targetName){
+    public String initiateCombat(String playerName, String targetName){
         currentPlayer = players.get(playerName);
         currentTarget = players.get(targetName);
 
@@ -41,7 +41,30 @@ public class Game {
     public void addRandomMonster(){
         Object[] creatureKeys = creaturePresets.keySet().toArray();
         Object key = creatureKeys[new Random().nextInt(creatureKeys.length)];
-        players.put("Creature", creaturePresets.get(key));
+        players.put(creaturePresets.get(key).getType(), creaturePresets.get(key));
+    }
+
+    public TreeMap<String, Actor> getCurrentPlayers(){
+        return players;
+    }
+
+    public int getAttackRoll(String playerName){
+        return players.get(playerName).getAttackDie().getLastRoll();
+    }
+
+    public int[] getDamageRolls(String playerName){
+        int n = players.get(playerName).getDamageDice().toArray().length;
+        int[] vals = new int[n];
+        int i = 0;
+        for(Die d : players.get(playerName).getDamageDice()){
+            vals[i] = d.getLastRoll();
+            i++;
+        }
+        return vals;
+    }
+
+    public String getPlayerStats(String playerName){
+        return players.get(playerName).toString();
     }
 
     public String[] getScoreBoard(){
