@@ -63,8 +63,17 @@ public class Game {
         return vals;
     }
 
+    public int getDamageDieSides(String playerName){
+        return players.get(playerName).getDamageDice().get(0).getNumSides();
+    }
+
     public String getPlayerStats(String playerName){
         return players.get(playerName).toString();
+    }
+
+    private String aiTargetSelect(String creatureName){
+        //TODO Create method for decided who the creature targets.
+        return null;
     }
 
     public String[] getScoreBoard(){

@@ -17,4 +17,8 @@ public class Die {
     public int getLastRoll(){
         return lastRoll;
     }
+
+    public int getNumSides(){
+        return numSides;
+    }
 }
