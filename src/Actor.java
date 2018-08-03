@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Actor implements Comparable<Actor>{
 
@@ -9,9 +10,9 @@ public class Actor implements Comparable<Actor>{
     private int initiative;
     private String attackName;
     private String defenseName;
-    private ArrayList<Die> damageDice = new ArrayList<>();
-    private Die d20 = new Die(20);
-    private int proficiencyBonus = 2;
+    private List<Die> damageDice;
+    private Die d20;
+    private int proficiencyBonus;
 
     public Actor(String type, int hitPoints, int armorClass, int damageDie, int numDamageDice, String attackName, String defenseName){
         this.type = type;
@@ -20,6 +21,9 @@ public class Actor implements Comparable<Actor>{
         this.armorClass = armorClass;
         this.attackName = attackName;
         this.defenseName = defenseName;
+        this.proficiencyBonus = 2;
+        this.d20 = new Die(20);
+        this.damageDice = new ArrayList<>();
         for(int i = 0; i < numDamageDice; i++){
             damageDice.add(new Die(damageDie));
         }
@@ -54,12 +58,24 @@ public class Actor implements Comparable<Actor>{
         return defenseName;
     }
 
+    public int getProficiencyBonus(){
+        return proficiencyBonus;
+    }
+
     public int rollInitiative(){
         return d20.rollDie();
     }
 
     public int getInitiative(){
         return initiative;
+    }
+
+    public int getAttackRoll(){
+        return attackRoll();
+    }
+
+    public int getDamageRoll(){
+        return rollDamageDice();
     }
 
     public int attackRoll(){
