@@ -15,15 +15,15 @@ public class Actor implements Comparable<Actor>{
     private int proficiencyBonus;
     private int abilityModifier;
 
-    public Actor(String type, int hitPoints, int armorClass, int damageDie, int numDamageDice, String attackName, String defenseName){
+    public Actor(String type, int hitPoints, int armorClass, int damageDie, int numDamageDice, String attackName, String defenseName, int proficiencyBonus, int abilityModifier){
         this.type = type;
         this.maxHitPoints = hitPoints;
         this.currentHitPoints = hitPoints;
         this.armorClass = armorClass;
         this.attackName = attackName;
         this.defenseName = defenseName;
-        this.proficiencyBonus = 2;
-        this.abilityModifier = 3;
+        this.proficiencyBonus = proficiencyBonus;
+        this.abilityModifier = abilityModifier;
         this.attackDie = new Die(20);
         this.initiativeDie = new Die(20);
         this.damageDice = new ArrayList<>();
@@ -95,7 +95,7 @@ public class Actor implements Comparable<Actor>{
         for(Die d : damageDice){
             totalDamage += d.rollDie();
         }
-        return totalDamage + proficiencyBonus + abilityModifier;
+        return totalDamage + abilityModifier;
     }
 
     public ArrayList<Die> getDamageDice(){
