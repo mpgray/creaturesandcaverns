@@ -19,7 +19,7 @@ public class Game {
         players.put(playerName, playerPresets.get(playerType));
     }
 
-    public String initiateCombat(String playerName, String targetName){
+    public String combat(String playerName, String targetName){
         currentPlayer = players.get(playerName);
         currentTarget = players.get(targetName);
 

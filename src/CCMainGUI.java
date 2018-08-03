@@ -17,6 +17,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JTextField submitFieldTXT = new JTextField(75);
     private JButton sendButton = new JButton("Send");
     private String userName;
+    private String playerCharacter;
 
 
     public CCMainGUI() {
@@ -57,6 +58,19 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return username;
     }
 
+    private String getPlayerCharacter(){
+        String[] options = new String[]{"Fighter", "Rogue", "Mage"};
+        int response = JOptionPane.showOptionDialog(contentPane, "Pick a Class!",
+                "Player Character", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+                options, options[0]);
+        switch(response){
+            case 0 : return "Fighter";
+            case 1 : return "Rogue";
+            case 3 : return "Mage";
+        }
+        return null;
+    }
+
     private String getServerAddress() {
         String serverName = JOptionPane.showInputDialog(contentPane,
                 "Server name or IP", "ec2-18-207-150-67.compute-1.amazonaws.com");
@@ -86,15 +100,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
         Game game = new Game();
         boolean isConnected = connectToServer();
         userName = getUser();
+        playerCharacter = getPlayerCharacter();
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
-        Actor player1 = actorPresets.playerPresets.get("Fighter");
+        Actor player1 = actorPresets.playerPresets.get(playerCharacter);
         game.addPlayer(userName, player1.getType());
-        chatFieldTXT.append(player1.getType() + "\n");
-        chatFieldTXT.append(player1.getCurrentHitPoints() + "/");
-        chatFieldTXT.append(player1.getMaxHitPoints() + "\n Armor:");
-        chatFieldTXT.append(player1.getArmorClass() + "\n RollCheck: ");
-        chatFieldTXT.append(player1.rollAttack() + "\n");
+        chatFieldTXT.append(player1.toString());
 
             // Process all messages from server, according to the protocol.
             while (true) {
