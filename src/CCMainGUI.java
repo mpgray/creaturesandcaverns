@@ -1,3 +1,5 @@
+import org.json.JSONObject;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -18,6 +20,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JTextField submitFieldTXT = new JTextField(75);
     private JButton sendButton = new JButton("Send");
     private String userName;
+
 
     public CCMainGUI() {
 
@@ -89,12 +92,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
         Actor player1 = actorPresets.playerPresets.get("Fighter");
-        game.addPlayer(userName, player1);
+        game.addPlayer(userName, player1.getType());
         chatFieldTXT.append(player1.getType() + "\n");
         chatFieldTXT.append(player1.getCurrentHitPoints() + "/");
         chatFieldTXT.append(player1.getMaxHitPoints() + "\n Armor:");
         chatFieldTXT.append(player1.getArmorClass() + "\n RollCheck: ");
-        chatFieldTXT.append(player1.attackRoll() + "\n");
+        chatFieldTXT.append(player1.getAttackRoll() + "\n");
 
             // Process all messages from server, according to the protocol.
             while (true) {

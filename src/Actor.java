@@ -71,18 +71,10 @@ public class Actor implements Comparable<Actor>{
     }
 
     public int getAttackRoll(){
-        return attackRoll();
-    }
-
-    public int getDamageRoll(){
-        return rollDamageDice();
-    }
-
-    public int attackRoll(){
         return d20.rollDie() + proficiencyBonus;
     }
 
-    public int rollDamageDice(){
+    public int getDamageRoll(){
         int totalDamage = 0;
         for(Die d : damageDice){
             totalDamage += d.rollDie();
