@@ -8,6 +8,7 @@ public class Game {
     private Actor currentTarget;
     private boolean hit;
     private int damage;
+    private String battleReport;
 
     public Game(){
         creaturePresets = new ActorPresets().creatures;
@@ -19,7 +20,7 @@ public class Game {
         players.put(playerName, playerPresets.get(playerType));
     }
 
-    public String combat(String playerName, String targetName){
+    public String fight(String playerName, String targetName){
         currentPlayer = players.get(playerName);
         currentTarget = players.get(targetName);
 
@@ -27,6 +28,9 @@ public class Game {
             hit = true;
             damage = currentPlayer.rollDamage();
             currentTarget.setCurrentHitPoints(currentTarget.getCurrentHitPoints() - damage);
+            if(currentTarget.getCurrentHitPoints() <= 0){
+                currentTarget.setIsDead(true);
+            }
         } else {
             hit = false;
         }
@@ -34,8 +38,14 @@ public class Game {
         String attackName = currentPlayer.getAttackName();
         String defenseName = currentTarget.getDefenseName();
 
-        return hit ? (playerName + " hit " + targetName + " with " + attackName + " for " + damage + "!") :
-                (targetName + " avoided damage with " + defenseName + " from " + playerName + "!");
+        if(currentTarget.getIsDead()){
+            battleReport = (playerName + " killed " + targetName + " with " + attackName + " for " + damage + "!");
+        } else {
+            battleReport = hit ? (playerName + " hit " + targetName + " with " + attackName + " for " + damage + "!") :
+                    (targetName + " avoided damage from " + playerName + " with " + defenseName + "!");
+        }
+
+        return battleReport;
     }
 
     public void addRandomMonster(){

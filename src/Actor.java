@@ -15,6 +15,7 @@ public class Actor implements Comparable<Actor>{
     private int proficiencyBonus;
     private int abilityModifier;
     private int level;
+    private boolean isDead;
 
     public Actor(String type, int level, int hitPoints, int armorClass, int damageDie, int numDamageDice, String attackName, String defenseName, int proficiencyBonus, int abilityModifier){
         this.type = type;
@@ -32,7 +33,9 @@ public class Actor implements Comparable<Actor>{
         for(int i = 0; i < numDamageDice; i++){
             damageDice.add(new Die(damageDie));
         }
-        initiative = this.rollInitiative();
+        this.initiative = this.rollInitiative();
+        this.isDead = false;
+
     }
 
     public String getType(){
@@ -114,6 +117,14 @@ public class Actor implements Comparable<Actor>{
 
     public Die getAttackDie(){
         return attackDie;
+    }
+
+    public boolean getIsDead(){
+        return isDead;
+    }
+
+    public void setIsDead(boolean isDead){
+        this.isDead = isDead;
     }
 
     @Override
