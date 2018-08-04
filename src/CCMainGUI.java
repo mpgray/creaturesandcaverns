@@ -92,13 +92,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
             chatFieldTXT.append("Could not connect to " + serverAddress + ". Continuing anyway for testing. \n");
             return false;
         }
-        chatFieldTXT.append("Connected to " + serverAddress + "successfully.\n");
+        chatFieldTXT.append("Connected to " + serverAddress + " successfully.\n");
         return true;
     }
 
     public void run() {
         Game game = new Game();
         boolean isConnected = connectToServer();
+        String JSONtestString = "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
+        out.println(JSONtestString);
+        System.out.println(JSONtestString);
         userName = getUser();
         playerCharacter = getPlayerCharacter();
         //Just a test//
