@@ -86,12 +86,11 @@ public class Game {
         return null;
     }
 
-    public String[] getScoreBoard(){
-        String[] eachActor = new String[4];
-        int i = 0;
-        for (Iterator<Actor> it = players.values().iterator(); it.hasNext(); i++) {
+    public ArrayList<String> getScoreBoard(){
+        ArrayList<String> eachActor = new ArrayList<>();
+        for (Iterator<Actor> it = players.values().iterator(); it.hasNext();) {
             Actor actor = it.next();
-            eachActor[i] = actor.toString();
+            eachActor.add(actor.toString());
         }
         return eachActor;
     }
