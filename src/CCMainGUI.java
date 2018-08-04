@@ -61,8 +61,14 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return username;
     }
 
-    private void sendUser(String username){
-        out.println("{\"type\": \"login\", \"message\": {\"username\": \""+username+"\"}}");
+    private void sendUser(String user){
+        JSONObject loginMessage = new JSONObject();
+        JSONObject username = new JSONObject();
+
+        loginMessage.put("type", "login");
+        username.put("username", user);
+        loginMessage.put("message", username);
+        out.println(loginMessage.toString());
     }
 
     private String getPlayerCharacter(){
