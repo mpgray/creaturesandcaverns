@@ -81,14 +81,49 @@ public class Game {
         return players.get(playerName).toString();
     }
 
-    private String aiTargetSelect(String creatureName){
-        //TODO Create method for decided who the creature targets.
-        return null;
+    private Actor aiTargetSelect(String creatureName){
+        Die D100 = new Die(100);
+        int greatestChance = 0;
+        int chanceAttacks = 0;
+        Actor willAttack = players.firstEntry().getValue();
+        for (Iterator<Actor> it = players.values().iterator(); it.hasNext();) {
+            Actor actor = it.next();
+            chanceAttacks = D100.rollDie();
+            if(actor.getType().equals("Fighter")){
+                chanceAttacks += 50;
+            }
+            else if(actor.getType().equals("Mage")){
+                chanceAttacks += 20;
+            }
+            else if(actor.getType().equals("Rogue")){
+                chanceAttacks += 15;
+            }
+            else{
+                chanceAttacks = -1000; //so it does not attack itself
+            }
+            if(actor.getCurrentHitPoints() < 10){
+                chanceAttacks += 25;
+            }
+            if (chanceAttacks > greatestChance){
+               willAttack = actor;
+               greatestChance = chanceAttacks;
+            }
+        }
+        return willAttack;
+    }
+
+    public ArrayList<String> getNames(){
+        ArrayList<String> eachName = new ArrayList<>();
+        for (Iterator<String> it = getCurrentPlayers().keySet().iterator(); it.hasNext();) {
+            String name = it.next();
+            eachName.add(name);
+        }
+        return eachName;
     }
 
     public ArrayList<String> getScoreBoard(){
         ArrayList<String> eachActor = new ArrayList<>();
-        for (Iterator<Actor> it = players.values().iterator(); it.hasNext();) {
+        for (Iterator<Actor> it = getCurrentPlayers().values().iterator(); it.hasNext();) {
             Actor actor = it.next();
             eachActor.add(actor.toString());
         }

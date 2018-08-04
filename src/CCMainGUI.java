@@ -66,7 +66,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         switch(response){
             case 0 : return "Fighter";
             case 1 : return "Rogue";
-            case 3 : return "Mage";
+            case 2 : return "Mage";
         }
         return null;
     }
@@ -107,7 +107,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
         game.addPlayer(userName, player1.getType());
         game.addRandomMonster();
 
+        //for titles of UI
+        for(String usernames: game.getNames()){
+            chatFieldTXT.append(usernames + "\n");
+        }
         //test of the getScoreBoard method
+        //for stats of UI
         for (String anActor: game.getScoreBoard()) {
             chatFieldTXT.append(anActor);
         }
