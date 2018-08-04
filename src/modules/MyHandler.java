@@ -10,14 +10,13 @@ public class MyHandler extends Handler {
 
     @Override
     protected void handle(JSONObject message) {
-        if(message.has("rollRequest")){
-            //do something
+        if(message.has("module")){
+            System.out.println(message.toString());
         }
-        
     }
 
     public static void main(String[] args) {
-
-      //  new Thread(MyHandler.handle).start();
+        String portString = "8990";
+        new Thread(new MyHandler(portString)).start();
     }
 }

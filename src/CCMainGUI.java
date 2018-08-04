@@ -68,6 +68,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         loginMessage.put("type", "login");
         username.put("username", user);
         loginMessage.put("message", username);
+
         out.println(loginMessage.toString());
     }
 
@@ -82,6 +83,17 @@ public class CCMainGUI extends JFrame implements ActionListener {
             case 3 : return "Mage";
         }
         return null;
+    }
+
+    private void sendPlayerCharacter(String playerCharacter){
+        JSONObject characterMessage = new JSONObject();
+        JSONObject character = new JSONObject();
+
+        characterMessage.put("type", "application");
+        character.put("player", playerCharacter);
+        characterMessage.put("message", character);
+        System.out.println(playerCharacter);
+        out.println(playerCharacter);
     }
 
     private String getServerAddress() {
@@ -115,11 +127,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
         userName = getUser();
         sendUser(userName);
 
+        playerCharacter = getPlayerCharacter();
+
         String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
         out.println(JSONtestApp);
         System.out.println(JSONtestApp);
 
-        playerCharacter = getPlayerCharacter();
+      //  sendPlayerCharacter(playerCharacter);
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
         Actor player1 = actorPresets.playerPresets.get(playerCharacter);
