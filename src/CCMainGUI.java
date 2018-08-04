@@ -105,7 +105,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
         ActorPresets actorPresets = new ActorPresets();
         Actor player1 = actorPresets.playerPresets.get(playerCharacter);
         game.addPlayer(userName, player1.getType());
-        chatFieldTXT.append(player1.toString());
+        game.addRandomMonster();
+
+        //test of the getScoreBoard method
+        for (String anActor: game.getScoreBoard()) {
+            chatFieldTXT.append(anActor);
+        }
 
             // Process all messages from server, according to the protocol.
             while (true) {

@@ -87,10 +87,12 @@ public class Game {
     }
 
     public String[] getScoreBoard(){
-        //TODO Format current players and health/stats for display in gui
-        return null;
+        String[] eachActor = new String[4];
+        int i = 0;
+        for (Iterator<Actor> it = players.values().iterator(); it.hasNext(); i++) {
+            Actor actor = it.next();
+            eachActor[i] = actor.toString();
+        }
+        return eachActor;
     }
-
-
-
 }
