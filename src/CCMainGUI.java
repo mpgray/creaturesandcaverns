@@ -1,3 +1,7 @@
+import com.oracle.javafx.jmx.json.impl.JSONMessages;
+import modules.IPCQueue;
+import org.json.JSONObject;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
@@ -47,7 +51,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     }
 
-
     private String getUser() {
         String username = JOptionPane.showInputDialog(
                 contentPane,
@@ -58,6 +61,17 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return username;
     }
 
+    private void sendUser(String user){
+        JSONObject loginMessage = new JSONObject();
+        JSONObject username = new JSONObject();
+
+        loginMessage.put("type", "login");
+        username.put("username", user);
+        loginMessage.put("message", username);
+
+        out.println(loginMessage.toString());
+    }
+
     private String getPlayerCharacter(){
         String[] options = new String[]{"Fighter", "Rogue", "Mage"};
         int response = JOptionPane.showOptionDialog(contentPane, "Choose Your Character!",
@@ -66,9 +80,20 @@ public class CCMainGUI extends JFrame implements ActionListener {
         switch(response){
             case 0 : return "Fighter";
             case 1 : return "Rogue";
-            case 3 : return "Mage";
+            case 2 : return "Mage";
         }
         return null;
+    }
+
+    private void sendPlayerCharacter(String playerCharacter){
+        JSONObject characterMessage = new JSONObject();
+        JSONObject character = new JSONObject();
+
+        characterMessage.put("type", "application");
+        character.put("player", playerCharacter);
+        characterMessage.put("message", character);
+        System.out.println(playerCharacter);
+        out.println(playerCharacter);
     }
 
     private String getServerAddress() {
@@ -92,7 +117,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
             chatFieldTXT.append("Could not connect to " + serverAddress + ". Continuing anyway for testing. \n");
             return false;
         }
-        chatFieldTXT.append("Connected to " + serverAddress + "successfully.\n");
+        chatFieldTXT.append("Connected to " + serverAddress + " successfully.\n");
         return true;
     }
 
@@ -100,12 +125,30 @@ public class CCMainGUI extends JFrame implements ActionListener {
         Game game = new Game();
         boolean isConnected = connectToServer();
         userName = getUser();
+        sendUser(userName);
+
         playerCharacter = getPlayerCharacter();
+
+        String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
+        out.println(JSONtestApp);
+        System.out.println(JSONtestApp);
+
+      //  sendPlayerCharacter(playerCharacter);
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
         Actor player1 = actorPresets.playerPresets.get(playerCharacter);
         game.addPlayer(userName, player1.getType());
-        chatFieldTXT.append(player1.toString());
+        game.addRandomMonster();
+
+        //for titles of UI
+        for(String usernames: game.getNames()){
+            chatFieldTXT.append(usernames + "\n");
+        }
+        //test of the getScoreBoard method
+        //for stats of UI
+        for (String anActor: game.getScoreBoard()) {
+            chatFieldTXT.append(anActor);
+        }
 
             // Process all messages from server, according to the protocol.
             while (true) {

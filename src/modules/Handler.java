@@ -31,6 +31,7 @@ public abstract class Handler implements Runnable {
 		json.put("action", "broadcast");
 		json.put("module",  module);
 		json.put("message", message);
+		System.out.println(message);
 		
 		send(json);
 	}
@@ -72,4 +73,5 @@ public abstract class Handler implements Runnable {
 	}
 	
 	protected abstract void handle(JSONObject message);
+
 }
