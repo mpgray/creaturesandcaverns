@@ -1,3 +1,7 @@
+import com.oracle.javafx.jmx.json.impl.JSONMessages;
+import modules.IPCQueue;
+import org.json.JSONObject;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
@@ -58,6 +62,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return username;
     }
 
+    private void sendUser(String username){
+        out.println("{\"type\": \"login\", \"message\": {\"username\": \""+username+"\"}}");
+    }
+
+
+
     private String getPlayerCharacter(){
         String[] options = new String[]{"Fighter", "Rogue", "Mage"};
         int response = JOptionPane.showOptionDialog(contentPane, "Choose Your Character!",
@@ -99,10 +109,14 @@ public class CCMainGUI extends JFrame implements ActionListener {
     public void run() {
         Game game = new Game();
         boolean isConnected = connectToServer();
-        String JSONtestString = "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
-        out.println(JSONtestString);
-        System.out.println(JSONtestString);
         userName = getUser();
+        sendUser(userName);
+
+        String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
+
+        out.println(JSONtestApp);
+        System.out.println(JSONtestApp);
+
         playerCharacter = getPlayerCharacter();
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
