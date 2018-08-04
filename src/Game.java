@@ -20,13 +20,13 @@ public class Game {
         players.put(playerName, playerPresets.get(playerType));
     }
 
-    public String fight(String playerName, String targetName){
+    public String runCombat(String playerName, String targetName){
         currentPlayer = players.get(playerName);
         currentTarget = players.get(targetName);
 
-        if(currentPlayer.rollAttack() >= currentTarget.getArmorClass()){
+        if(currentPlayer.getAttackDie().getLastRoll() >= currentTarget.getArmorClass()){
             hit = true;
-            damage = currentPlayer.rollDamage();
+            damage = currentPlayer.getLastDamageTotal();
             currentTarget.setCurrentHitPoints(currentTarget.getCurrentHitPoints() - damage);
             if(currentTarget.getCurrentHitPoints() <= 0){
                 currentTarget.setIsDead(true);

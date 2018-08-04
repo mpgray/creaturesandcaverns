@@ -16,6 +16,7 @@ public class Actor implements Comparable<Actor>{
     private int abilityModifier;
     private int level;
     private boolean isDead;
+    private int totalDamage;
 
     public Actor(String type, int level, int hitPoints, int armorClass, int damageDie, int numDamageDice, String attackName, String defenseName, int proficiencyBonus, int abilityModifier){
         this.type = type;
@@ -104,15 +105,20 @@ public class Actor implements Comparable<Actor>{
     }
 
     public int rollDamage(){
-        int totalDamage = 0;
+        totalDamage = 0;
         for(Die d : damageDice){
             totalDamage += d.rollDie();
         }
-        return totalDamage + abilityModifier;
+        totalDamage += abilityModifier;
+        return totalDamage;
     }
 
     public ArrayList<Die> getDamageDice(){
         return damageDice;
+    }
+
+    public int getLastDamageTotal(){
+        return totalDamage;
     }
 
     public Die getAttackDie(){
