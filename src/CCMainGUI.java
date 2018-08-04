@@ -51,7 +51,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     }
 
-
     private String getUser() {
         String username = JOptionPane.showInputDialog(
                 contentPane,
@@ -65,8 +64,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private void sendUser(String username){
         out.println("{\"type\": \"login\", \"message\": {\"username\": \""+username+"\"}}");
     }
-
-
 
     private String getPlayerCharacter(){
         String[] options = new String[]{"Fighter", "Rogue", "Mage"};
@@ -113,7 +110,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         sendUser(userName);
 
         String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
-
         out.println(JSONtestApp);
         System.out.println(JSONtestApp);
 

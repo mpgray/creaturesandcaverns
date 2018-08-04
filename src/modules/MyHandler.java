@@ -10,11 +10,14 @@ public class MyHandler extends Handler {
 
     @Override
     protected void handle(JSONObject message) {
-
+        if(message.has("rollRequest")){
+            //do something
+        }
+        
     }
 
     public static void main(String[] args) {
-        
+
       //  new Thread(MyHandler.handle).start();
     }
 }
