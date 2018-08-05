@@ -10,10 +10,9 @@ public class MyHandler extends Handler {
 
     @Override
     protected void handle(JSONObject message) {
-        if(message.has("module")){
-            System.out.println(message.toString());
-        }
+            System.out.println(message);
     }
+
 
     public static void main(String[] args) {
         String portString = "8990";

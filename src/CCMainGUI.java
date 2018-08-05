@@ -87,16 +87,23 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return null;
     }
 
-    private void sendPlayerCharacter(String playerCharacter){
-        JSONObject characterMessage = new JSONObject();
-        JSONObject character = new JSONObject();
-
-        characterMessage.put("type", "application");
-        character.put("player", playerCharacter);
-        characterMessage.put("message", character);
-        System.out.println(playerCharacter);
-        out.println(playerCharacter);
+    private void sendPlayer(){
+//        JSONObject playerMessage = new JSONObject();
+//        JSONObject player = new JSONObject();
+//        "action" : {
+//            "addPlayerToGame" : {
+//                "playerName" : "playerName",
+//                        "playerCharacter" : "playerCharacter"
+//            }
+//        }
     }
+
+    private void startGame(){
+        JSONObject startGame = new JSONObject();
+        startGame.put("action", "startNewGame");
+        out.println(startGame.toString());
+    }
+
 
     private String getServerAddress() {
         String serverName = JOptionPane.showInputDialog(contentPane,
@@ -131,6 +138,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         playerCharacter = getPlayerCharacter();
         game.addPlayer(username, playerCharacter);
+
+        startGame();
 
         String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
         out.println(JSONtestApp);
