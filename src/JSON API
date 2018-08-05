@@ -1,5 +1,6 @@
 //Instantiate new game with timer for players to join by sending addPlayerToGame request.
 //Broadcast new game open to join for 15 seconds.
+//First round require all players to send initiative roll. When all rolls are recieved sort players.
 {"action" : "startNewGame"}
 
 {
@@ -11,14 +12,9 @@
     }
 }
 
-{
-    "action" : {
-        "addRandomCreatureToGame" :{
-            "creatureName" : "creatureName",
-            "creatureType" : "creatureType"
-        }
-    }
-}
+//Add random creature and roll it's initiative.
+{ "action" : "addRandomCreatureToGame" }
+
 
 {
     "action" : {
@@ -30,9 +26,10 @@
 }
 
 //Runs combat and broadcasts battleReport
+//Update and broadcast scoreCard
 {
     "action" : {
-        "attack" : {
+        "playerTurn" : {
             "playerName" : "playerName",
             "targetName" : "targetName",
             "attackRoll" : int,
@@ -40,9 +37,6 @@
         }
     }
 }
-
-//Returns scoreCard only to sender
-{ "action" : "displayScoreCard" }
 
 
 

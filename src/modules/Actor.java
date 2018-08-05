@@ -36,7 +36,7 @@ public class Actor implements Comparable<Actor>{
         for(int i = 0; i < numDamageDice; i++){
             damageDice.add(new Die(damageDie));
         }
-        this.initiative = this.rollInitiative();
+        this.initiative = 0;
         this.isDead = false;
 
     }
