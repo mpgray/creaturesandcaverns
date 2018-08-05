@@ -3,23 +3,35 @@ broadcast
 "module" : "creaturesAndCaverns"
 "message" : JSONObject
 
-message
-"messageType" : "chat"
-"userName" : "userName"
-"messageText" : "messageText"
+    message
+    "messageType" : "chat"
+    "userName" : "userName"
+    "messageText" : "messageText"
 
-"messageType" : "addPlayer"
-"userName" : "userName"
-"actorType" : "actorType"
-"initiative" : int
+    "messageType" : "addPlayer"
+    "userName" : "userName"
+    "actorType" : "actorType"
+    "initiative" : int
 
-"messageType" : "startGame"
-"gameStarted" : "true"
+    "messageType" : "startGame"
+    "gameStarted" : "true"
 
-"messageType" : "battleReport"
-"battleReport" : "battleReport"
-"targetUserName" : "targetUserName"
-"targetCurrentHP" : int
+    "messageType" : "battleReport"
+    "battleReport" : "battleReport"
+    "targetUserName" : "targetUserName"
+    "targetCurrentHP" : int
+
+netSend
+"action" : "netSend"
+"module" : "creaturesAndCavers"
+"userName" : "latestJoinedUserName"
+"message" : JSONObject
+
+    message
+    "messageType" : "updatePlayers"
+    "userName" : "userName"
+    "actorType" : "actorType"
+    "initiative" : int
 
 
 
