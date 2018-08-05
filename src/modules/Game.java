@@ -1,3 +1,9 @@
+package modules;
+
+import modules.Actor;
+import modules.ActorPresets;
+import modules.Die;
+
 import java.util.*;
 
 public class Game {
