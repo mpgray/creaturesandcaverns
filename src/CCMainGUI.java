@@ -1,4 +1,4 @@
-import com.oracle.javafx.jmx.json.impl.JSONMessages;
+
 import modules.IPCQueue;
 import org.json.JSONObject;
 
@@ -128,6 +128,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         sendUser(userName);
 
         playerCharacter = getPlayerCharacter();
+        game.addPlayer(userName, playerCharacter);
 
         String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
         out.println(JSONtestApp);
@@ -149,7 +150,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         for (String anActor: game.getScoreBoard()) {
             chatFieldTXT.append(anActor);
         }
-
             // Process all messages from server, according to the protocol.
             while (true) {
                 //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!

@@ -1,0 +1,32 @@
+broadcast
+"action" : "broadcast"
+"module" : "creaturesAndCaverns"
+"message" : JSONObject
+
+message
+"messageType" : "chat"
+"userName" : "userName"
+"messageText" : "messageText"
+
+"messageType" : "addPlayer"
+"userName" : "userName"
+"actorType" : "actorType"
+"initiative" : int
+
+"messageType" : "startGame"
+"gameStarted" : "true"
+
+"messageType" : "battleReport"
+"battleReport" : "battleReport"
+"targetUserName" : "targetUserName"
+"targetCurrentHP" : int
+
+
+
+
+
+
+
+
+
+
