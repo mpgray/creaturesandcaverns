@@ -4,12 +4,22 @@
 {"action" : "startNewGame"}
 
 {
+    What does the server send to the client once the game has been started?
+    A new game id (int)
+
+}
+
+{
     "action" : {
         "addPlayerToGame" : {
             "playerName" : "playerName",
             "playerCharacter" : "playerCharacter"
         }
     }
+}
+
+{
+
 }
 
 //Add random creature and roll it's initiative.
