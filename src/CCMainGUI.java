@@ -74,6 +74,17 @@ public class CCMainGUI extends JFrame implements ActionListener {
         out.println(loginMessage.toString());
     }
 
+    private void startGame(){
+        JSONObject startGame = new JSONObject();
+        JSONObject startCommand = new JSONObject();
+
+        startGame.put("type", "application");
+        startCommand.put("action", "startNewGame");
+        startGame.put("message", startCommand);
+
+        out.println(startGame.toString());
+    }
+
     private String getPlayerCharacter(){
         String[] options = new String[]{"Fighter", "Rogue", "Mage"};
         int response = JOptionPane.showOptionDialog(contentPane, "Choose Your Character!",
@@ -98,11 +109,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
 //        }
     }
 
-    private void startGame(){
-        JSONObject startGame = new JSONObject();
-        startGame.put("action", "startNewGame");
-        out.println(startGame.toString());
-    }
+
 
 
     private String getServerAddress() {
