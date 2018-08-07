@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class CCMainGUI extends JFrame implements ActionListener {
     private static final int serverPort = 8989;
@@ -18,7 +19,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private PrintWriter out;
     private JFrame frame = new JFrame("Caverns and Creatures");
     private JPanel contentPane = new JPanel();
-    private JTextArea chatFieldTXT = new JTextArea(20, 75);;
+    private JTextArea chatFieldTXT = new JTextArea(20, 75);
+    private JLabel scoreBoardLBL = new JLabel();
     private JScrollPane scrollChatTxt = new JScrollPane(chatFieldTXT,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     private JTextField submitFieldTXT = new JTextField(75);
     private JButton sendButton = new JButton("Send");
@@ -31,25 +33,28 @@ public class CCMainGUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(50, 50, 805, 650);
 
-        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        contentPane.setBorder(new EmptyBorder(0, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
+        scoreBoardLBL.setOpaque(true);
 
         submitFieldTXT.addActionListener(this);
 
         sendButton.addActionListener(this);
         sendButton.setEnabled(true);
 
-
+        scoreBoardLBL.setBounds(0, 0, 780, 140);
         submitFieldTXT.setBounds(5, 577, 695, 25);
         sendButton.setBounds(700, 577, 84, 23);
         scrollChatTxt.setBounds(5,465,780,110);
         chatFieldTXT.setEditable(false);
 
+        contentPane.add(scoreBoardLBL);
         contentPane.add(scrollChatTxt);
         contentPane.add(submitFieldTXT);
         contentPane.add(sendButton);
+
 
     }
 
@@ -123,41 +128,54 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return true;
     }
 
+    private void displayScoreBoard(Game game) {
+        String scoreBoard = "<HTML><TABLE ALIGN=TOP BORDER=1 BORDERCOLOR=BLACK  cellspacing=0 cellpadding=0><TR>";
+        for(String actorName: game.getNames()){
+            scoreBoard += "<TH BGCOLOR=BLUE><B>" + actorName + "</B></TH>";
+        }
+        scoreBoard += "</TR><TR>";
+        for(String anActor: game.getScoreBoard()){
+            scoreBoard += "<TD>" + anActor + "</TD>";
+        }
+        scoreBoard += "</TR></TABLE></HTML>";
+        scoreBoardLBL.setText(scoreBoard);
+    }
+
     public void run() {
         Game game = new Game();
         boolean isConnected = connectToServer();
         username = getUser();
-        sendUser(username);
+        // sendUser(username);
 
         playerCharacter = getPlayerCharacter();
         game.addPlayer(username, playerCharacter);
 
-        String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
-        out.println(JSONtestApp);
-        System.out.println(JSONtestApp);
+        // String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
+        // out.println(JSONtestApp);
+        // System.out.println(JSONtestApp);
 
-      //  sendPlayerCharacter(playerCharacter);
+        //  sendPlayerCharacter(playerCharacter);
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
         Actor player1 = actorPresets.playerPresets.get(playerCharacter);
         game.addPlayer(username, player1.getType());
         game.addRandomMonster();
 
+        displayScoreBoard(game);
+
         //for titles of UI
         for(String usernames: game.getNames()){
             chatFieldTXT.append(usernames + "\n");
         }
-        //test of the getScoreBoard method
-        //for stats of UI
-        for (String anActor: game.getScoreBoard()) {
-            chatFieldTXT.append(anActor);
+
+        // Process all messages from server, according to the protocol.
+        while (true) {
+            //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
+            //Put Handler here...
         }
-            // Process all messages from server, according to the protocol.
-            while (true) {
-                //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
-                //Put Handler here...
-            }
     }
+
+
 
     @Override
     public void actionPerformed(ActionEvent e) {

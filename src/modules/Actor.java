@@ -138,12 +138,12 @@ public class Actor implements Comparable<Actor>{
     @Override
     public String toString(){
         return "Type: " + type + "\n"
-                + "HP: " + currentHitPoints + "/" + maxHitPoints + "\n"
-                + "Armor Class: " + armorClass + "\n"
-                + "Attack Type: " + attackName + "\n"
-                + "Defense Type: " + defenseName + "\n"
-                + "Proficiency Bonus: " + proficiencyBonus + "\n"
-                + "Ability Modifier: " + abilityModifier + "\n";
+                + "HP: " + currentHitPoints + "/" + maxHitPoints + "<br />\n"
+                + "Armor Class: " + armorClass + "<br />\n"
+                + "Attack Type: " + attackName + "<br />\n"
+                + "Defense Type: " + defenseName + "<br />\n"
+                + "Proficiency Bonus: " + proficiencyBonus + "<br />\n"
+                + "Ability Modifier: " + abilityModifier + "<br />\n";
     }
 
     @Override
