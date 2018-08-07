@@ -1,5 +1,7 @@
-import com.oracle.javafx.jmx.json.impl.JSONMessages;
-import modules.IPCQueue;
+
+import modules.Actor;
+import modules.ActorPresets;
+import modules.Game;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -20,7 +22,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JScrollPane scrollChatTxt = new JScrollPane(chatFieldTXT,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     private JTextField submitFieldTXT = new JTextField(75);
     private JButton sendButton = new JButton("Send");
-    private String userName;
+    private String username;
     private String playerCharacter;
 
 
@@ -124,10 +126,11 @@ public class CCMainGUI extends JFrame implements ActionListener {
     public void run() {
         Game game = new Game();
         boolean isConnected = connectToServer();
-        userName = getUser();
-        sendUser(userName);
+        username = getUser();
+        sendUser(username);
 
         playerCharacter = getPlayerCharacter();
+        game.addPlayer(username, playerCharacter);
 
         String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
         out.println(JSONtestApp);
@@ -137,7 +140,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
         Actor player1 = actorPresets.playerPresets.get(playerCharacter);
-        game.addPlayer(userName, player1.getType());
+        game.addPlayer(username, player1.getType());
         game.addRandomMonster();
 
         //for titles of UI
@@ -149,7 +152,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         for (String anActor: game.getScoreBoard()) {
             chatFieldTXT.append(anActor);
         }
-
             // Process all messages from server, according to the protocol.
             while (true) {
                 //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
@@ -160,7 +162,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String text = submitFieldTXT.getText();
-        chatFieldTXT.append(userName + ": " + text + "\n");
+        chatFieldTXT.append(username + ": " + text + "\n");
         submitFieldTXT.selectAll();
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
     }

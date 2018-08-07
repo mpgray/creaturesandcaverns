@@ -1,3 +1,7 @@
+package modules;
+
+import modules.Actor;
+
 import java.util.HashMap;
 
 public class ActorPresets {
