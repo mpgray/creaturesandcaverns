@@ -145,16 +145,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
         Game game = new Game();
         boolean isConnected = connectToServer();
         username = getUser();
-        // sendUser(username);
+        sendUser(username);
 
         playerCharacter = getPlayerCharacter();
         game.addPlayer(username, playerCharacter);
 
-        // String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
-        // out.println(JSONtestApp);
-        // System.out.println(JSONtestApp);
+        String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
+        out.println(JSONtestApp);
+        System.out.println(JSONtestApp);
 
-        //  sendPlayerCharacter(playerCharacter);
+        sendPlayerCharacter(playerCharacter);
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
         Actor player1 = actorPresets.playerPresets.get(playerCharacter);
