@@ -20,7 +20,7 @@ public class JSONLibrary {
         return loginMessage.toString();
     }
 
-    public static String joinLobby(){
+    public static String sendJoinLobby(){
         JSONObject joinLobby = new JSONObject();
         JSONObject joinCommand = new JSONObject();
 
@@ -30,7 +30,7 @@ public class JSONLibrary {
         return joinLobby.toString();
     }
 
-    public static String startGame(){
+    public static String sendStartGame(){
         JSONObject startGame = new JSONObject();
         JSONObject startCommand = new JSONObject();
 
@@ -57,7 +57,7 @@ public class JSONLibrary {
         return sendPC.toString();
     }
 
-    public static String initiateTurn(String attackerUsername, String targetUsername, int attackRoll, int damageRoll ){
+    public static String sendInitiateTurn(String attackerUsername, String targetUsername, int attackRoll, int damageRoll ){
 
         JSONObject initiateTurn = new JSONObject();
 
