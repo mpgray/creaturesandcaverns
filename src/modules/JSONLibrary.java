@@ -3,7 +3,7 @@ package modules;
 import org.json.JSONObject;
 
 public class JSONLibrary {
-    public static final String module = "CREATURESANDCAVERNS";
+    public static final String MODULE = "CREATURESANDCAVERNS";
 
     public JSONLibrary(){
 
@@ -25,7 +25,7 @@ public class JSONLibrary {
         JSONObject startCommand = new JSONObject();
 
         startGame.put("type", "application");
-        startCommand.put("module", module);
+        startCommand.put("module", MODULE);
         startCommand.put("action", "startNewGame");
         startGame.put("message", startCommand);
 
@@ -37,7 +37,7 @@ public class JSONLibrary {
         JSONObject playerCharacter = new JSONObject();
 
         sendPC.put("type", "application");
-        playerCharacter.put("module", module);
+        playerCharacter.put("module", MODULE);
         playerCharacter.put("action", "addPlayerCharacter");
         playerCharacter.put("type", pc);
         sendPC.put("message", playerCharacter);
