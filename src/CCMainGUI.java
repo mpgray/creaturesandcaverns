@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class CCMainGUI extends JFrame implements ActionListener {
     private static final int serverPort = 8989;
@@ -80,10 +79,14 @@ public class CCMainGUI extends JFrame implements ActionListener {
         playerComboBox.setVisible(false);
         initiateTurnButton.setVisible(false);
 
+        startGameButton.addActionListener(e-> {
+            sendJson(JSONLibrary.sendStartGame());
+            startGameButton.setVisible(false);
+        });
 
         startGameButton.addActionListener(e->{
-            sendJson(JSONLibrary.startGame());
-            startGameButton.setVisible(false);
+            sendJson(JSONLibrary.sendStartGame());
+            startGameButton.setEnabled(false);
             attackButton.setVisible(true);
             damageButton.setVisible(true);
             playerComboBox.setVisible(true);
@@ -110,17 +113,20 @@ public class CCMainGUI extends JFrame implements ActionListener {
             }
         });
 
-        initiateTurnButton.addActionListener(e->{
-            if(!attackButton.isEnabled() && !damageButton.isEnabled() && !playerComboBox.getSelectedItem().equals("--Target--")){
-                //sendJson(JSONLibrary.sendCombat(username, target, attackRoll, damageRoll));
-                initiateTurnButton.setEnabled(false);
-            } else {
-                chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
+        initiateTurnButton.addActionListener(e-> {
+            if (!attackButton.isEnabled() && !damageButton.isEnabled() && !playerComboBox.getSelectedItem().equals("--Target--")) {
+                    sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
+                if (!attackButton.isEnabled() && !damageButton.isEnabled()) {
+                    sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
+                    initiateTurnButton.setEnabled(false);
+                } else {
+                    chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
+                }
             }
         });
 
         addCreatureButton.addActionListener(e->{
-            //sendJson(JSONLibrary.sendAddCreature());
+            sendJson(JSONLibrary.sendAddCreature());
         });
 
         startGameButton.setBounds(5, 175, 300, 25);
