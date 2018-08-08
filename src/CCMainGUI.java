@@ -105,20 +105,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return null;
     }
 
-    private void sendPlayer(){
-//        JSONObject playerMessage = new JSONObject();
-//        JSONObject player = new JSONObject();
-//        "action" : {
-//            "addPlayerToGame" : {
-//                "playerName" : "playerName",
-//                        "playerCharacter" : "playerCharacter"
-//            }
-//        }
-    }
-
-
-
-
     private String getServerAddress() {
         String serverName = JOptionPane.showInputDialog(contentPane,
                 "Server name or IP", "ec2-18-207-150-67.compute-1.amazonaws.com");
@@ -183,6 +169,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
         Actor player1 = actorPresets.playerPresets.get(playerCharacter);
+
         }
     }
 
