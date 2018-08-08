@@ -24,6 +24,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JScrollPane scrollChatTxt = new JScrollPane(chatFieldTXT,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     private JTextField submitFieldTXT = new JTextField(75);
     private JButton sendButton = new JButton("Send");
+    private JButton attackButton = new JButton("Attack");
     private String username;
     private String playerCharacter;
 
@@ -40,20 +41,30 @@ public class CCMainGUI extends JFrame implements ActionListener {
         scoreBoardLBL.setOpaque(true);
 
         submitFieldTXT.addActionListener(this);
+        attackButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chatFieldTXT.append("ATTACK!!!!!\n");
+            }
+        });
 
         sendButton.addActionListener(this);
         sendButton.setEnabled(true);
+        attackButton.setEnabled(true);
+        chatFieldTXT.setEditable(false);
 
         scoreBoardLBL.setBounds(0, 0, 880, 140);
+        attackButton.setBounds(5,175,84,23);
         submitFieldTXT.setBounds(5, 627, 795, 25);
         sendButton.setBounds(800, 627, 84, 23);
         scrollChatTxt.setBounds(5,515,880,110);
-        chatFieldTXT.setEditable(false);
+
 
         contentPane.add(scoreBoardLBL);
         contentPane.add(scrollChatTxt);
         contentPane.add(submitFieldTXT);
         contentPane.add(sendButton);
+        contentPane.add(attackButton);
 
     }
 
