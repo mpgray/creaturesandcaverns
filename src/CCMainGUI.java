@@ -30,6 +30,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private String playerCharacter;
     private Actor playerActor;
     private int initiative, attackRoll, damageRoll;
+    static final String module = "creaturesAndCaverns";
 
 
     public CCMainGUI() {
@@ -84,6 +85,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return username;
     }
 
+    private void send(String object){
+        out.println(object);
+        out.flush();
+
+    }
+
     private void sendUser(String user){
         JSONObject loginMessage = new JSONObject();
         JSONObject username = new JSONObject();
@@ -92,7 +99,21 @@ public class CCMainGUI extends JFrame implements ActionListener {
         username.put("username", user);
         loginMessage.put("message", username);
 
-        out.println(loginMessage.toString());
+        send(loginMessage.toString());
+
+    }
+
+    private void startGame(){
+        JSONObject startGame = new JSONObject();
+        JSONObject startCommand = new JSONObject();
+
+        startGame.put("type", "application");
+        startCommand.put("module", module);
+        startCommand.put("action", "startNewGame");
+        startGame.put("message", startCommand);
+
+        out.println(startGame.toString());
+        out.flush();
     }
 
     private String getPlayerCharacter(){
@@ -111,16 +132,19 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return null;
     }
 
-    private void sendPlayerCharacter(String playerCharacter){
-        JSONObject characterMessage = new JSONObject();
-        JSONObject character = new JSONObject();
-
-        characterMessage.put("type", "application");
-        character.put("player", playerCharacter);
-        characterMessage.put("message", character);
-        System.out.println(playerCharacter);
-        out.println(playerCharacter);
+    private void sendPlayer(){
+//        JSONObject playerMessage = new JSONObject();
+//        JSONObject player = new JSONObject();
+//        "action" : {
+//            "addPlayerToGame" : {
+//                "playerName" : "playerName",
+//                        "playerCharacter" : "playerCharacter"
+//            }
+//        }
     }
+
+
+
 
     private String getServerAddress() {
         String serverName = JOptionPane.showInputDialog(contentPane,
@@ -174,12 +198,20 @@ public class CCMainGUI extends JFrame implements ActionListener {
         sendUser(username);
 
         playerCharacter = getPlayerCharacter();
-        sendPlayerCharacter(playerCharacter);
 
         // Process all messages from server, according to the protocol.
         while (true) {
             //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
             //Put Handler here...
+
+        String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
+        out.println(JSONtestApp);
+        System.out.println(JSONtestApp);
+
+      //  sendPlayerCharacter(playerCharacter);
+        //Just a test//
+        ActorPresets actorPresets = new ActorPresets();
+        Actor player1 = actorPresets.playerPresets.get(playerCharacter);
         }
     }
 
