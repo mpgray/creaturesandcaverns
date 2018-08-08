@@ -18,7 +18,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JLabel scoreBoardLBL;
     private JScrollPane scrollChatTxt;
     private JTextField submitFieldTXT;
-    private JButton sendButton, joinLobbyButton, startGameButton, addCreatureButton, attackButton, damageButton, turnButton;
+    private JButton sendButton, joinLobbyButton, startGameButton, addCreatureButton, attackButton, damageButton, initiateTurnButton;
     private JComboBox<String> playerComboBox;
     private String username, playerCharacter, target;
     private Actor playerActor;
@@ -73,14 +73,14 @@ public class CCMainGUI extends JFrame implements ActionListener {
         damageButton = new JButton("Roll Damage");
         playerComboBox = new JComboBox<>();
         playerComboBox.addItem("--Target--");
-        turnButton = new JButton("Initiate Turn");
+        initiateTurnButton = new JButton("Initiate Turn");
 
         startGameButton.setVisible(false);
         addCreatureButton.setVisible(false);
         attackButton.setVisible(false);
         damageButton.setVisible(false);
         playerComboBox.setVisible(false);
-        turnButton.setVisible(false);
+        initiateTurnButton.setVisible(false);
 
         joinLobbyButton.addActionListener(e->{
             joinLobbyButton.setVisible(false);
@@ -95,7 +95,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
             attackButton.setVisible(true);
             damageButton.setVisible(true);
             playerComboBox.setVisible(true);
-            turnButton.setVisible(true);
+            initiateTurnButton.setVisible(true);
         });
 
         attackButton.addActionListener(e->{
@@ -118,13 +118,17 @@ public class CCMainGUI extends JFrame implements ActionListener {
             }
         });
 
-        turnButton.addActionListener(e->{
+        initiateTurnButton.addActionListener(e->{
             if(!attackButton.isEnabled() && !damageButton.isEnabled()){
                 //sendJson(JSONLibrary.sendCombat(username, target, attackRoll, damageRoll));
-                turnButton.setEnabled(false);
+                initiateTurnButton.setEnabled(false);
             } else {
                 chatFieldTXT.append("You must roll attack and damage to initiate combat.\n");
             }
+        });
+
+        addCreatureButton.addActionListener(e->{
+            //sendJson(JSONLibrary.sendAddCreature());
         });
 
         joinLobbyButton.setBounds(5, 175, 300, 25);
@@ -133,7 +137,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         attackButton.setBounds(5,200,150,25);
         damageButton.setBounds(155, 200, 150, 25);
         playerComboBox.setBounds(5, 225, 300, 25);
-        turnButton.setBounds(5, 250, 300, 25);
+        initiateTurnButton.setBounds(5, 250, 300, 25);
 
         contentPane.add(joinLobbyButton);
         contentPane.add(startGameButton);
@@ -141,7 +145,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         contentPane.add(attackButton);
         contentPane.add(damageButton);
         contentPane.add(playerComboBox);
-        contentPane.add(turnButton);
+        contentPane.add(initiateTurnButton);
     }
 
     private String getUser() {
