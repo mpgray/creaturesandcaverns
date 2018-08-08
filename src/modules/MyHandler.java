@@ -4,13 +4,18 @@ import org.json.JSONObject;
 
 public class MyHandler extends Handler {
 
+    static final String module = "creaturesAndCaverns";
+
     public MyHandler(String portString) {
         super(portString);
     }
 
     @Override
     protected void handle(JSONObject message) {
-            System.out.println(message);
+        if(message.getString("module").contains(module)){
+        System.out.println(message);
+        }
+
     }
 
     public void startGame(){

@@ -24,6 +24,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JButton sendButton = new JButton("Send");
     private String username;
     private String playerCharacter;
+    static final String module = "creaturesAndCaverns";
 
 
     public CCMainGUI() {
@@ -63,6 +64,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return username;
     }
 
+    private void send(String object){
+        out.println(object);
+        out.flush();
+
+    }
+
     private void sendUser(String user){
         JSONObject loginMessage = new JSONObject();
         JSONObject username = new JSONObject();
@@ -71,7 +78,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
         username.put("username", user);
         loginMessage.put("message", username);
 
-        out.println(loginMessage.toString());
+        send(loginMessage.toString());
+
     }
 
     private void startGame(){
@@ -79,11 +87,15 @@ public class CCMainGUI extends JFrame implements ActionListener {
         JSONObject startCommand = new JSONObject();
 
         startGame.put("type", "application");
+        startCommand.put("module", module);
         startCommand.put("action", "startNewGame");
         startGame.put("message", startCommand);
 
         out.println(startGame.toString());
+        out.flush();
     }
+
+
 
     private String getPlayerCharacter(){
         String[] options = new String[]{"Fighter", "Rogue", "Mage"};
