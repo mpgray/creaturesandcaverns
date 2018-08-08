@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class CCMainGUI extends JFrame implements ActionListener {
     private static final int serverPort = 8989;
@@ -25,6 +26,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JTextField submitFieldTXT = new JTextField(75);
     private JButton sendButton = new JButton("Send");
     private JButton attackButton = new JButton("Attack");
+    private JButton addCreatureButton = new JButton("Add Creature");
     private String username;
     private String playerCharacter;
 
@@ -44,17 +46,27 @@ public class CCMainGUI extends JFrame implements ActionListener {
         attackButton.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chatFieldTXT.append("Attack");
+            }
+        });
+        addCreatureButton.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
 
+                game.addRandomMonster();
+                scoreBoardLBL.updateUI();
             }
         });
 
         sendButton.addActionListener(this);
         sendButton.setEnabled(true);
         attackButton.setEnabled(true);
+        addCreatureButton.setEnabled(true);
         chatFieldTXT.setEditable(false);
 
-        scoreBoardLBL.setBounds(0, 0, 880, 140);
+        scoreBoardLBL.setBounds(0, 0, 905, 140);
         attackButton.setBounds(5,175,84,23);
+        addCreatureButton.setBounds(5,200,175,23);
         submitFieldTXT.setBounds(5, 627, 795, 25);
         sendButton.setBounds(800, 627, 84, 23);
         scrollChatTxt.setBounds(5,515,880,110);
@@ -65,6 +77,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         contentPane.add(submitFieldTXT);
         contentPane.add(sendButton);
         contentPane.add(attackButton);
+        contentPane.add(addCreatureButton);
 
     }
 
@@ -138,7 +151,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return true;
     }
 
-    private void displayScoreBoard(Game game) {
+    private String displayScoreBoard(Game game) {
         String scoreBoard = "<HTML><TABLE ALIGN=TOP BORDER=0  cellspacing=2 cellpadding=2><TR>";
         for(String actorName: game.getNames()){
             scoreBoard += "<TH><H2>" + actorName + "</H2></TH>";
@@ -155,10 +168,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
             count++;
         }
         scoreBoard += "</TR></TABLE></HTML>";
-        scoreBoardLBL.setText(scoreBoard);
+        return scoreBoard;
     }
 
+
     public void run() {
+
 
         boolean isConnected = connectToServer();
         username = getUser();
@@ -178,8 +193,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         game.addPlayer(username, player1.getType());
         game.addRandomMonster();
 
-        displayScoreBoard(game);
-
         //for titles of UI
         for(String usernames: game.getNames()){
             chatFieldTXT.append(usernames + "\n");
@@ -187,6 +200,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         // Process all messages from server, according to the protocol.
         while (true) {
+
+            scoreBoardLBL.setText(displayScoreBoard(game));
+
             //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
             //Put Handler here...
         }
