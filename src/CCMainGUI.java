@@ -18,7 +18,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JLabel scoreBoardLBL;
     private JScrollPane scrollChatTxt;
     private JTextField submitFieldTXT;
-    private JButton sendButton, joinLobbyButton, startGameButton, addCreatureButton, attackButton, damageButton, initiateTurnButton;
+    private JButton sendButton, startGameButton, addCreatureButton, attackButton, damageButton, initiateTurnButton;
     private JComboBox<String> playerComboBox;
     private String username, playerCharacter, target;
     private Actor playerActor;
@@ -66,7 +66,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void createGameControls() {
-        joinLobbyButton = new JButton("Join Game Lobby");
         startGameButton = new JButton("Start Game");
         addCreatureButton = new JButton("Add Creature");
         attackButton = new JButton("Roll Attack");
@@ -75,23 +74,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
         playerComboBox.addItem("--Target--");
         initiateTurnButton = new JButton("Initiate Turn");
 
-        startGameButton.setVisible(false);
         addCreatureButton.setVisible(false);
         attackButton.setVisible(false);
         damageButton.setVisible(false);
         playerComboBox.setVisible(false);
         initiateTurnButton.setVisible(false);
 
-        joinLobbyButton.addActionListener(e->{
-            joinLobbyButton.setVisible(false);
-            startGameButton.setVisible(true);
-            addCreatureButton.setVisible(true);
-            sendJson(JSONLibrary.joinLobby());
-        });
 
         startGameButton.addActionListener(e->{
             sendJson(JSONLibrary.startGame());
-            startGameButton.setEnabled(false);
+            startGameButton.setVisible(false);
             attackButton.setVisible(true);
             damageButton.setVisible(true);
             playerComboBox.setVisible(true);
@@ -119,11 +111,11 @@ public class CCMainGUI extends JFrame implements ActionListener {
         });
 
         initiateTurnButton.addActionListener(e->{
-            if(!attackButton.isEnabled() && !damageButton.isEnabled()){
+            if(!attackButton.isEnabled() && !damageButton.isEnabled() && !playerComboBox.getSelectedItem().equals("--Target--")){
                 //sendJson(JSONLibrary.sendCombat(username, target, attackRoll, damageRoll));
                 initiateTurnButton.setEnabled(false);
             } else {
-                chatFieldTXT.append("You must roll attack and damage to initiate combat.\n");
+                chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
             }
         });
 
@@ -131,15 +123,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
             //sendJson(JSONLibrary.sendAddCreature());
         });
 
-        joinLobbyButton.setBounds(5, 175, 300, 25);
-        startGameButton.setBounds(5, 175, 150, 25);
+        startGameButton.setBounds(5, 175, 300, 25);
         addCreatureButton.setBounds(155, 175, 150, 25);
         attackButton.setBounds(5,200,150,25);
         damageButton.setBounds(155, 200, 150, 25);
         playerComboBox.setBounds(5, 225, 300, 25);
         initiateTurnButton.setBounds(5, 250, 300, 25);
 
-        contentPane.add(joinLobbyButton);
         contentPane.add(startGameButton);
         contentPane.add(addCreatureButton);
         contentPane.add(attackButton);
@@ -205,7 +195,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     //Takes arrays of player names and player scoreboards from game running on server
-    private void displayScoreBoard(ArrayList<String> playerNames, ArrayList<String> playerStats) {
+    private void displayScoreBoard(String[] playerNames, String[] playerStats) {
         String scoreBoard = "<HTML><TABLE ALIGN=TOP BORDER=0  cellspacing=2 cellpadding=2><TR>";
         for(String actorName: playerNames){
             scoreBoard += "<TH><H2>" + actorName + "</H2></TH>";
