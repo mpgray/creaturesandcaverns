@@ -86,11 +86,11 @@ public class CCMainGUI extends JFrame implements ActionListener {
             joinLobbyButton.setVisible(false);
             startGameButton.setVisible(true);
             addCreatureButton.setVisible(true);
-            sendJson(JSONLibrary.joinLobby());
+            sendJson(JSONLibrary.sendJoinLobby());
         });
 
         startGameButton.addActionListener(e->{
-            sendJson(JSONLibrary.startGame());
+            sendJson(JSONLibrary.sendStartGame());
             startGameButton.setEnabled(false);
             attackButton.setVisible(true);
             damageButton.setVisible(true);
@@ -120,7 +120,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         initiateTurnButton.addActionListener(e->{
             if(!attackButton.isEnabled() && !damageButton.isEnabled()){
-                //sendJson(JSONLibrary.sendCombat(username, target, attackRoll, damageRoll));
+                sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
                 initiateTurnButton.setEnabled(false);
             } else {
                 chatFieldTXT.append("You must roll attack and damage to initiate combat.\n");
@@ -128,7 +128,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         });
 
         addCreatureButton.addActionListener(e->{
-            //sendJson(JSONLibrary.sendAddCreature());
+            sendJson(JSONLibrary.sendAddCreature());
         });
 
         joinLobbyButton.setBounds(5, 175, 300, 25);

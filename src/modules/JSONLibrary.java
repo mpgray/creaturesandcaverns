@@ -61,7 +61,15 @@ public class JSONLibrary {
 
         JSONObject initiateTurn = new JSONObject();
 
-        return initiateTurn.toString();    }
-        
+        return initiateTurn.toString();
+    }
+
+    public static String sendAddCreature( ){
+
+        JSONObject addCreature = new JSONObject();
+
+        return addCreature.toString();
+    }
+
 
 }
