@@ -233,13 +233,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         while (true) {
             //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
             //Put Handler here...
-            
-
-      //  sendPlayerCharacter(playerCharacter);
-        //Just a test//
-        ActorPresets actorPresets = new ActorPresets();
-        Actor player1 = actorPresets.playerPresets.get(playerCharacter);
-
         }
     }
 
