@@ -30,9 +30,9 @@ public class Game {
         currentPlayer = players.get(playerName);
         currentTarget = players.get(targetName);
 
-        if(currentPlayer.getAttackDie().getLastRoll() >= currentTarget.getArmorClass()){
+        if(currentPlayer.rollAttack() >= currentTarget.getArmorClass()){
             hit = true;
-            damage = currentPlayer.getLastDamageTotal();
+            damage = currentPlayer.rollDamage();
             currentTarget.setCurrentHitPoints(currentTarget.getCurrentHitPoints() - damage);
             if(currentTarget.getCurrentHitPoints() <= 0){
                 currentTarget.setIsDead(true);
@@ -131,6 +131,11 @@ public class Game {
         ArrayList<String> eachActor = new ArrayList<>();
         for (Iterator<Actor> it = getCurrentPlayers().values().iterator(); it.hasNext();) {
             Actor actor = it.next();
+            String color = "#D49B90";
+            if (actor.isPlayer()){
+                color = "#A7D490";
+            }
+            eachActor.add(color);
             eachActor.add(actor.toString());
         }
         return eachActor;

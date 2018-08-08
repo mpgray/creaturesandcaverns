@@ -29,9 +29,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
 
     public CCMainGUI() {
-
+        setTitle("Caverns and Creatures");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(50, 50, 805, 650);
+        setBounds(10, 10, 905, 700);
 
         contentPane.setBorder(new EmptyBorder(0, 5, 5, 5));
         setContentPane(contentPane);
@@ -44,17 +44,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
         sendButton.addActionListener(this);
         sendButton.setEnabled(true);
 
-        scoreBoardLBL.setBounds(0, 0, 780, 140);
-        submitFieldTXT.setBounds(5, 577, 695, 25);
-        sendButton.setBounds(700, 577, 84, 23);
-        scrollChatTxt.setBounds(5,465,780,110);
+        scoreBoardLBL.setBounds(0, 0, 880, 140);
+        submitFieldTXT.setBounds(5, 627, 795, 25);
+        sendButton.setBounds(800, 627, 84, 23);
+        scrollChatTxt.setBounds(5,515,880,110);
         chatFieldTXT.setEditable(false);
 
         contentPane.add(scoreBoardLBL);
         contentPane.add(scrollChatTxt);
         contentPane.add(submitFieldTXT);
         contentPane.add(sendButton);
-
 
     }
 
@@ -129,13 +128,20 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void displayScoreBoard(Game game) {
-        String scoreBoard = "<HTML><TABLE ALIGN=TOP BORDER=1 BORDERCOLOR=BLACK  cellspacing=0 cellpadding=0><TR>";
+        String scoreBoard = "<HTML><TABLE ALIGN=TOP BORDER=0  cellspacing=2 cellpadding=2><TR>";
         for(String actorName: game.getNames()){
-            scoreBoard += "<TH BGCOLOR=BLUE><B>" + actorName + "</B></TH>";
+            scoreBoard += "<TH><H2>" + actorName + "</H2></TH>";
         }
         scoreBoard += "</TR><TR>";
+        int count = 0;
         for(String anActor: game.getScoreBoard()){
-            scoreBoard += "<TD>" + anActor + "</TD>";
+            if(count % 2 == 0){
+                scoreBoard += "<TD BGCOLOR=" + anActor + ">";
+            }
+            else {
+                scoreBoard += anActor + "</TD>";
+            }
+            count++;
         }
         scoreBoard += "</TR></TABLE></HTML>";
         scoreBoardLBL.setText(scoreBoard);

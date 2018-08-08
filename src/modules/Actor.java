@@ -19,6 +19,7 @@ public class Actor implements Comparable<Actor>{
     private int level;
     private boolean isDead;
     private int totalDamage;
+    private boolean isPlayer;
 
     public Actor(String type, int level, int hitPoints, int armorClass, int damageDie, int numDamageDice, String attackName, String defenseName, int proficiencyBonus, int abilityModifier){
         this.type = type;
@@ -38,6 +39,7 @@ public class Actor implements Comparable<Actor>{
         }
         this.initiative = 0;
         this.isDead = false;
+        this.isPlayer = false;
 
     }
 
@@ -135,14 +137,20 @@ public class Actor implements Comparable<Actor>{
         this.isDead = isDead;
     }
 
+    public boolean isPlayer() {
+        return isPlayer;
+    }
+
+    public void setPlayer(boolean player) {
+        isPlayer = player;
+    }
+
     @Override
     public String toString(){
-        return "Type: " + type + "\n"
+        return "Type: " + type + "<br /><\n"
                 + "HP: " + currentHitPoints + "/" + maxHitPoints + "<br />\n"
-                + "Armor Class: " + armorClass + "<br />\n"
-                + "Attack Type: " + attackName + "<br />\n"
-                + "Defense Type: " + defenseName + "<br />\n"
-                + "Proficiency Bonus: " + proficiencyBonus + "<br />\n"
+                + defenseName + ": " + armorClass + "<br />\n"
+                + attackName + ": " + getDamageDice().size() + "D" + getDamageDice().get(0).getNumSides() + "(" + proficiencyBonus +")<br />\n"
                 + "Ability Modifier: " + abilityModifier + "<br />\n";
     }
 
@@ -150,6 +158,5 @@ public class Actor implements Comparable<Actor>{
     public int compareTo(Actor other){
         return -Integer.valueOf(this.initiative).compareTo(other.initiative);
     }
-
 
 }
