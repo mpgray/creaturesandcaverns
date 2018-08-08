@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class CCMainGUI extends JFrame implements ActionListener {
     private static final int serverPort = 8989;
-
+    private Game game = new Game();
     private BufferedReader in;
     private PrintWriter out;
     private JFrame frame = new JFrame("Caverns and Creatures");
@@ -44,7 +44,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         attackButton.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chatFieldTXT.append("ATTACK!!!!!\n");
+
             }
         });
 
@@ -159,7 +159,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     public void run() {
-        Game game = new Game();
+
         boolean isConnected = connectToServer();
         username = getUser();
         sendUser(username);
