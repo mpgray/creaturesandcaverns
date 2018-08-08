@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class CCMainGUI extends JFrame implements ActionListener {
     private static final int serverPort = 8989;
-    private Game game = new Game();
     private BufferedReader in;
     private PrintWriter out;
     private JFrame frame = new JFrame("Caverns and Creatures");
@@ -24,9 +23,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JScrollPane scrollChatTxt = new JScrollPane(chatFieldTXT,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     private JTextField submitFieldTXT = new JTextField(75);
     private JButton sendButton = new JButton("Send");
-    private JButton attackButton = new JButton("Attack");
+    private JButton attackButton = new JButton("Roll Attack");
+    private JButton damageButton = new JButton("Roll Damage");
+    private JComboBox<String> playerComboBox;
     private String username;
     private String playerCharacter;
+    private Actor playerActor;
+    private int initiative, attackRoll, damageRoll;
 
 
     public CCMainGUI() {
@@ -41,12 +44,15 @@ public class CCMainGUI extends JFrame implements ActionListener {
         scoreBoardLBL.setOpaque(true);
 
         submitFieldTXT.addActionListener(this);
-        attackButton.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
 
-            }
+        attackButton.addActionListener(e->{
+            attackRoll = playerActor.rollAttack();
         });
+
+        damageButton.addActionListener((e->{
+            damageRoll = playerActor.rollDamage();
+        }));
+
 
         sendButton.addActionListener(this);
         sendButton.setEnabled(true);
@@ -95,9 +101,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 "Player Character Selection", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
                 options, options[0]);
         switch(response){
-            case 0 : return "Fighter";
-            case 1 : return "Rogue";
-            case 2 : return "Mage";
+            case 0 : playerActor = new ActorPresets().playerPresets.get("Fighter");
+                return "Fighter";
+            case 1 : playerActor = new ActorPresets().playerPresets.get("Rogue");
+                return "Rogue";
+            case 2 : playerActor = new ActorPresets().playerPresets.get("Mage");
+                return "Mage";
         }
         return null;
     }
@@ -165,25 +174,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         sendUser(username);
 
         playerCharacter = getPlayerCharacter();
-        game.addPlayer(username, playerCharacter);
-
-        String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
-        out.println(JSONtestApp);
-        System.out.println(JSONtestApp);
-
         sendPlayerCharacter(playerCharacter);
-        //Just a test//
-        ActorPresets actorPresets = new ActorPresets();
-        Actor player1 = actorPresets.playerPresets.get(playerCharacter);
-        game.addPlayer(username, player1.getType());
-        game.addRandomMonster();
-
-        displayScoreBoard(game);
-
-        //for titles of UI
-        for(String usernames: game.getNames()){
-            chatFieldTXT.append(usernames + "\n");
-        }
 
         // Process all messages from server, according to the protocol.
         while (true) {
