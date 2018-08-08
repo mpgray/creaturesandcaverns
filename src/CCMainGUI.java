@@ -222,7 +222,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     public void run() {
-
         boolean isConnected = connectToServer();
         username = getUser();
         sendJson(JSONLibrary.sendUser(username));
