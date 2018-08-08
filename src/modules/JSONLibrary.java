@@ -26,9 +26,6 @@ public class JSONLibrary {
 
         joinLobby.put("type", "application");
         joinCommand.put("module", MODULE);
-        joinCommand.put("action", "startNewGame");
-        joinLobby.put("message", joinCommand);
-        System.out.println(joinCommand.toString());
 
         return joinLobby.toString();
     }
