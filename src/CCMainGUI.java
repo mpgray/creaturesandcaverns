@@ -95,6 +95,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
         out.flush();
     }
 
+    private void startGame(){
+        JSONObject startGame = new JSONObject();
+        JSONObject startCommand = new JSONObject();
+
+        startGame.put("type", "application");
+        startCommand.put("action", "startNewGame");
+        startGame.put("message", startCommand);
+
+        out.println(startGame.toString());
+    }
 
 
     private String getPlayerCharacter(){
