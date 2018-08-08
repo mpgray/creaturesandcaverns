@@ -177,10 +177,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         while (true) {
             //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
             //Put Handler here...
-
-        String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
-        out.println(JSONtestApp);
-        System.out.println(JSONtestApp);
+            
 
       //  sendPlayerCharacter(playerCharacter);
         //Just a test//
