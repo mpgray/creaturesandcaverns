@@ -20,17 +20,17 @@ public class JSONLibrary {
         return loginMessage.toString();
     }
 
-    public static String sendJoinGame(){
-        JSONObject joinGame = new JSONObject();
+    public static String joinLobby(){
+        JSONObject joinLobby = new JSONObject();
         JSONObject joinCommand = new JSONObject();
 
-        joinGame.put("type", "application");
+        joinLobby.put("type", "application");
         joinCommand.put("module", MODULE);
         joinCommand.put("action", "startNewGame");
-        joinGame.put("message", joinCommand);
+        joinLobby.put("message", joinCommand);
         System.out.println(joinCommand.toString());
 
-        return joinGame.toString();
+        return joinLobby.toString();
     }
 
     public static String startGame(){

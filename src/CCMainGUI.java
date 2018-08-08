@@ -86,7 +86,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
             joinLobbyButton.setVisible(false);
             startGameButton.setVisible(true);
             addCreatureButton.setVisible(true);
-            //sendJson(JSONLibrary.sendJoinGame);
+            sendJson(JSONLibrary.joinLobby());
         });
 
         startGameButton.addActionListener(e->{
