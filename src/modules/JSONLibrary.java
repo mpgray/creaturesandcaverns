@@ -20,6 +20,19 @@ public class JSONLibrary {
         return loginMessage.toString();
     }
 
+    public static String sendJoinGame(){
+        JSONObject joinGame = new JSONObject();
+        JSONObject joinCommand = new JSONObject();
+
+        joinGame.put("type", "application");
+        joinCommand.put("module", MODULE);
+        joinCommand.put("action", "startNewGame");
+        joinGame.put("message", joinCommand);
+        System.out.println(joinCommand.toString());
+
+        return joinGame.toString();
+    }
+
     public static String startGame(){
         JSONObject startGame = new JSONObject();
         JSONObject startCommand = new JSONObject();
@@ -28,6 +41,7 @@ public class JSONLibrary {
         startCommand.put("module", MODULE);
         startCommand.put("action", "startNewGame");
         startGame.put("message", startCommand);
+        System.out.println(startGame.toString());
 
         return startGame.toString();
     }
@@ -41,6 +55,7 @@ public class JSONLibrary {
         playerCharacter.put("action", "addPlayerCharacter");
         playerCharacter.put("type", pc);
         sendPC.put("message", playerCharacter);
+        System.out.println(sendPC.toString());
 
         return sendPC.toString();
     }
