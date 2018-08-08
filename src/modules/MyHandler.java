@@ -4,7 +4,9 @@ import org.json.JSONObject;
 
 public class MyHandler extends Handler {
 
+
     static final String MODULE = "CREATURESANDCAVERNS";
+    private Game game = new Game();
 
     public MyHandler(String portString) {
         super(portString);
@@ -15,8 +17,8 @@ public class MyHandler extends Handler {
         if(message.opt("module") != null || MODULE.equals(message.getString("module"))){
             String action = message.getString("action");
             switch(action){
-                case "addPlayerCharacter"        :   addPlayer();
-                case "startNewGame"              :   startNewGame();
+                case "addPlayerCharacter"        :   addPlayer(message);
+                case "startGame"              :   startGame();
 
             }
 //            for(message.has("action")){
@@ -27,15 +29,15 @@ public class MyHandler extends Handler {
 
     }
 
-    private void addPlayer() {
+    private void addPlayer(JSONObject message) {
+        String username = message.getString("username");
+        String playerType = message.getString("playerType");
+
+        game.addPlayer(username, playerType);
     }
 
-    private void startNewGame() {
-        Game game = new Game();
-        for ( username : whois(CREATURESANDCAVERNS)) {
-            game.addPlayer(username);
-        }
-
+    private void startGame() {
+        game.startGame();
     }
 
     public static void main(String[] args) {

@@ -227,7 +227,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         sendJson(JSONLibrary.sendUser(username));
 
         playerCharacter = getPlayerCharacter();
-        sendJson(JSONLibrary.sendPlayerCharacter(playerCharacter));
+        sendJson(JSONLibrary.sendPlayerCharacter(playerCharacter, username));
 
         // Process all messages from server, according to the protocol.
         while (true) {

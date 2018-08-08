@@ -20,16 +20,6 @@ public class JSONLibrary {
         return loginMessage.toString();
     }
 
-    public static String sendJoinLobby(){
-        JSONObject joinLobby = new JSONObject();
-        JSONObject joinCommand = new JSONObject();
-
-        joinLobby.put("type", "application");
-        joinCommand.put("module", MODULE);
-
-        return joinLobby.toString();
-    }
-
     public static String sendStartGame(){
         JSONObject startGame = new JSONObject();
         JSONObject startCommand = new JSONObject();
@@ -43,14 +33,15 @@ public class JSONLibrary {
         return startGame.toString();
     }
 
-    public static String sendPlayerCharacter(String pc){
+    public static String sendPlayerCharacter(String pc, String username){
         JSONObject sendPC = new JSONObject();
         JSONObject playerCharacter = new JSONObject();
 
         sendPC.put("type", "application");
         playerCharacter.put("module", MODULE);
         playerCharacter.put("action", "addPlayerCharacter");
-        playerCharacter.put("type", pc);
+        playerCharacter.put("username", username);
+        playerCharacter.put("playerType", pc);
         sendPC.put("message", playerCharacter);
         System.out.println(sendPC.toString());
 
@@ -59,9 +50,19 @@ public class JSONLibrary {
 
     public static String sendInitiateTurn(String attackerUsername, String targetUsername, int attackRoll, int damageRoll ){
 
+        JSONObject sendInitiateTurn = new JSONObject();
         JSONObject initiateTurn = new JSONObject();
 
-        return initiateTurn.toString();
+        sendInitiateTurn.put("type", "application");
+        initiateTurn.put("module", MODULE);
+        initiateTurn.put("attacker", attackerUsername);
+
+
+        sendInitiateTurn.put("message", initiateTurn);
+
+
+
+        return sendInitiateTurn.toString();
     }
 
     public static String sendAddCreature( ){
