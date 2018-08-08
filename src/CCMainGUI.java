@@ -12,6 +12,11 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.locks.ReentrantLock;
+
+import static java.lang.Thread.sleep;
 
 public class CCMainGUI extends JFrame implements ActionListener {
     private static final int serverPort = 8989;
@@ -30,6 +35,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private String username;
     private String playerCharacter;
 
+    ExecutorService executor = Executors.newFixedThreadPool(2);
+    ReentrantLock lock = new ReentrantLock();
 
     public CCMainGUI() {
         setTitle("Caverns and Creatures");
@@ -49,14 +56,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 chatFieldTXT.append("Attack");
             }
         });
-        addCreatureButton.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-
+        addCreatureButton.addActionListener(evt -> executor.submit(() -> {
+            lock.lock();
+            try {
                 game.addRandomMonster();
+                scoreBoardLBL.setText(displayScoreBoard(game));
                 scoreBoardLBL.updateUI();
+            }finally {
+                lock.unlock();
             }
-        });
+        }));
 
         sendButton.addActionListener(this);
         sendButton.setEnabled(true);
@@ -174,7 +183,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     public void run() {
 
-
         boolean isConnected = connectToServer();
         username = getUser();
         sendUser(username);
@@ -200,8 +208,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         // Process all messages from server, according to the protocol.
         while (true) {
-
-            scoreBoardLBL.setText(displayScoreBoard(game));
 
             //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
             //Put Handler here...
