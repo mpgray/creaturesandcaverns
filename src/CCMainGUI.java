@@ -2,7 +2,7 @@
 import modules.Actor;
 import modules.ActorPresets;
 import modules.Game;
-import org.json.JSONObject;
+import modules.JSONLibrary;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class CCMainGUI extends JFrame implements ActionListener {
     private static final int serverPort = 8989;
@@ -85,34 +84,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return username;
     }
 
-    private void send(String object){
-        out.println(object);
-        out.flush();
-
-    }
-
-    private void sendUser(String user){
-        JSONObject loginMessage = new JSONObject();
-        JSONObject username = new JSONObject();
-
-        loginMessage.put("type", "login");
-        username.put("username", user);
-        loginMessage.put("message", username);
-
-        send(loginMessage.toString());
-
-    }
-
-    private void startGame(){
-        JSONObject startGame = new JSONObject();
-        JSONObject startCommand = new JSONObject();
-
-        startGame.put("type", "application");
-        startCommand.put("module", module);
-        startCommand.put("action", "startNewGame");
-        startGame.put("message", startCommand);
-
-        out.println(startGame.toString());
+    private void sendJson(String json){
+        out.println(json);
         out.flush();
     }
 
@@ -195,9 +168,10 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         boolean isConnected = connectToServer();
         username = getUser();
-        sendUser(username);
+        sendJson(JSONLibrary.sendUser(username));
 
         playerCharacter = getPlayerCharacter();
+        sendJson(JSONLibrary.sendPlayerCharacter(playerCharacter));
 
         // Process all messages from server, according to the protocol.
         while (true) {
