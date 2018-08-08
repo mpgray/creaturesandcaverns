@@ -13,10 +13,27 @@ public class MyHandler extends Handler {
     @Override
     protected void handle(JSONObject message) {
         if(message.opt("module") != null || MODULE.equals(message.getString("module"))){
-            for(message.has("action")){
-                
-            }
+            String action = message.getString("action");
+            switch(action){
+                case "addPlayerCharacter"        :   addPlayer();
+                case "startNewGame"              :   startNewGame();
 
+            }
+//            for(message.has("action")){
+//
+//            }
+
+        }
+
+    }
+
+    private void addPlayer() {
+    }
+
+    private void startNewGame() {
+        Game game = new Game();
+        for ( username : whois(CREATURESANDCAVERNS)) {
+            game.addPlayer(username);
         }
 
     }
