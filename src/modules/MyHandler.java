@@ -13,8 +13,12 @@ public class MyHandler extends Handler {
     @Override
     protected void handle(JSONObject message) {
         if(message.opt("module") != null || MODULE.equals(message.getString("module"))){
-            System.out.println(message);
+            for(message.has("action")){
+                
+            }
+
         }
+
     }
 
     public static void main(String[] args) {
