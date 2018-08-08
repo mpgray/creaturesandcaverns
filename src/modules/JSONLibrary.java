@@ -57,5 +57,11 @@ public class JSONLibrary {
         return sendPC.toString();
     }
 
+    public static String initiateTurn(String attackerUsername, String targetUsername, int attackRoll, int damageRoll ){
+
+        JSONObject initiateTurn = new JSONObject();
+
+        return initiateTurn.toString();    }
+        
 
 }
