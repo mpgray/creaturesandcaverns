@@ -12,14 +12,27 @@ public class Game {
     private TreeMap<String, Actor> players;
     private Actor currentPlayer;
     private Actor currentTarget;
-    private boolean hit;
+    private boolean hit, gameStarted;
     private int damage;
-    private String battleReport;
+    private String battleReport, playerTurn;
 
     public Game(){
         creaturePresets = new ActorPresets().creatures;
         playerPresets = new ActorPresets().playerPresets;
         players = new TreeMap<>();
+        gameStarted = false;
+    }
+
+    public void startGame(){
+        gameStarted = true;
+        playerTurn = players.firstKey();
+    }
+
+    public void endGame(){
+        gameStarted = false;
+        for(String user : players.keySet()){
+            players.remove(user);
+        }
     }
 
     public void addPlayer(String playerName, String playerType){
