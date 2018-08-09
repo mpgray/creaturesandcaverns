@@ -258,10 +258,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         player3LBL.setIcon(createImageIcon("Rogue.gif")); //hard coded but you get the idea
         creature1LBL.setIcon(createImageIcon("Dragon.gif"));
 
-        //for titles of UI
-        for(String usernames: game.getNames()){
-            chatFieldTXT.append(usernames + "\n");
-        }
     }
 
     /** Returns an ImageIcon, or null if the path was invalid. */
