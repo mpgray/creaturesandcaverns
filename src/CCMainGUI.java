@@ -1,6 +1,9 @@
 
 import modules.*;
 import org.json.JSONObject;
+import org.json.JSONWriter;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -359,13 +362,25 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         setupGame();
 
-        Runnable messageHandler = () -> {
+        Runnable gameOn = () -> {
+            JSONObject json = null;
+            JSONParser jsonParser = new JSONParser();
             while(true){
-                
+                try{
+                    json = (JSONObject) jsonParser.parse(in.readLine());
 
+                } catch (IOException e){
+                    e.printStackTrace();
+                } catch (ParseException e){
+                    e.printStackTrace();
+                }
 
             }
-        }; new Thread(messageHandler).start();
+        }; new Thread(gameOn).start();
+    }
+
+    private void messageHandler(JSONObject json){
+        
     }
 
 
