@@ -164,7 +164,7 @@ public class JSONLibrary {
         return sendYourTurn;
     }
 
-    public static JSONObject serverGameOver(){
+    public static JSONObject serverGameOver(String winner){
         JSONObject sendGameOver = new JSONObject();
         JSONObject gameOverMsg = new JSONObject();
 
@@ -173,10 +173,26 @@ public class JSONLibrary {
         gameOverMsg.put("module", MODULE);
         gameOverMsg.put("action", "gameOver");
         gameOverMsg.put("gameOver", true);
+        gameOverMsg.put("winner", winner);
 
         sendGameOver.put("message", gameOverMsg);
 
         return sendGameOver;
+    }
+
+    public static JSONObject serverTargetNames(String[] targetNames){
+        JSONObject sendTargetNames = new JSONObject();
+        JSONObject targetNamesMsg = new JSONObject();
+
+        sendTargetNames.put("type", "application");
+
+        targetNamesMsg.put("module", MODULE);
+        targetNamesMsg.put("action", "targetNames");
+        targetNamesMsg.put("targetNames", targetNames);
+
+        sendTargetNames.put("message", targetNamesMsg);
+
+        return sendTargetNames;
     }
 
 }

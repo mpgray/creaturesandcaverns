@@ -10,13 +10,14 @@ public class Game {
     private Actor currentTarget;
     private boolean hit, gameStarted, gameOver;
     private int damage, numDead;
-    private String battleReport;
+    private String battleReport, winner;
 
     public Game(){
         creaturePresets = new ActorPresets().creatures;
         playerPresets = new ActorPresets().playerPresets;
         actors = new TreeMap<>();
         gameStarted = false;
+        winner = null;
     }
 
     public void startGame(){
@@ -142,9 +143,12 @@ public class Game {
 
     public boolean getGameOver(){
         numDead = 0;
+
         for(String actor : actors.keySet()){
             if(actors.get(actor).getIsDead()){
                 numDead++;
+            } else {
+                winner = actor;
             }
         }
         if(numDead == this.getNames().length - 1){
@@ -152,5 +156,9 @@ public class Game {
         }
 
         return gameOver;
+    }
+
+    public String getWinner(){
+        return winner;
     }
 }
