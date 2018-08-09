@@ -22,7 +22,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private String username, playerCharacter, target;
     private Actor playerActor;
     private int attackRoll, damageRoll;
-    private boolean playerDeath, playerTurn;
+    private boolean playerDeath = false;
+    private boolean playerTurn = false;
 
     public CCMainGUI() {
         setTitle("Caverns and Creatures");
@@ -120,6 +121,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 if (!attackButton.isEnabled() && !damageButton.isEnabled()) {
                     sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
                     initiateTurnButton.setEnabled(false);
+                    playerTurn = false;
                 } else {
                     chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
                 }
