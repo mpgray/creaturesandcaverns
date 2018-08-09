@@ -79,21 +79,6 @@ public class JSONLibrary {
         return addCreature.toString();
     }
 
-    public static String sendPassTurn(){
-
-        JSONObject sendPassTurn = new JSONObject();
-        JSONObject passTurnMsg = new JSONObject();
-
-        sendPassTurn.put("type", "application");
-
-        passTurnMsg.put("module", MODULE);
-        passTurnMsg.put("action", "true");
-
-        sendPassTurn.put("message", passTurnMsg);
-
-        return sendPassTurn.toString();
-    }
-
     //SERVER JSON
 
     public static JSONObject serverGameStarted(){

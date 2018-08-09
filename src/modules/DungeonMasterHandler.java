@@ -30,14 +30,8 @@ public class DungeonMasterHandler extends Handler {
                     break;
                 case "quit"                      :   removePlayer(message);
                     break;
-                case "passTurn"                  :   passPlayerTurn(message);
-                    break;
             }
         }
-    }
-
-    private void passPlayerTurn(JSONObject message) {
-        incrementPlayerTurn();
     }
 
     private void removePlayer(JSONObject message) {
