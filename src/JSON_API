@@ -1,15 +1,28 @@
 //Instantiate new game with timer for players to join by sending addPlayerToGame request.
 //Broadcast new game open to join for 15 seconds.
 //First round require all players to send initiative roll. When all rolls are recieved sort players.
-{"action" : "startNewGame"}
+
 
 {
-    "action" : {
-        "addPlayerToGame" : {
-            "playerName" : "playerName",
-            "playerCharacter" : "playerCharacter"
-        }
-    }
+	"type": "application",
+	"message": {
+		"action": "startNewGame"
+	}
+}
+
+{
+    What does the server send to the client once the game has been started?
+    A new game id (int)?
+
+}
+
+
+{ type: application, message: { }}
+
+ {"type": "application", "message:" { "action" : "addPlayerToGame" : { "playerName" : "playerName"}, {"playerCharacter" : "playerCharacter" }}} }
+
+{
+
 }
 
 //Add random creature and roll it's initiative.
