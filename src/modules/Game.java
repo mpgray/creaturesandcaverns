@@ -39,6 +39,10 @@ public class Game {
         players.put(playerName, playerPresets.get(playerType));
     }
 
+    public void removePlayer(String playerName){
+        players.remove(playerName);
+    }
+
     public String runCombat(String playerName, String targetName, int attackRoll, int damageRoll){
         currentPlayer = players.get(playerName);
         currentTarget = players.get(targetName);
