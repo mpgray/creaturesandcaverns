@@ -64,7 +64,7 @@ public class DungeonMasterHandler extends Handler {
         }
 
         do{
-            if(currentPlayerIndex < game.getNames().length - 1){
+            if(currentPlayerIndex < game.getNames().length){
                 currentPlayerIndex++;
             } else {
                 currentPlayerIndex = 0;
