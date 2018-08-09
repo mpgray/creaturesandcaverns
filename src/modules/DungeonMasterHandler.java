@@ -24,8 +24,16 @@ public class DungeonMasterHandler extends Handler {
                 case "runCombat"                 :   runCombat(message);
                     break;
                 case "addCreature"               :   addCreature();
+                case "quit"                      :   removePlayer(message);
             }
         }
+    }
+
+    private void removePlayer(JSONObject message) {
+        String username = message.getString("username");
+        
+
+
     }
 
     private void runCombat(JSONObject message) {
@@ -37,7 +45,7 @@ public class DungeonMasterHandler extends Handler {
 
         broadcast(JSONLibrary.serverBattleReport(battleReport), MODULE);
 
-        //broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getColor));
+        broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
     }
 
     private void addPlayer(JSONObject message) {
@@ -50,12 +58,12 @@ public class DungeonMasterHandler extends Handler {
     private void startGame() {
         game.startGame();
         broadcast(JSONLibrary.serverGameStarted(), MODULE);
+        broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
     }
 
     private void addCreature() {
         game.addRandomMonster();
-
-      //  broadcast(JSONLibrary.futureMethodHere(), MODULE);
+        broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
     }
 
 
