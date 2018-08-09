@@ -5,9 +5,7 @@ import org.json.JSONObject;
 public class JSONLibrary {
     public static final String MODULE = "CREATURESANDCAVERNS";
 
-    public JSONLibrary(){
-
-    }
+    public JSONLibrary(){}
 
     public static String sendUser(String user){
         JSONObject loginMessage = new JSONObject();
@@ -77,21 +75,6 @@ public class JSONLibrary {
         addCreature.put("message", addCreatureMsg);
 
         return addCreature.toString();
-    }
-
-    public static String sendPassTurn(){
-
-        JSONObject sendPassTurn = new JSONObject();
-        JSONObject passTurnMsg = new JSONObject();
-
-        sendPassTurn.put("type", "application");
-
-        passTurnMsg.put("module", MODULE);
-        passTurnMsg.put("action", "true");
-
-        sendPassTurn.put("message", passTurnMsg);
-
-        return sendPassTurn.toString();
     }
 
     //SERVER JSON
@@ -169,6 +152,11 @@ public class JSONLibrary {
         sendYourTurn.put("message", yourTurnMsg);
 
         return sendYourTurn;
+    }
+
+    public static JSONObject serverGameOver(){
+        //TODO Simple message to notify clients that game is over.
+        return null;
     }
 
 

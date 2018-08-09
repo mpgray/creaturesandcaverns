@@ -1,7 +1,5 @@
 package modules;
 
-import modules.Actor;
-
 import java.util.HashMap;
 
 public class ActorPresets {
@@ -42,7 +40,7 @@ public class ActorPresets {
         proficiencyBonus = 2;
         abilityModifier = 3;
         Actor fighter = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        fighter.setPlayer(true);
+        fighter.setIsPlayer(true);
         playerPresets.put(type, fighter);
     }
 
@@ -58,7 +56,7 @@ public class ActorPresets {
         proficiencyBonus = 2;
         abilityModifier = 3;
         Actor rogue = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        rogue.setPlayer(true);
+        rogue.setIsPlayer(true);
         playerPresets.put(type, rogue);
     }
 
@@ -74,7 +72,7 @@ public class ActorPresets {
         proficiencyBonus = 2;
         abilityModifier = 3;
         Actor mage = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        mage.setPlayer(true);
+        mage.setIsPlayer(true);
         playerPresets.put(type, mage);
     }
 
@@ -90,7 +88,7 @@ public class ActorPresets {
         proficiencyBonus = 5;
         abilityModifier = 3;
         Actor lion = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        lion.setPlayer(false);
+        lion.setIsPlayer(false);
         creatures.put(type, lion);
     }
 
@@ -106,7 +104,7 @@ public class ActorPresets {
         proficiencyBonus = 5;
         abilityModifier = 4;
         Actor bear = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        bear.setPlayer(false);
+        bear.setIsPlayer(false);
         creatures.put(type, bear);
     }
 
@@ -122,7 +120,7 @@ public class ActorPresets {
         proficiencyBonus = 5;
         abilityModifier = 3;
         Actor dragon = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        dragon.setPlayer(false);
+        dragon.setIsPlayer(false);
         creatures.put(type, dragon);
     }
 
@@ -138,7 +136,7 @@ public class ActorPresets {
         proficiencyBonus = 5;
         abilityModifier = 3;
         Actor wolf = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        wolf.setPlayer(false);
+        wolf.setIsPlayer(false);
         creatures.put(type, wolf);
     }
 
