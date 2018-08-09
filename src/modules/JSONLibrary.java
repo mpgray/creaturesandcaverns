@@ -115,5 +115,20 @@ public class JSONLibrary {
         return sendBattleReport;
     }
 
+    public static JSONObject serverScoreboard(String[] playerNames, String[] colorActorStats){
+
+        JSONObject sendScoreboard = new JSONObject();
+        JSONObject scoreboardMsg = new JSONObject();
+
+        sendScoreboard.put("type", "application");
+
+        scoreboardMsg.put("module", MODULE);
+        scoreboardMsg.put("playerNames", playerNames);
+        scoreboardMsg.put("colorActorStats", colorActorStats);
+
+        sendScoreboard.put("message", scoreboardMsg);
+
+        return sendScoreboard;
+    }
 
 }

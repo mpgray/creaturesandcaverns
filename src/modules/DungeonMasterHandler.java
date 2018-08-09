@@ -23,11 +23,9 @@ public class DungeonMasterHandler extends Handler {
                     break;
                 case "runCombat"                 :   runCombat(message);
                     break;
-                case "addCreature"               :
-
+                case "addCreature"               :   addCreature();
             }
         }
-
     }
 
     private void runCombat(JSONObject message) {
@@ -39,6 +37,7 @@ public class DungeonMasterHandler extends Handler {
 
         broadcast(JSONLibrary.serverBattleReport(battleReport), MODULE);
 
+        //broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getColor));
     }
 
     private void addPlayer(JSONObject message) {
@@ -52,6 +51,13 @@ public class DungeonMasterHandler extends Handler {
         game.startGame();
         broadcast(JSONLibrary.serverGameStarted(), MODULE);
     }
+
+    private void addCreature() {
+        game.addRandomMonster();
+
+      //  broadcast(JSONLibrary.futureMethodHere(), MODULE);
+    }
+
 
     public static void main(String[] args) {
         String portString = "8990";
