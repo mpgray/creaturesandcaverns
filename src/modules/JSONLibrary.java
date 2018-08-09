@@ -7,6 +7,11 @@ public class JSONLibrary {
 
     public JSONLibrary(){}
 
+    public static String sendChatMessage(String message){
+        //TODO JSON object for chat area messages.
+        return null;
+    }
+
     public static String sendUser(String user){
         JSONObject loginMessage = new JSONObject();
         JSONObject username = new JSONObject();
@@ -87,6 +92,7 @@ public class JSONLibrary {
         gameStarted.put("type", "application");
 
         gameStartedMsg.put("module", MODULE);
+        gameStartedMsg.put("action", "startGame");
         gameStartedMsg.put("isStarted","true");
 
         gameStarted.put("message", gameStarted);
@@ -101,6 +107,7 @@ public class JSONLibrary {
 
         sendBattleReport.put("type", "application");
         battleReportMsg.put("module", MODULE);
+        battleReportMsg.put("action", "battleReport");
         battleReportMsg.put("battleReport", battleReport);
 
         sendBattleReport.put("message", battleReportMsg);
@@ -116,6 +123,7 @@ public class JSONLibrary {
         sendScoreboard.put("type", "application");
 
         scoreboardMsg.put("module", MODULE);
+        scoreboardMsg.put("action", "scoreboard");
         scoreboardMsg.put("playerNames", playerNames);
         scoreboardMsg.put("colorActorStats", colorActorStats);
 
@@ -132,6 +140,7 @@ public class JSONLibrary {
         sendPlayerDeath.put("type", "application");
 
         playerDeathMsg.put("module", MODULE);
+        playerDeathMsg.put("action", "playerDeath");
         playerDeathMsg.put("isDead", true);
 
         sendPlayerDeath.put("message", playerDeathMsg);
@@ -147,6 +156,7 @@ public class JSONLibrary {
         sendYourTurn.put("type", "application");
 
         yourTurnMsg.put("module", MODULE);
+        yourTurnMsg.put("action", "yourTurn");
         yourTurnMsg.put("yourTurn", true);
 
         sendYourTurn.put("message", yourTurnMsg);
@@ -158,7 +168,5 @@ public class JSONLibrary {
         //TODO Simple message to notify clients that game is over.
         return null;
     }
-
-
 
 }

@@ -1,6 +1,8 @@
 import modules.Actor;
 import modules.ActorPresets;
 import modules.JSONLibrary;
+import org.json.JSONObject;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
@@ -236,7 +238,26 @@ public class CCMainGUI extends JFrame implements ActionListener {
         while (true) {
             //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
             //Put Handler here...
-            //TODO
+            //TODO use readServerMessage method.
+        }
+    }
+
+    private void readServerMessage(JSONObject json){
+        String action = json.getString("action");
+
+        switch(action){
+            case "startGame"        :   //TODO
+                break;
+            case "battleReport"     :   //TODO
+                break;
+            case "scoreboard"       :   //TODO
+                break;
+            case "playerDeath"      :   //TODO
+                break;
+            case "yourTurn"         :   //TODO
+                break;
+            case "gameOver"         :   //TODO
+                break;
         }
     }
 
@@ -246,6 +267,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         chatFieldTXT.append(username + ": " + text + "\n");
         submitFieldTXT.selectAll();
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
+        sendJson(JSONLibrary.sendChatMessage(text));
     }
 
     public static void main(String[] args) throws IOException {

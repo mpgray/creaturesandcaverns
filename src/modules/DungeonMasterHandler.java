@@ -30,8 +30,14 @@ public class DungeonMasterHandler extends Handler {
                     break;
                 case "quit"                      :   removePlayer(message);
                     break;
+                case "chatMessage"               :   forwardChatMessage(message);
+                    break;
             }
         }
+    }
+
+    private void forwardChatMessage(JSONObject message) {
+        //TODO forward chat message to all clients.
     }
 
     private void removePlayer(JSONObject message) {
