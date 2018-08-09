@@ -2,8 +2,6 @@
 import modules.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 
 public class CCMainGUI extends JFrame implements ActionListener {
@@ -22,8 +19,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private Game game = new Game();
     private BufferedReader in;
     private PrintWriter out;
-    private JSONParser parser;
-
 
     private JFrame frame = new JFrame("Caverns and Creatures");
     private JLayeredPane contentPane = new JLayeredPane();
@@ -353,29 +348,25 @@ public class CCMainGUI extends JFrame implements ActionListener {
         setupGame();
 
         Runnable gameOn = () -> {
-            JSONObject json = null;
-            JSONParser jsonParser = new JSONParser();
+            JSONObject json;
             while(true){
                 try{
-                    json = (JSONObject) jsonParser.parse(in.readLine());
+                    json = new JSONObject(in.readLine());
                     messageHandler(json);
                 } catch (IOException e){
                     e.printStackTrace();
-                } catch (ParseException e){
-                    e.printStackTrace();
                 }
-
             }
         }; new Thread(gameOn).start();
     }
 
     private void messageHandler(JSONObject json){
-        if(json.opt("module") != null || MODULE.equals(json.getString("module"))) {
-            String action = json.getString("action");
+        if(json.get("module") != null || MODULE.equals(json.get("module").toString())) {
+            String action = json.get("action").toString();
             switch (action) {
                 case "startGame"        :       startGameGuiVisibility();
                     break;
-                case "battleReport"     :       updateBattleReport(json.getString("battleReport"));
+                case "battleReport"     :       updateBattleReport(json.get("battleReport").toString());
                     break;
                 case "scoreBoard"       :       updateScoreboard(json);
                     break;
@@ -383,7 +374,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
                     break;
                 case "yourTurn"         :       yourTurn();
                     break;
-                case "gameOver"         :       gameOver(json.getString("winner"));
+                case "gameOver"         :       gameOver(json.get("winner").toString());
                     break;
                 case "targetNames"      :       updateComboTargetBox(json);
                     break;
