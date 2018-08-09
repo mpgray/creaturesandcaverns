@@ -12,18 +12,35 @@ public class Game {
     private TreeMap<String, Actor> players;
     private Actor currentPlayer;
     private Actor currentTarget;
-    private boolean hit;
+    private boolean hit, gameStarted;
     private int damage;
-    private String battleReport;
+    private String battleReport, playerTurn;
 
     public Game(){
         creaturePresets = new ActorPresets().creatures;
         playerPresets = new ActorPresets().playerPresets;
         players = new TreeMap<>();
+        gameStarted = false;
+    }
+
+    public void startGame(){
+        gameStarted = true;
+        playerTurn = players.firstKey();
+    }
+
+    public void endGame(){
+        gameStarted = false;
+        for(String user : players.keySet()){
+            players.remove(user);
+        }
     }
 
     public void addPlayer(String playerName, String playerType){
         players.put(playerName, playerPresets.get(playerType));
+    }
+
+    public void removePlayer(String playerName){
+        players.remove(playerName);
     }
 
     public String runCombat(String playerName, String targetName, int attackRoll, int damageRoll){
@@ -64,6 +81,12 @@ public class Game {
         return players;
     }
 
+    public String[] getNames(){
+        String[] playerNames = null;
+        players.keySet().toArray(playerNames);
+        return playerNames;
+    }
+
     public int getAttackRoll(String playerName){
         return players.get(playerName).getAttackDie().getLastRoll();
     }
@@ -85,6 +108,10 @@ public class Game {
 
     public String getPlayerStats(String playerName){
         return players.get(playerName).toString();
+    }
+
+    public Actor getCurrentTarget(){
+        return currentTarget;
     }
 
     private Actor aiTargetSelect(String creatureName){
@@ -118,16 +145,8 @@ public class Game {
         return willAttack;
     }
 
-    public ArrayList<String> getNames(){
-        ArrayList<String> eachName = new ArrayList<>();
-        for (Iterator<String> it = getCurrentPlayers().keySet().iterator(); it.hasNext();) {
-            String name = it.next();
-            eachName.add(name);
-        }
-        return eachName;
-    }
-
-    public ArrayList<String> getScoreBoard(){
+    public String[] getScoreboard(){
+        String[] colorActorStats = null;
         ArrayList<String> eachActor = new ArrayList<>();
         for (Iterator<Actor> it = getCurrentPlayers().values().iterator(); it.hasNext();) {
             Actor actor = it.next();
@@ -138,6 +157,8 @@ public class Game {
             eachActor.add(color);
             eachActor.add(actor.toString());
         }
-        return eachActor;
+
+        eachActor.toArray(colorActorStats);
+        return colorActorStats;
     }
 }

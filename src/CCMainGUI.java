@@ -1,71 +1,150 @@
-
 import modules.Actor;
 import modules.ActorPresets;
-import modules.Game;
-import org.json.JSONObject;
-
+import modules.JSONLibrary;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class CCMainGUI extends JFrame implements ActionListener {
     private static final int serverPort = 8989;
-
+    private JPanel contentPane;
     private BufferedReader in;
     private PrintWriter out;
-    private JFrame frame = new JFrame("Caverns and Creatures");
-    private JPanel contentPane = new JPanel();
-    private JTextArea chatFieldTXT = new JTextArea(20, 75);
-    private JLabel scoreBoardLBL = new JLabel();
-    private JScrollPane scrollChatTxt = new JScrollPane(chatFieldTXT,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    private JTextField submitFieldTXT = new JTextField(75);
-    private JButton sendButton = new JButton("Send");
-    private JButton attackButton = new JButton("Attack");
-    private String username;
-    private String playerCharacter;
-
+    private JTextArea chatFieldTXT;
+    private JLabel scoreboardlbl;
+    private JScrollPane scrollChatTxt;
+    private JTextField submitFieldTXT;
+    private JButton sendButton, startGameButton, addCreatureButton, attackButton, damageButton, initiateTurnButton;
+    private JComboBox<String> playerComboBox;
+    private String username, playerCharacter, target;
+    private Actor playerActor;
+    private int attackRoll, damageRoll;
+    private boolean playerDeath = false;
+    private boolean playerTurn = false;
 
     public CCMainGUI() {
         setTitle("Caverns and Creatures");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(10, 10, 905, 700);
 
+        contentPane = new JPanel();
+        chatFieldTXT = new JTextArea(20, 75);
+        scrollChatTxt = new JScrollPane(chatFieldTXT,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scoreboardlbl = new JLabel();
+        submitFieldTXT = new JTextField(75);
+
         contentPane.setBorder(new EmptyBorder(0, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        scoreBoardLBL.setOpaque(true);
+        scoreboardlbl.setOpaque(true);
 
+        createGameControls();
+
+        createChatArea();
+    }
+
+    private void createChatArea() {
+        sendButton = new JButton("Send");
         submitFieldTXT.addActionListener(this);
-        attackButton.addActionListener(new java.awt.event.ActionListener() {
-            @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chatFieldTXT.append("ATTACK!!!!!\n");
-            }
-        });
 
         sendButton.addActionListener(this);
         sendButton.setEnabled(true);
-        attackButton.setEnabled(true);
         chatFieldTXT.setEditable(false);
+        scoreboardlbl.setBounds(0, 0, 880, 140);
 
-        scoreBoardLBL.setBounds(0, 0, 880, 140);
-        attackButton.setBounds(5,175,84,23);
         submitFieldTXT.setBounds(5, 627, 795, 25);
         sendButton.setBounds(800, 627, 84, 23);
         scrollChatTxt.setBounds(5,515,880,110);
 
-
-        contentPane.add(scoreBoardLBL);
+        contentPane.add(scoreboardlbl);
         contentPane.add(scrollChatTxt);
         contentPane.add(submitFieldTXT);
         contentPane.add(sendButton);
-        contentPane.add(attackButton);
+    }
 
+    private void createGameControls() {
+        startGameButton = new JButton("Start Game");
+        addCreatureButton = new JButton("Add Creature");
+        attackButton = new JButton("Roll Attack");
+        damageButton = new JButton("Roll Damage");
+        playerComboBox = new JComboBox<>();
+        playerComboBox.addItem("--Target--");
+        initiateTurnButton = new JButton("Initiate Turn");
+
+        addCreatureButton.setVisible(false);
+        attackButton.setVisible(false);
+        damageButton.setVisible(false);
+        playerComboBox.setVisible(false);
+        initiateTurnButton.setVisible(false);
+
+        startGameButton.addActionListener(e-> {
+            sendJson(JSONLibrary.sendStartGame());
+            startGameButton.setVisible(false);
+        });
+
+        startGameButton.addActionListener(e->{
+            sendJson(JSONLibrary.sendStartGame());
+            startGameButton.setEnabled(false);
+            attackButton.setVisible(true);
+            damageButton.setVisible(true);
+            playerComboBox.setVisible(true);
+            initiateTurnButton.setVisible(true);
+        });
+
+        attackButton.addActionListener(e->{
+            attackRoll = playerActor.rollAttack();
+            chatFieldTXT.append("Attack Roll: " + attackRoll + "\n");
+            attackButton.setEnabled(false);
+        });
+
+        damageButton.addActionListener(e->{
+            damageRoll = playerActor.rollDamage();
+            chatFieldTXT.append("Damage Roll: " + damageRoll + "\n");
+            damageButton.setEnabled(false);
+        });
+
+        playerComboBox.addActionListener(e->{
+            JComboBox cb = (JComboBox)e.getSource();
+            if(!cb.getSelectedItem().equals("--Target--")){
+                target = (String)cb.getSelectedItem();
+                chatFieldTXT.append("Target : " + target + "\n");
+            }
+        });
+
+        initiateTurnButton.addActionListener(e-> {
+            if (!attackButton.isEnabled() && !damageButton.isEnabled() && !playerComboBox.getSelectedItem().equals("--Target--")) {
+                    sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
+                if (!attackButton.isEnabled() && !damageButton.isEnabled()) {
+                    sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
+                    initiateTurnButton.setEnabled(false);
+                    playerTurn = false;
+                } else {
+                    chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
+                }
+            }
+        });
+
+        addCreatureButton.addActionListener(e->{
+            sendJson(JSONLibrary.sendAddCreature());
+        });
+
+        startGameButton.setBounds(5, 175, 300, 25);
+        addCreatureButton.setBounds(155, 175, 300, 25);
+        attackButton.setBounds(5,200,150,25);
+        damageButton.setBounds(155, 200, 150, 25);
+        playerComboBox.setBounds(5, 225, 300, 25);
+        initiateTurnButton.setBounds(5, 250, 300, 25);
+
+        contentPane.add(startGameButton);
+        contentPane.add(addCreatureButton);
+        contentPane.add(attackButton);
+        contentPane.add(damageButton);
+        contentPane.add(playerComboBox);
+        contentPane.add(initiateTurnButton);
     }
 
     private String getUser() {
@@ -78,15 +157,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return username;
     }
 
-    private void sendUser(String user){
-        JSONObject loginMessage = new JSONObject();
-        JSONObject username = new JSONObject();
-
-        loginMessage.put("type", "login");
-        username.put("username", user);
-        loginMessage.put("message", username);
-
-        out.println(loginMessage.toString());
+    private void sendJson(String json){
+        out.println(json);
+        out.flush();
     }
 
     private String getPlayerCharacter(){
@@ -95,22 +168,14 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 "Player Character Selection", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
                 options, options[0]);
         switch(response){
-            case 0 : return "Fighter";
-            case 1 : return "Rogue";
-            case 2 : return "Mage";
+            case 0 : playerActor = new ActorPresets().playerPresets.get("Fighter");
+                return "Fighter";
+            case 1 : playerActor = new ActorPresets().playerPresets.get("Rogue");
+                return "Rogue";
+            case 2 : playerActor = new ActorPresets().playerPresets.get("Mage");
+                return "Mage";
         }
         return null;
-    }
-
-    private void sendPlayerCharacter(String playerCharacter){
-        JSONObject characterMessage = new JSONObject();
-        JSONObject character = new JSONObject();
-
-        characterMessage.put("type", "application");
-        character.put("player", playerCharacter);
-        characterMessage.put("message", character);
-        System.out.println(playerCharacter);
-        out.println(playerCharacter);
     }
 
     private String getServerAddress() {
@@ -138,52 +203,34 @@ public class CCMainGUI extends JFrame implements ActionListener {
         return true;
     }
 
-    private void displayScoreBoard(Game game) {
-        String scoreBoard = "<HTML><TABLE ALIGN=TOP BORDER=0  cellspacing=2 cellpadding=2><TR>";
-        for(String actorName: game.getNames()){
-            scoreBoard += "<TH><H2>" + actorName + "</H2></TH>";
+    //Takes arrays of player names and player scoreboards from game running on server
+    private void displayScoreboard(String[] playerNames, String[] colorActorStats) {
+        String scoreboard = "<HTML><TABLE ALIGN=TOP BORDER=0  cellspacing=2 cellpadding=2><TR>";
+        for(String actorName: playerNames){
+            scoreboard += "<TH><H2>" + actorName + "</H2></TH>";
         }
-        scoreBoard += "</TR><TR>";
+        scoreboard += "</TR><TR>";
         int count = 0;
-        for(String anActor: game.getScoreBoard()){
+        for(String anActor: colorActorStats){
             if(count % 2 == 0){
-                scoreBoard += "<TD BGCOLOR=" + anActor + ">";
+                scoreboard += "<TD BGCOLOR=" + anActor + ">";
             }
             else {
-                scoreBoard += anActor + "</TD>";
+                scoreboard += anActor + "</TD>";
             }
             count++;
         }
-        scoreBoard += "</TR></TABLE></HTML>";
-        scoreBoardLBL.setText(scoreBoard);
+        scoreboard += "</TR></TABLE></HTML>";
+        scoreboardlbl.setText(scoreboard);
     }
 
     public void run() {
-        Game game = new Game();
         boolean isConnected = connectToServer();
         username = getUser();
-        sendUser(username);
+        sendJson(JSONLibrary.sendUser(username));
 
         playerCharacter = getPlayerCharacter();
-        game.addPlayer(username, playerCharacter);
-
-        String JSONtestApp= "{\"type\": \"application\", \"message\": {\"module\": \"test\"}}";
-        out.println(JSONtestApp);
-        System.out.println(JSONtestApp);
-
-        sendPlayerCharacter(playerCharacter);
-        //Just a test//
-        ActorPresets actorPresets = new ActorPresets();
-        Actor player1 = actorPresets.playerPresets.get(playerCharacter);
-        game.addPlayer(username, player1.getType());
-        game.addRandomMonster();
-
-        displayScoreBoard(game);
-
-        //for titles of UI
-        for(String usernames: game.getNames()){
-            chatFieldTXT.append(usernames + "\n");
-        }
+        sendJson(JSONLibrary.sendPlayerCharacter(playerCharacter, username));
 
         // Process all messages from server, according to the protocol.
         while (true) {
@@ -191,8 +238,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
             //Put Handler here...
         }
     }
-
-
 
     @Override
     public void actionPerformed(ActionEvent e) {
