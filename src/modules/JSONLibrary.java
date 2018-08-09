@@ -5,9 +5,7 @@ import org.json.JSONObject;
 public class JSONLibrary {
     public static final String MODULE = "CREATURESANDCAVERNS";
 
-    public JSONLibrary(){
-
-    }
+    public JSONLibrary(){}
 
     public static String sendUser(String user){
         JSONObject loginMessage = new JSONObject();
@@ -154,6 +152,11 @@ public class JSONLibrary {
         sendYourTurn.put("message", yourTurnMsg);
 
         return sendYourTurn;
+    }
+
+    public static JSONObject serverGameOver(){
+        //TODO Simple message to notify clients that game is over.
+        return null;
     }
 
 

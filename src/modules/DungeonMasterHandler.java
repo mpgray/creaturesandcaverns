@@ -6,10 +6,10 @@ public class DungeonMasterHandler extends Handler {
 
 
     static final String MODULE = "CREATURESANDCAVERNS";
-    private Game game = new Game();
+    private Game game;
     private String currentPlayer;
-    private int currentPlayerIndex = 0;
-    boolean gameOver = false;
+    private int currentPlayerIndex;
+    boolean gameOver;
 
     public DungeonMasterHandler(String portString) {
         super(portString);
@@ -58,8 +58,7 @@ public class DungeonMasterHandler extends Handler {
 
     private void incrementPlayerTurn() {
         if(game.getGameOver()){
-            //TODO
-            //broadcast(JSONLibrary.serverGameOver(), MODULE);
+            broadcast(JSONLibrary.serverGameOver(), MODULE);
             return;
         }
 
@@ -100,13 +99,15 @@ public class DungeonMasterHandler extends Handler {
     private void addPlayer(JSONObject message) {
         String username = message.getString("username");
         String playerType = message.getString("playerType");
-
         game.addPlayer(username, playerType);
     }
 
     private void startGame() {
+        game = new Game();
         game.startGame();
+        currentPlayerIndex = 0;
         currentPlayer = game.getNames()[currentPlayerIndex];
+        gameOver = false;
         broadcast(JSONLibrary.serverGameStarted(), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
         netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);

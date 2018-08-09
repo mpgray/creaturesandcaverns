@@ -236,6 +236,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         while (true) {
             //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
             //Put Handler here...
+            //TODO
         }
     }
 
