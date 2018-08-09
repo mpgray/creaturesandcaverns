@@ -1,6 +1,8 @@
 package modules;
 
-import org.json.JSONObject;
+import org.json.*;
+
+import java.util.*;
 
 public class DungeonMasterHandler extends Handler {
 
