@@ -7,6 +7,8 @@ public class DungeonMasterHandler extends Handler {
 
     static final String MODULE = "CREATURESANDCAVERNS";
     private Game game = new Game();
+    private String currentPlayer;
+    private int currentPlayerIndex = 0;
 
     public DungeonMasterHandler(String portString) {
         super(portString);
@@ -26,8 +28,15 @@ public class DungeonMasterHandler extends Handler {
                 case "addCreature"               :   addCreature();
                     break;
                 case "quit"                      :   removePlayer(message);
+                    break;
+                case "passTurn"                  :   passPlayerTurn(message);
+                    break;
             }
         }
+    }
+
+    private void passPlayerTurn(JSONObject message) {
+        incrementPlayerTurn();
     }
 
     private void removePlayer(JSONObject message) {
@@ -42,8 +51,25 @@ public class DungeonMasterHandler extends Handler {
         int damageRoll = message.getInt("damageRoll");
         String battleReport = game.runCombat(attackerUsername, targetUsername, attackRoll, damageRoll);
 
+        if(game.getCurrentTarget().getIsDead()){
+            netSend(JSONLibrary.serverPlayerDeath(), targetUsername, MODULE);
+        }
+
         broadcast(JSONLibrary.serverBattleReport(battleReport), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
+
+        incrementPlayerTurn();
+    }
+
+    private void incrementPlayerTurn() {
+        if(currentPlayerIndex < game.getNames().length - 1){
+            currentPlayerIndex ++;
+        } else {
+            currentPlayerIndex = 0;
+        }
+
+        currentPlayer = game.getNames()[currentPlayerIndex];
+        netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
     }
 
     private void addPlayer(JSONObject message) {
@@ -55,8 +81,10 @@ public class DungeonMasterHandler extends Handler {
 
     private void startGame() {
         game.startGame();
+        currentPlayer = game.getNames()[currentPlayerIndex];
         broadcast(JSONLibrary.serverGameStarted(), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
+        netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
     }
 
     private void addCreature() {
@@ -68,4 +96,6 @@ public class DungeonMasterHandler extends Handler {
         String portString = "8990";
         new Thread(new DungeonMasterHandler(portString)).start();
     }
+
+
 }
