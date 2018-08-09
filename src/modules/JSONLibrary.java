@@ -131,5 +131,20 @@ public class JSONLibrary {
         return sendScoreboard;
     }
 
+    public static JSONObject serverplayerDeath(){
+
+        JSONObject sendPlayerDeath = new JSONObject();
+        JSONObject playerDeathMsg = new JSONObject();
+
+        sendPlayerDeath.put("type", "application");
+
+        playerDeathMsg.put("module", MODULE);
+        playerDeathMsg.put("isDead", true);
+
+        sendPlayerDeath.put("message", playerDeathMsg);
+
+        return sendPlayerDeath;
+    }
+
 
 }
