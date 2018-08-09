@@ -9,6 +9,7 @@ public class DungeonMasterHandler extends Handler {
     private Game game = new Game();
     private String currentPlayer;
     private int currentPlayerIndex = 0;
+    boolean gameOver = false;
 
     public DungeonMasterHandler(String portString) {
         super(portString);
@@ -62,14 +63,44 @@ public class DungeonMasterHandler extends Handler {
     }
 
     private void incrementPlayerTurn() {
-        if(currentPlayerIndex < game.getNames().length - 1){
-            currentPlayerIndex ++;
-        } else {
-            currentPlayerIndex = 0;
+        if(game.getGameOver()){
+            //TODO
+            //broadcast(JSONLibrary.serverGameOver(), MODULE);
+            return;
         }
 
-        currentPlayer = game.getNames()[currentPlayerIndex];
-        netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
+        do{
+            if(currentPlayerIndex < game.getNames().length - 1){
+                currentPlayerIndex++;
+            } else {
+                currentPlayerIndex = 0;
+            }
+            currentPlayer = game.getNames()[currentPlayerIndex];
+        } while(game.getCurrentActors().get(currentPlayer).getIsDead());
+
+        if(game.getCurrentActors().get(currentPlayer).isPlayer()){
+            netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
+        } else {
+            runAICombat(currentPlayer);
+        }
+
+    }
+
+    private void runAICombat(String creatureName){
+        String attackerUsername = creatureName;
+        String targetUsername = game.aiTargetSelect(creatureName);
+        int attackRoll = game.getCurrentActors().get(creatureName).rollAttack();
+        int damageRoll = game.getCurrentActors().get(creatureName).rollDamage();
+        String battleReport = game.runCombat(attackerUsername, targetUsername, attackRoll, damageRoll);
+
+        if(game.getCurrentTarget().getIsDead()){
+            netSend(JSONLibrary.serverPlayerDeath(), targetUsername, MODULE);
+        }
+
+        broadcast(JSONLibrary.serverBattleReport(battleReport), MODULE);
+        broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
+
+        incrementPlayerTurn();
     }
 
     private void addPlayer(JSONObject message) {

@@ -141,7 +141,7 @@ public class Actor implements Comparable<Actor>{
         return isPlayer;
     }
 
-    public void setPlayer(boolean player) {
+    public void setIsPlayer(boolean player) {
         isPlayer = player;
     }
 

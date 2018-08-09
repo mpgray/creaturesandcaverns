@@ -1,51 +1,48 @@
 package modules;
 
-import modules.Actor;
-import modules.ActorPresets;
-import modules.Die;
-
 import java.util.*;
 
 public class Game {
     private HashMap<String, Actor> creaturePresets;
     private HashMap<String, Actor> playerPresets;
-    private TreeMap<String, Actor> players;
-    private Actor currentPlayer;
+    private TreeMap<String, Actor> actors;
+    private Actor currentActor;
     private Actor currentTarget;
-    private boolean hit, gameStarted;
-    private int damage;
-    private String battleReport, playerTurn;
+    private boolean hit, gameStarted, gameOver;
+    private int damage, numDead;
+    private String battleReport;
 
     public Game(){
         creaturePresets = new ActorPresets().creatures;
         playerPresets = new ActorPresets().playerPresets;
-        players = new TreeMap<>();
+        actors = new TreeMap<>();
         gameStarted = false;
     }
 
     public void startGame(){
         gameStarted = true;
-        playerTurn = players.firstKey();
+        gameOver = false;
+        numDead = 0;
     }
 
     public void endGame(){
         gameStarted = false;
-        for(String user : players.keySet()){
-            players.remove(user);
+        for(String user : actors.keySet()){
+            actors.remove(user);
         }
     }
 
     public void addPlayer(String playerName, String playerType){
-        players.put(playerName, playerPresets.get(playerType));
+        actors.put(playerName, playerPresets.get(playerType));
     }
 
     public void removePlayer(String playerName){
-        players.remove(playerName);
+        actors.remove(playerName);
     }
 
     public String runCombat(String playerName, String targetName, int attackRoll, int damageRoll){
-        currentPlayer = players.get(playerName);
-        currentTarget = players.get(targetName);
+        currentActor = actors.get(playerName);
+        currentTarget = actors.get(targetName);
 
         if(attackRoll >= currentTarget.getArmorClass()){
             hit = true;
@@ -58,7 +55,7 @@ public class Game {
             hit = false;
         }
 
-        String attackName = currentPlayer.getAttackName();
+        String attackName = currentActor.getAttackName();
         String defenseName = currentTarget.getDefenseName();
 
         if(currentTarget.getIsDead()){
@@ -74,81 +71,62 @@ public class Game {
     public void addRandomMonster(){
         Object[] creatureKeys = creaturePresets.keySet().toArray();
         Object key = creatureKeys[new Random().nextInt(creatureKeys.length)];
-        players.put(creaturePresets.get(key).getType(), creaturePresets.get(key));
+        actors.put(creaturePresets.get(key).getType(), creaturePresets.get(key));
     }
 
-    public TreeMap<String, Actor> getCurrentPlayers(){
-        return players;
+    public TreeMap<String, Actor> getCurrentActors(){
+        return actors;
     }
 
     public String[] getNames(){
         String[] playerNames = null;
-        players.keySet().toArray(playerNames);
+        actors.keySet().toArray(playerNames);
         return playerNames;
     }
 
-    public int getAttackRoll(String playerName){
-        return players.get(playerName).getAttackDie().getLastRoll();
-    }
-
-    public int[] getDamageRolls(String playerName){
-        int n = players.get(playerName).getDamageDice().toArray().length;
-        int[] vals = new int[n];
-        int i = 0;
-        for(Die d : players.get(playerName).getDamageDice()){
-            vals[i] = d.getLastRoll();
-            i++;
-        }
-        return vals;
-    }
-
-    public int getDamageDieSides(String playerName){
-        return players.get(playerName).getDamageDice().get(0).getNumSides();
-    }
-
     public String getPlayerStats(String playerName){
-        return players.get(playerName).toString();
+        return actors.get(playerName).toString();
     }
 
     public Actor getCurrentTarget(){
         return currentTarget;
     }
 
-    private Actor aiTargetSelect(String creatureName){
+    public String aiTargetSelect(String creatureName){
         Die D100 = new Die(100);
         int greatestChance = 0;
         int chanceAttacks = 0;
-        Actor willAttack = players.firstEntry().getValue();
-        for (Iterator<Actor> it = players.values().iterator(); it.hasNext();) {
-            Actor actor = it.next();
+        String willAttack = actors.firstKey();
+        for (String actorName : actors.keySet()) {
             chanceAttacks = D100.rollDie();
-            if(actor.getType().equals("Fighter")){
+            if(actors.get(actorName).getType().equals("Fighter")){
                 chanceAttacks += 50;
             }
-            else if(actor.getType().equals("Mage")){
+            else if(actors.get(actorName).getType().equals("Mage")){
                 chanceAttacks += 20;
             }
-            else if(actor.getType().equals("Rogue")){
+            else if(actors.get(actorName).getType().equals("Rogue")){
                 chanceAttacks += 15;
             }
             else{
                 chanceAttacks = -1000; //so it does not attack itself
             }
-            if(actor.getCurrentHitPoints() < 10){
+            if(actors.get(actorName).getCurrentHitPoints() < 10){
                 chanceAttacks += 25;
             }
             if (chanceAttacks > greatestChance){
-               willAttack = actor;
+               willAttack = actorName;
                greatestChance = chanceAttacks;
             }
         }
+
         return willAttack;
     }
 
     public String[] getScoreboard(){
         String[] colorActorStats = null;
         ArrayList<String> eachActor = new ArrayList<>();
-        for (Iterator<Actor> it = getCurrentPlayers().values().iterator(); it.hasNext();) {
+        for (Iterator<Actor> it = getCurrentActors().values().iterator(); it.hasNext();) {
             Actor actor = it.next();
             String color = "#D49B90";
             if (actor.isPlayer()){
@@ -160,5 +138,19 @@ public class Game {
 
         eachActor.toArray(colorActorStats);
         return colorActorStats;
+    }
+
+    public boolean getGameOver(){
+        numDead = 0;
+        for(String actor : actors.keySet()){
+            if(actors.get(actor).getIsDead()){
+                numDead++;
+            }
+        }
+        if(numDead == this.getNames().length - 1){
+            gameOver = true;
+        }
+
+        return gameOver;
     }
 }
