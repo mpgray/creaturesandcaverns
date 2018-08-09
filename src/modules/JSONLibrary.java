@@ -165,8 +165,18 @@ public class JSONLibrary {
     }
 
     public static JSONObject serverGameOver(){
-        //TODO Simple message to notify clients that game is over.
-        return null;
+        JSONObject sendGameOver = new JSONObject();
+        JSONObject gameOverMsg = new JSONObject();
+
+        sendGameOver.put("type", "application");
+
+        gameOverMsg.put("module", MODULE);
+        gameOverMsg.put("action", "gameOver");
+        gameOverMsg.put("gameOver", true);
+
+        sendGameOver.put("message", gameOverMsg);
+
+        return sendGameOver;
     }
 
 }
