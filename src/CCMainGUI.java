@@ -22,6 +22,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private String username, playerCharacter, target;
     private Actor playerActor;
     private int attackRoll, damageRoll;
+    private boolean playerDeath = false;
 
     public CCMainGUI() {
         setTitle("Caverns and Creatures");

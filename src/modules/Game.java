@@ -110,6 +110,10 @@ public class Game {
         return players.get(playerName).toString();
     }
 
+    public Actor getCurrentTarget(){
+        return currentTarget;
+    }
+
     private Actor aiTargetSelect(String creatureName){
         Die D100 = new Die(100);
         int greatestChance = 0;
