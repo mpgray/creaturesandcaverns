@@ -359,13 +359,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         setupGame();
 
-        // Process all messages from server, according to the protocol.
-        while (true) {
+        Runnable messageHandler = () -> {
+            while(true){
+                
 
-            //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
-            //Put Handler here...
-            //TODO
-        }
+
+            }
+        }; new Thread(messageHandler).start();
     }
 
 

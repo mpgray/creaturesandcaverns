@@ -179,4 +179,19 @@ public class JSONLibrary {
         return sendGameOver;
     }
 
+    public static JSONObject serverTargetNames(String[] targetNames){
+        JSONObject sendTargetNames = new JSONObject();
+        JSONObject targetNamesMsg = new JSONObject();
+
+        sendTargetNames.put("type", "application");
+
+        targetNamesMsg.put("module", MODULE);
+        targetNamesMsg.put("action", "targetNames");
+        targetNamesMsg.put("playerNames", targetNames);
+
+        sendTargetNames.put("message", targetNamesMsg);
+
+        return sendTargetNames;
+    }
+
 }

@@ -2,8 +2,6 @@ package modules;
 
 import org.json.*;
 
-import java.util.*;
-
 public class DungeonMasterHandler extends Handler {
 
 
@@ -59,6 +57,7 @@ public class DungeonMasterHandler extends Handler {
         }
 
         broadcast(JSONLibrary.serverBattleReport(battleReport), MODULE);
+        broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
 
         incrementPlayerTurn();
@@ -99,6 +98,7 @@ public class DungeonMasterHandler extends Handler {
         }
 
         broadcast(JSONLibrary.serverBattleReport(battleReport), MODULE);
+        broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
 
         incrementPlayerTurn();
@@ -117,6 +117,7 @@ public class DungeonMasterHandler extends Handler {
         currentPlayer = game.getNames()[currentPlayerIndex];
         gameOver = false;
         broadcast(JSONLibrary.serverGameStarted(), MODULE);
+        broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
         netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
     }
