@@ -55,7 +55,11 @@ public class JSONLibrary {
 
         sendInitiateTurn.put("type", "application");
         initiateTurn.put("module", MODULE);
+        initiateTurn.put("action", "runCombat");
         initiateTurn.put("attacker", attackerUsername);
+        initiateTurn.put("target", targetUsername);
+        initiateTurn.put("attachRoll", attackRoll);
+        initiateTurn.put("damageRoll", damageRoll);
 
 
         sendInitiateTurn.put("message", initiateTurn);
@@ -68,8 +72,47 @@ public class JSONLibrary {
     public static String sendAddCreature( ){
 
         JSONObject addCreature = new JSONObject();
+        JSONObject addCreatureMsg = new JSONObject();
+
+        addCreature.put("type", "application");
+
+        addCreatureMsg.put("module", MODULE);
+        addCreatureMsg.put("action", "addCreature");
+
+        addCreature.put("message", addCreature);
 
         return addCreature.toString();
+    }
+
+    //SERVER JSON
+
+    public static JSONObject serverGameStarted(){
+
+        JSONObject gameStarted = new JSONObject();
+        JSONObject gameStartedMsg = new JSONObject();
+
+        gameStarted.put("type", "application");
+
+        gameStartedMsg.put("module", MODULE);
+        gameStartedMsg.put("isStarted","true");
+
+        gameStarted.put("message", gameStarted);
+
+        return gameStarted;
+    }
+
+    public static JSONObject serverBattleReport(String battleReport ){
+
+        JSONObject sendBattleReport = new JSONObject();
+        JSONObject battleReportMsg = new JSONObject();
+
+        sendBattleReport.put("type", "application");
+        battleReportMsg.put("module", MODULE);
+        battleReportMsg.put("battleReport", battleReport);
+
+        sendBattleReport.put("message", battleReportMsg);
+
+        return sendBattleReport;
     }
 
 
