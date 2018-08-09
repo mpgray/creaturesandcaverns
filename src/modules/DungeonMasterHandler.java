@@ -65,7 +65,7 @@ public class DungeonMasterHandler extends Handler {
 
     private void incrementPlayerTurn() {
         if(game.getGameOver()){
-            broadcast(JSONLibrary.serverGameOver(), MODULE);
+            broadcast(JSONLibrary.serverGameOver(game.getWinner()), MODULE);
             return;
         }
 

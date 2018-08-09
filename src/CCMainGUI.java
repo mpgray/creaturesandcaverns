@@ -1,7 +1,7 @@
 
 import modules.*;
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONWriter;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -10,18 +10,19 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 
 public class CCMainGUI extends JFrame implements ActionListener {
     private static final int serverPort = 8989;
+    static final String MODULE = "CREATURESANDCAVERNS";
 
     private Game game = new Game();
     private BufferedReader in;
     private PrintWriter out;
+    private JSONParser parser;
 
 
     private JFrame frame = new JFrame("Caverns and Creatures");
@@ -42,7 +43,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JButton rollButton = new JButton("Roll", createImageIcon("d20-blank.png"));
     private JButton addCreatureButton = new JButton("Add Creature");
     private JButton startGameButton, initiateTurnButton;
-    private JComboBox<String> playerComboBox;
+    private JComboBox targetComboBox;
     private Actor playerActor;
     private int attackRoll = 0, damageRoll = 0;
     private String username, playerCharacter, target;
@@ -178,29 +179,21 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private void createGameControls() {
         startGameButton = new JButton("Start Game");
 
-        playerComboBox = new JComboBox<>();
-        playerComboBox.addItem("--Target--");
+        targetComboBox = new JComboBox();
+        targetComboBox.addItem("--Target--");
         initiateTurnButton = new JButton("Initiate Turn");
 
 
-        playerComboBox.setVisible(false);
+        targetComboBox.setVisible(false);
         initiateTurnButton.setVisible(false);
-
-        startGameButton.addActionListener(e-> {
-            sendJson(JSONLibrary.sendStartGame());
-            startGameButton.setVisible(false);
-        });
 
         startGameButton.addActionListener(e->{
             sendJson(JSONLibrary.sendStartGame());
-            startGameButton.setEnabled(false);
-            attackButton.setVisible(true);
-            playerComboBox.setVisible(true);
-            initiateTurnButton.setVisible(true);
+            startGameGuiVisibility();
         });
 
 
-        playerComboBox.addActionListener(e->{
+        targetComboBox.addActionListener(e->{
             JComboBox cb = (JComboBox)e.getSource();
             if(!cb.getSelectedItem().equals("--Target--")){
                 target = (String)cb.getSelectedItem();
@@ -209,7 +202,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         });
 
         initiateTurnButton.addActionListener(e-> {
-            if (!attackButton.isEnabled() && !playerComboBox.getSelectedItem().equals("--Target--")) {
+            if (!attackButton.isEnabled() && !targetComboBox.getSelectedItem().equals("--Target--")) {
                 sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
                 if (!attackButton.isEnabled()) {
                     sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
@@ -223,13 +216,24 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         startGameButton.setBounds(105, 175, 300, 25);
 
-        playerComboBox.setBounds(105, 225, 300, 25);
+        targetComboBox.setBounds(105, 225, 300, 25);
         initiateTurnButton.setBounds(105, 250, 300, 25);
 
         contentPane.add(startGameButton,JLayeredPane.MODAL_LAYER);
-        contentPane.add(playerComboBox,JLayeredPane.MODAL_LAYER);
+        contentPane.add(targetComboBox,JLayeredPane.MODAL_LAYER);
         contentPane.add(initiateTurnButton,JLayeredPane.MODAL_LAYER);
     }
+
+    private void startGameGuiVisibility() {
+        startGameButton.setEnabled(false);
+        attackButton.setVisible(true);
+        attackButton.setEnabled(false);
+        targetComboBox.setVisible(true);
+        targetComboBox.setEnabled(false);
+        initiateTurnButton.setVisible(true);
+        initiateTurnButton.setEnabled(false);
+    }
+
     private void setupGame(){
         //Just a test//
         ActorPresets actorPresets = new ActorPresets();
@@ -354,7 +358,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
             while(true){
                 try{
                     json = (JSONObject) jsonParser.parse(in.readLine());
-
+                    messageHandler(json);
                 } catch (IOException e){
                     e.printStackTrace();
                 } catch (ParseException e){
@@ -366,7 +370,76 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void messageHandler(JSONObject json){
-        
+        if(json.opt("module") != null || MODULE.equals(json.getString("module"))) {
+            String action = json.getString("action");
+            switch (action) {
+                case "startGame"        :       startGameGuiVisibility();
+                    break;
+                case "battleReport"     :       updateBattleReport(json.getString("battleReport"));
+                    break;
+                case "scoreBoard"       :       updateScoreboard(json);
+                    break;
+                case "playerDeath"      :       youAreDead();
+                    break;
+                case "yourTurn"         :       yourTurn();
+                    break;
+                case "gameOver"         :       gameOver(json.getString("winner"));
+                    break;
+                case "targetNames"      :       updateComboTargetBox(json);
+                    break;
+            }
+        }
+    }
+
+    private void updateBattleReport(String battleReport) {
+        chatFieldTXT.append("Battle Report: " + battleReport + "\n");
+        submitFieldTXT.selectAll();
+        chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
+    }
+
+    private void updateScoreboard(JSONObject json) {
+        JSONArray p = json.getJSONArray("playerNames");
+        JSONArray c = json.getJSONArray("colorActorStats");
+
+        String[] playerNames = new String[p.length()];
+        String[] colorActorStats = new String[c.length()];
+
+        for(int i = 0; i < p.length(); i++){
+            playerNames[i] = p.getString(i);
+        }
+        for(int i = 0; i < c.length(); i++){
+            colorActorStats[i] = c.getString(i);
+        }
+
+        displayScoreboard(playerNames, colorActorStats);
+    }
+
+    private void youAreDead() {
+        //TODO DISPLAY YOU ARE DEAD PROMPT
+    }
+
+    private void yourTurn(){
+        //TODO DISPLAY YOUR TURN PROMPT
+        targetComboBox.setEnabled(true);
+        initiateTurnButton.setEnabled(true);
+        attackButton.setEnabled(true);
+    }
+
+    private void gameOver(String winner){
+        if(username.equalsIgnoreCase(winner)){
+            //TODO VICTORY GUI MESSAGE
+        } else {
+            // TODO DEFEAT GUI MESSAGE
+        }
+    }
+
+    private void updateComboTargetBox(JSONObject json){
+        JSONArray jsonArray = json.getJSONArray("targetNames");
+        for(int i = 0; i < jsonArray.length(); i++){
+            if(((DefaultComboBoxModel)targetComboBox.getModel()).getIndexOf(jsonArray.get(i)) == -1){
+                targetComboBox.addItem(jsonArray.getString(i));
+            }
+        }
     }
 
 

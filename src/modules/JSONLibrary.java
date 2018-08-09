@@ -164,7 +164,7 @@ public class JSONLibrary {
         return sendYourTurn;
     }
 
-    public static JSONObject serverGameOver(){
+    public static JSONObject serverGameOver(String winner){
         JSONObject sendGameOver = new JSONObject();
         JSONObject gameOverMsg = new JSONObject();
 
@@ -173,6 +173,7 @@ public class JSONLibrary {
         gameOverMsg.put("module", MODULE);
         gameOverMsg.put("action", "gameOver");
         gameOverMsg.put("gameOver", true);
+        gameOverMsg.put("winner", winner);
 
         sendGameOver.put("message", gameOverMsg);
 
@@ -187,7 +188,7 @@ public class JSONLibrary {
 
         targetNamesMsg.put("module", MODULE);
         targetNamesMsg.put("action", "targetNames");
-        targetNamesMsg.put("playerNames", targetNames);
+        targetNamesMsg.put("targetNames", targetNames);
 
         sendTargetNames.put("message", targetNamesMsg);
 
