@@ -63,6 +63,7 @@ public class Game {
 
         if(currentTarget.getIsDead()){
             battleReport = (playerName + " killed " + targetName + " with " + attackName + " for " + damage + "!");
+            players.remove(targetName);
         } else {
             battleReport = hit ? (playerName + " hit " + targetName + " with " + attackName + " for " + damage + "!") :
                     (targetName + " avoided damage from " + playerName + " with " + defenseName + "!");
