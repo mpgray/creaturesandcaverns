@@ -10,6 +10,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.io.*;
 import java.net.Socket;
 
@@ -39,7 +41,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JButton attackButton = new JButton("Roll Attack", createImageIcon("sword.png"));
     private JButton rollButton = new JButton("Roll", createImageIcon("d20-blank.png"));
     private JButton addCreatureButton = new JButton("Add Creature");
-    private JButton startGameButton, damageButton, initiateTurnButton;
+    private JButton startGameButton, initiateTurnButton;
     private JComboBox<String> playerComboBox;
     private Actor playerActor;
     private int attackRoll = 0, damageRoll = 0;
@@ -79,21 +81,24 @@ public class CCMainGUI extends JFrame implements ActionListener {
         createGameControls();
 
     }
-
+    private void displayRoll(int roll){
+        rollButton.setFont(new Font("Arial", Font.BOLD, 20));
+        rollButton.setText(Integer.toString(roll));
+    }
     private void displayGameBoard(){
         attackButton.addActionListener(evt -> {
             if(attackRoll == 0) {
                 attackRoll = playerActor.rollAttack();
-                rollButton.setFont(new Font("Arial", Font.BOLD, 20));
-                rollButton.setText(Integer.toString(attackRoll));
+                displayRoll(attackRoll);
                 chatFieldTXT.append("Attack Roll: " + attackRoll + "\n");
                 attackButton.setText("Roll Damage");
+
             }
             else {
                 damageRoll = playerActor.rollDamage();
                 chatFieldTXT.append("Damage Roll: " + damageRoll + "\n");
-                rollButton.setFont(new Font("Arial", Font.BOLD, 20));
-                rollButton.setText(Integer.toString(attackRoll));
+                displayRoll(damageRoll);
+                attackButton.setEnabled(false);
                 attackButton.setVisible(false);
                 attackButton.setText("Roll Attack");
                 attackRoll = 0;
@@ -103,8 +108,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
             Die d20 = new Die(20);
             int roll = d20.rollDie();
             chatFieldTXT.append("You rolled a " + roll + "!\n");
-            rollButton.setFont(new Font("Arial", Font.BOLD, 20));
-            rollButton.setText(Integer.toString(roll));
+            displayRoll(roll);
         });
         addCreatureButton.addActionListener(evt -> {
             sendJson(JSONLibrary.sendAddCreature());
@@ -114,6 +118,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         rollButton.setOpaque(false);
 
         attackButton.setEnabled(true);
+        attackButton.setContentAreaFilled(false);
         attackButton.setBorder(BorderFactory.createEmptyBorder());
         attackButton.setForeground(new Color( 161,81,55));
         attackButton.setVerticalTextPosition(AbstractButton.BOTTOM);
@@ -137,8 +142,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
         player3LBL.setForeground(Color.WHITE);
         addCreatureButton.setEnabled(true);
 
-        attackButton.setBounds(0,140,100,100);
-        rollButton.setBounds(0,240,100,109);
+        attackButton.setBounds(0,249,100,100);
+        rollButton.setBounds(0,140,100,109);
         addCreatureButton.setBounds(5,492,175,23);
         player1LBL.setBounds(440,250,240,160);
         player2LBL.setBounds(540,275,240,160);
@@ -156,7 +161,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private void displayChat(){
         chatFieldTXT = new JTextArea(20, 75);
         scrollChatTxt = new JScrollPane(chatFieldTXT,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
         submitFieldTXT.setBounds(5, 627, 795, 25);
         sendButton.setBounds(800, 627, 84, 23);
         scrollChatTxt.setBounds(5,515,880,110);
@@ -173,12 +177,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
     private void createGameControls() {
         startGameButton = new JButton("Start Game");
-        damageButton = new JButton("Roll Damage");
+
         playerComboBox = new JComboBox<>();
         playerComboBox.addItem("--Target--");
         initiateTurnButton = new JButton("Initiate Turn");
 
-        damageButton.setVisible(false);
+
         playerComboBox.setVisible(false);
         initiateTurnButton.setVisible(false);
 
@@ -191,22 +195,10 @@ public class CCMainGUI extends JFrame implements ActionListener {
             sendJson(JSONLibrary.sendStartGame());
             startGameButton.setEnabled(false);
             attackButton.setVisible(true);
-            damageButton.setVisible(true);
             playerComboBox.setVisible(true);
             initiateTurnButton.setVisible(true);
         });
 
-        attackButton.addActionListener(e->{
-            attackRoll = playerActor.rollAttack();
-            chatFieldTXT.append("Attack Roll: " + attackRoll + "\n");
-            attackButton.setEnabled(false);
-        });
-
-        damageButton.addActionListener(e->{
-            damageRoll = playerActor.rollDamage();
-            chatFieldTXT.append("Damage Roll: " + damageRoll + "\n");
-            damageButton.setEnabled(false);
-        });
 
         playerComboBox.addActionListener(e->{
             JComboBox cb = (JComboBox)e.getSource();
@@ -217,9 +209,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
         });
 
         initiateTurnButton.addActionListener(e-> {
-            if (!attackButton.isEnabled() && !damageButton.isEnabled() && !playerComboBox.getSelectedItem().equals("--Target--")) {
+            if (!attackButton.isEnabled() && !playerComboBox.getSelectedItem().equals("--Target--")) {
                 sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
-                if (!attackButton.isEnabled() && !damageButton.isEnabled()) {
+                if (!attackButton.isEnabled()) {
                     sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
                     initiateTurnButton.setEnabled(false);
                     playerTurn = false;
@@ -229,18 +221,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
             }
         });
 
-        addCreatureButton.addActionListener(e->{
-            sendJson(JSONLibrary.sendAddCreature());
-        });
-
         startGameButton.setBounds(105, 175, 300, 25);
 
-        damageButton.setBounds(255, 200, 150, 25);
         playerComboBox.setBounds(105, 225, 300, 25);
         initiateTurnButton.setBounds(105, 250, 300, 25);
 
         contentPane.add(startGameButton,JLayeredPane.MODAL_LAYER);
-        contentPane.add(damageButton,JLayeredPane.MODAL_LAYER);
         contentPane.add(playerComboBox,JLayeredPane.MODAL_LAYER);
         contentPane.add(initiateTurnButton,JLayeredPane.MODAL_LAYER);
     }
@@ -402,4 +388,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
             e.printStackTrace();
         }
     }
+
+
+
+
+
 }
