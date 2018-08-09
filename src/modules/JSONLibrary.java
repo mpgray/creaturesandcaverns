@@ -28,7 +28,6 @@ public class JSONLibrary {
         startCommand.put("module", MODULE);
         startCommand.put("action", "startNewGame");
         startGame.put("message", startCommand);
-        System.out.println(startGame.toString());
 
         return startGame.toString();
     }
@@ -43,7 +42,6 @@ public class JSONLibrary {
         playerCharacter.put("username", username);
         playerCharacter.put("playerType", pc);
         sendPC.put("message", playerCharacter);
-        System.out.println(sendPC.toString());
 
         return sendPC.toString();
     }
@@ -61,10 +59,7 @@ public class JSONLibrary {
         initiateTurn.put("attachRoll", attackRoll);
         initiateTurn.put("damageRoll", damageRoll);
 
-
         sendInitiateTurn.put("message", initiateTurn);
-
-
 
         return sendInitiateTurn.toString();
     }
@@ -79,9 +74,24 @@ public class JSONLibrary {
         addCreatureMsg.put("module", MODULE);
         addCreatureMsg.put("action", "addCreature");
 
-        addCreature.put("message", addCreature);
+        addCreature.put("message", addCreatureMsg);
 
         return addCreature.toString();
+    }
+
+    public static String sendPassTurn(){
+
+        JSONObject sendPassTurn = new JSONObject();
+        JSONObject passTurnMsg = new JSONObject();
+
+        sendPassTurn.put("type", "application");
+
+        passTurnMsg.put("module", MODULE);
+        passTurnMsg.put("action", "true");
+
+        sendPassTurn.put("message", passTurnMsg);
+
+        return sendPassTurn.toString();
     }
 
     //SERVER JSON
@@ -131,7 +141,7 @@ public class JSONLibrary {
         return sendScoreboard;
     }
 
-    public static JSONObject serverplayerDeath(){
+    public static JSONObject serverPlayerDeath(){
 
         JSONObject sendPlayerDeath = new JSONObject();
         JSONObject playerDeathMsg = new JSONObject();
@@ -145,6 +155,22 @@ public class JSONLibrary {
 
         return sendPlayerDeath;
     }
+
+    public static JSONObject serverYourTurn(){
+
+        JSONObject sendYourTurn = new JSONObject();
+        JSONObject yourTurnMsg = new JSONObject();
+
+        sendYourTurn.put("type", "application");
+
+        yourTurnMsg.put("module", MODULE);
+        yourTurnMsg.put("yourTurn", true);
+
+        sendYourTurn.put("message", yourTurnMsg);
+
+        return sendYourTurn;
+    }
+
 
 
 }
