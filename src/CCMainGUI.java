@@ -223,7 +223,11 @@ public class CCMainGUI extends JFrame implements ActionListener {
             count++;
         }
         scoreboard += "</TR></TABLE></HTML>";
-        scoreboardlbl.setText(scoreboard);
+        scoreBoardLBL.setText(scoreboard);
+    }
+    private void sendJson(String json){
+        out.println(json);
+        out.flush();
     }
 
     public void run() {
@@ -238,26 +242,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         while (true) {
             //THIS IS WHERE THE SERVER COMMUNICATES WITH THE UI!!!!!!!!!!!!!
             //Put Handler here...
-            //TODO use readServerMessage method.
-        }
-    }
-
-    private void readServerMessage(JSONObject json){
-        String action = json.getString("action");
-
-        switch(action){
-            case "startGame"        :   //TODO
-                break;
-            case "battleReport"     :   //TODO
-                break;
-            case "scoreboard"       :   //TODO
-                break;
-            case "playerDeath"      :   //TODO
-                break;
-            case "yourTurn"         :   //TODO
-                break;
-            case "gameOver"         :   //TODO
-                break;
+            //TODO
         }
     }
 
@@ -267,7 +252,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         chatFieldTXT.append(username + ": " + text + "\n");
         submitFieldTXT.selectAll();
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
-        sendJson(JSONLibrary.sendChatMessage(text));
     }
 
     public static void main(String[] args) throws IOException {
