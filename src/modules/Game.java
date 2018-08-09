@@ -77,6 +77,12 @@ public class Game {
         return players;
     }
 
+    public String[] getNames(){
+        String[] playerNames = null;
+        players.keySet().toArray(playerNames);
+        return playerNames;
+    }
+
     public int getAttackRoll(String playerName){
         return players.get(playerName).getAttackDie().getLastRoll();
     }
@@ -131,16 +137,8 @@ public class Game {
         return willAttack;
     }
 
-    public ArrayList<String> getNames(){
-        ArrayList<String> eachName = new ArrayList<>();
-        for (Iterator<String> it = getCurrentPlayers().keySet().iterator(); it.hasNext();) {
-            String name = it.next();
-            eachName.add(name);
-        }
-        return eachName;
-    }
-
-    public ArrayList<String> getScoreBoard(){
+    public String[] getScoreboard(){
+        String[] colorActorStats = null;
         ArrayList<String> eachActor = new ArrayList<>();
         for (Iterator<Actor> it = getCurrentPlayers().values().iterator(); it.hasNext();) {
             Actor actor = it.next();
@@ -151,6 +149,8 @@ public class Game {
             eachActor.add(color);
             eachActor.add(actor.toString());
         }
-        return eachActor;
+
+        eachActor.toArray(colorActorStats);
+        return colorActorStats;
     }
 }

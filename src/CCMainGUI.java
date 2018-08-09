@@ -14,7 +14,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private BufferedReader in;
     private PrintWriter out;
     private JTextArea chatFieldTXT;
-    private JLabel scoreBoardLBL;
+    private JLabel scoreboardlbl;
     private JScrollPane scrollChatTxt;
     private JTextField submitFieldTXT;
     private JButton sendButton, startGameButton, addCreatureButton, attackButton, damageButton, initiateTurnButton;
@@ -31,14 +31,14 @@ public class CCMainGUI extends JFrame implements ActionListener {
         contentPane = new JPanel();
         chatFieldTXT = new JTextArea(20, 75);
         scrollChatTxt = new JScrollPane(chatFieldTXT,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scoreBoardLBL = new JLabel();
+        scoreboardlbl = new JLabel();
         submitFieldTXT = new JTextField(75);
 
         contentPane.setBorder(new EmptyBorder(0, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        scoreBoardLBL.setOpaque(true);
+        scoreboardlbl.setOpaque(true);
 
         createGameControls();
 
@@ -52,13 +52,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
         sendButton.addActionListener(this);
         sendButton.setEnabled(true);
         chatFieldTXT.setEditable(false);
-        scoreBoardLBL.setBounds(0, 0, 880, 140);
+        scoreboardlbl.setBounds(0, 0, 880, 140);
 
         submitFieldTXT.setBounds(5, 627, 795, 25);
         sendButton.setBounds(800, 627, 84, 23);
         scrollChatTxt.setBounds(5,515,880,110);
 
-        contentPane.add(scoreBoardLBL);
+        contentPane.add(scoreboardlbl);
         contentPane.add(scrollChatTxt);
         contentPane.add(submitFieldTXT);
         contentPane.add(sendButton);
@@ -130,7 +130,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         });
 
         startGameButton.setBounds(5, 175, 300, 25);
-        addCreatureButton.setBounds(155, 175, 150, 25);
+        addCreatureButton.setBounds(155, 175, 300, 25);
         attackButton.setBounds(5,200,150,25);
         damageButton.setBounds(155, 200, 150, 25);
         playerComboBox.setBounds(5, 225, 300, 25);
@@ -201,24 +201,24 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     //Takes arrays of player names and player scoreboards from game running on server
-    private void displayScoreBoard(String[] playerNames, String[] playerStats) {
-        String scoreBoard = "<HTML><TABLE ALIGN=TOP BORDER=0  cellspacing=2 cellpadding=2><TR>";
+    private void displayScoreboard(String[] playerNames, String[] colorActorStats) {
+        String scoreboard = "<HTML><TABLE ALIGN=TOP BORDER=0  cellspacing=2 cellpadding=2><TR>";
         for(String actorName: playerNames){
-            scoreBoard += "<TH><H2>" + actorName + "</H2></TH>";
+            scoreboard += "<TH><H2>" + actorName + "</H2></TH>";
         }
-        scoreBoard += "</TR><TR>";
+        scoreboard += "</TR><TR>";
         int count = 0;
-        for(String anActor: playerStats){
+        for(String anActor: colorActorStats){
             if(count % 2 == 0){
-                scoreBoard += "<TD BGCOLOR=" + anActor + ">";
+                scoreboard += "<TD BGCOLOR=" + anActor + ">";
             }
             else {
-                scoreBoard += anActor + "</TD>";
+                scoreboard += anActor + "</TD>";
             }
             count++;
         }
-        scoreBoard += "</TR></TABLE></HTML>";
-        scoreBoardLBL.setText(scoreBoard);
+        scoreboard += "</TR></TABLE></HTML>";
+        scoreboardlbl.setText(scoreboard);
     }
 
     public void run() {
