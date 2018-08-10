@@ -37,7 +37,8 @@ public class DungeonMasterHandler extends Handler {
     }
 
     private void forwardChatMessage(JSONObject message) {
-        //TODO forward chat message to all clients.
+        String username = message.getString("usernaem");
+
     }
 
     private void removePlayer(JSONObject message) {

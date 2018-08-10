@@ -7,9 +7,17 @@ public class JSONLibrary {
 
     public JSONLibrary(){}
 
-    public static String sendChatMessage(String message){
-        //TODO JSON object for chat area messages.
-        return null;
+    public static String sendChatMessage( String message){
+
+        JSONObject sendChatMessage = new JSONObject();
+        JSONObject chatMessageMsg = new JSONObject();
+
+        sendChatMessage.put("type", "chat");
+        chatMessageMsg.put("module", MODULE);
+        chatMessageMsg.put("chatMessage", message );
+        sendChatMessage.put("message", chatMessageMsg);
+
+        return sendChatMessage.toString();
     }
 
     public static String sendUser(String user){
