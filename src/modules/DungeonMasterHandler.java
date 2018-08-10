@@ -4,7 +4,6 @@ import org.json.*;
 
 public class DungeonMasterHandler extends Handler {
 
-
     static final String MODULE = "CREATURESANDCAVERNS";
     private Game game = new Game();
     private String currentPlayer;

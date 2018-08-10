@@ -365,13 +365,17 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         Runnable gameOn = () -> {
             JSONObject json;
-            String serverMsg;
+            String serverMsg = "1";
+            String prevMsg = "2";
             while(true){
                 try{
                     serverMsg = in.readLine();
-                    System.out.println(serverMsg);
-                    json = new JSONObject(serverMsg);
-                    messageHandler(json);
+                    if(!serverMsg.equalsIgnoreCase(prevMsg)){
+                        prevMsg = serverMsg;
+                        System.out.println(serverMsg);
+                        json = new JSONObject(serverMsg);
+                        messageHandler(json);
+                    }
                 } catch (IOException e){
                     e.printStackTrace();
                 }
