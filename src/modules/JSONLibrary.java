@@ -7,13 +7,14 @@ public class JSONLibrary {
 
     public JSONLibrary(){}
 
-    public static String sendChatMessage( String message){
+    public static String sendChatMessage(String username, String message){
 
         JSONObject sendChatMessage = new JSONObject();
         JSONObject chatMessageMsg = new JSONObject();
 
         sendChatMessage.put("type", "chat");
         chatMessageMsg.put("module", MODULE);
+        chatMessageMsg.put("username", username);
         chatMessageMsg.put("chatMessage", message );
         sendChatMessage.put("message", chatMessageMsg);
 
