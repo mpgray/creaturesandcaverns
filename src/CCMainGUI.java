@@ -32,6 +32,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JLabel player2LBL = new JLabel();
     private JLabel player3LBL = new JLabel();
     private JLabel creature1LBL= new JLabel();
+    private ImageIcon player1Icon, player2Icon, player3Icon;
     private JScrollPane scrollChatTxt;
     private JTextField submitFieldTXT = new JTextField(75);
     private JButton sendButton = new JButton("Send");
@@ -99,8 +100,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 attackButton.setEnabled(false);
                 attackButton.setVisible(false);
                 attackButton.setText("Roll Attack");
-                player1LBL.removeAll();
-                player1LBL.setIcon(createImageIcon(playerActor.getType()+".gif"));
+                player1Icon.getImage().flush(); //causes animation to continue
                 attackRoll = 0;
 
             }
@@ -250,9 +250,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         //populate Actor test
         //player1LBL.setText(username);
+        player1Icon = createImageIcon(playerActor.getType()+".gif");
+        player2Icon = createImageIcon("Mage.gif");
+        player3Icon = createImageIcon("Rogue.gif");
         player1LBL.setIcon(createImageIcon(playerActor.getType()+".gif"));
-        player2LBL.setIcon(createImageIcon("Mage.gif")); //hard coded but you get the idea
-        player3LBL.setIcon(createImageIcon("Rogue.gif")); //hard coded but you get the idea
+        player2LBL.setIcon(player2Icon); //hard coded but you get the idea
+        player3LBL.setIcon(player3Icon); //hard coded but you get the idea
         creature1LBL.setIcon(createImageIcon("Dragon.gif"));
 
     }
