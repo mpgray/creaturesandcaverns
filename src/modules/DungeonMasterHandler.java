@@ -8,7 +8,7 @@ public class DungeonMasterHandler extends Handler {
     private Game game = new Game();
     private String currentPlayer;
     private int currentPlayerIndex;
-    boolean gameOver;
+    private boolean gameOver;
 
     public DungeonMasterHandler(String portString) {
         super(portString);
@@ -16,9 +16,14 @@ public class DungeonMasterHandler extends Handler {
 
     @Override
     protected void handle(JSONObject message) {
-        if(message.opt("module") != null || MODULE.equals(message.getString("module"))){
-            String action = message.opt("gameAction").toString();
-            System.out.println(message.toString());
+
+        if(message.has("action") && message.opt("action").equals("broadcast")){
+            return;
+        }
+
+        System.out.println("Client Says: " + message.toString());
+        if(message.opt("module") != null || MODULE.equals(message.get("module"))){
+            String action = message.optString("gameAction");
             switch(action){
                 case "addPlayerCharacter"        :   addPlayer(message);
                     break;
@@ -110,9 +115,9 @@ public class DungeonMasterHandler extends Handler {
         currentPlayer = game.getNames()[currentPlayerIndex];
         gameOver = false;
         broadcast(JSONLibrary.serverGameStarted(), MODULE);
-        broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
-        broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
-        netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
+//        broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
+//        broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
+//        netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
     }
 
     private void addCreature() {

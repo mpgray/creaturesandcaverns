@@ -1,5 +1,6 @@
 package modules;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class JSONLibrary {
@@ -33,8 +34,8 @@ public class JSONLibrary {
         JSONObject startCommand = new JSONObject();
 
         startGame.put("type", "application");
-        startGame.put("module", MODULE);
 
+        startCommand.put("module", MODULE);
         startCommand.put("gameAction", "startNewGame");
         startGame.put("message", startCommand);
 
@@ -46,8 +47,8 @@ public class JSONLibrary {
         JSONObject playerCharacter = new JSONObject();
 
         sendPC.put("type", "application");
-        sendPC.put("module", MODULE);
 
+        playerCharacter.put("module", MODULE);
         playerCharacter.put("gameAction", "addPlayerCharacter");
         playerCharacter.put("username", username);
         playerCharacter.put("playerType", pc);
@@ -62,8 +63,8 @@ public class JSONLibrary {
         JSONObject initiateTurn = new JSONObject();
 
         sendInitiateTurn.put("type", "application");
-        sendInitiateTurn.put("module", MODULE);
 
+        initiateTurn.put("module", MODULE);
         initiateTurn.put("gameAction", "runCombat");
         initiateTurn.put("attacker", attackerUsername);
         initiateTurn.put("target", targetUsername);
@@ -81,8 +82,8 @@ public class JSONLibrary {
         JSONObject addCreatureMsg = new JSONObject();
 
         addCreature.put("type", "application");
-        addCreature.put("module", MODULE);
 
+        addCreatureMsg.put("module", MODULE);
         addCreatureMsg.put("gameAction", "addCreature");
 
         addCreature.put("message", addCreatureMsg);
@@ -97,15 +98,13 @@ public class JSONLibrary {
         JSONObject gameStarted = new JSONObject();
         JSONObject gameStartedMsg = new JSONObject();
 
-        gameStarted.put("type", "application");
-
         gameStartedMsg.put("module", MODULE);
         gameStartedMsg.put("gameAction", "startGame");
         gameStartedMsg.put("isStarted","true");
 
         gameStarted.put("message", gameStartedMsg);
 
-        return gameStarted;
+        return gameStartedMsg;
     }
 
     public static JSONObject serverBattleReport(String battleReport ){
@@ -113,7 +112,6 @@ public class JSONLibrary {
         JSONObject sendBattleReport = new JSONObject();
         JSONObject battleReportMsg = new JSONObject();
 
-        sendBattleReport.put("type", "application");
         battleReportMsg.put("module", MODULE);
         battleReportMsg.put("gameAction", "battleReport");
         battleReportMsg.put("battleReport", battleReport);
@@ -127,13 +125,13 @@ public class JSONLibrary {
 
         JSONObject sendScoreboard = new JSONObject();
         JSONObject scoreboardMsg = new JSONObject();
-
-        sendScoreboard.put("type", "application");
+        JSONArray namesArray = new JSONArray(playerNames);
+        JSONArray colorArray = new JSONArray(colorActorStats);
 
         scoreboardMsg.put("module", MODULE);
         scoreboardMsg.put("gameAction", "scoreboard");
-        scoreboardMsg.put("playerNames", playerNames);
-        scoreboardMsg.put("colorActorStats", colorActorStats);
+        scoreboardMsg.put("playerNames", namesArray);
+        scoreboardMsg.put("colorActorStats", colorArray);
 
         sendScoreboard.put("message", scoreboardMsg);
 
@@ -144,8 +142,6 @@ public class JSONLibrary {
 
         JSONObject sendPlayerDeath = new JSONObject();
         JSONObject playerDeathMsg = new JSONObject();
-
-        sendPlayerDeath.put("type", "application");
 
         playerDeathMsg.put("module", MODULE);
         playerDeathMsg.put("gameAction", "playerDeath");
@@ -191,16 +187,25 @@ public class JSONLibrary {
     public static JSONObject serverTargetNames(String[] targetNames){
         JSONObject sendTargetNames = new JSONObject();
         JSONObject targetNamesMsg = new JSONObject();
+        JSONArray targetArray = new JSONArray(targetNames);
 
-        sendTargetNames.put("type", "application");
-        sendTargetNames.put("module", MODULE);
-
+        targetNamesMsg.put("module", MODULE);
         targetNamesMsg.put("gameAction", "targetNames");
-        targetNamesMsg.put("targetNames", targetNames);
+        targetNamesMsg.put("targetNames", targetArray);
 
         sendTargetNames.put("message", targetNamesMsg);
 
         return sendTargetNames;
+    }
+
+    public static JSONObject serverPlayerJoined(String username){
+        JSONObject sendPlayerJoined = new JSONObject();
+
+        sendPlayerJoined.put("message", username);
+
+        return sendPlayerJoined;
+
+
     }
 
     public static JSONObject serverChatMessage(String message){
