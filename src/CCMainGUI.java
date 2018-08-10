@@ -40,7 +40,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JButton addCreatureButton = new JButton("Add Creature");
     private JButton startGameButton;
     private JButton initiateTurnButton = new JButton("End Turn");;
-    private JComboBox<String> playerComboBox = new JComboBox<>();;
+    private JComboBox<String> targetComboBox = new JComboBox<>();;
     private Actor playerActor;
     private int attackRoll = 0, damageRoll = 0;
     private String username, playerCharacter, target;
@@ -99,7 +99,10 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 attackButton.setEnabled(false);
                 attackButton.setVisible(false);
                 attackButton.setText("Roll Attack");
+                player1LBL.removeAll();
+                player1LBL.setIcon(createImageIcon(playerActor.getType()+".gif"));
                 attackRoll = 0;
+
             }
         });
         rollButton.addActionListener(evt -> {
@@ -112,7 +115,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
             sendJson(JSONLibrary.sendAddCreature());
         });
 
-        playerComboBox.addActionListener(e->{
+        targetComboBox.addActionListener(e->{
             JComboBox cb = (JComboBox)e.getSource();
             if(!cb.getSelectedItem().equals("--Target--")){
                 target = (String)cb.getSelectedItem();
@@ -121,7 +124,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         });
 
         initiateTurnButton.addActionListener(e-> {
-            if (!attackButton.isEnabled() && !playerComboBox.getSelectedItem().equals("--Target--")) {
+            if (!attackButton.isEnabled() && !targetComboBox.getSelectedItem().equals("--Target--")) {
                 sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
                 if (!attackButton.isEnabled()) {
                     sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
@@ -133,16 +136,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
             }
         });
 
-        contentPane.add(playerComboBox,JLayeredPane.MODAL_LAYER);
+        contentPane.add(targetComboBox,JLayeredPane.MODAL_LAYER);
         contentPane.add(initiateTurnButton,JLayeredPane.MODAL_LAYER);
 
-        playerComboBox.addItem("--Target--");
+        targetComboBox.addItem("--Target--");
 
 
         scoreBoardLBL.setOpaque(false);
         player1LBL.setOpaque(false);
         rollButton.setOpaque(false);
-        playerComboBox.setVisible(false);
+        targetComboBox.setVisible(false);
         initiateTurnButton.setVisible(false);
 
         attackButton.setEnabled(true);
@@ -177,7 +180,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         player2LBL.setBounds(540,275,240,160);
         player3LBL.setBounds(640,300,240,160);
         creature1LBL.setBounds(200,275,240,160);
-        playerComboBox.setBounds(105, 225, 300, 25);
+        targetComboBox.setBounds(105, 225, 300, 25);
         initiateTurnButton.setBounds(0, 415, 100, 100);
 
 
@@ -222,36 +225,10 @@ public class CCMainGUI extends JFrame implements ActionListener {
             startGameGuiVisibility();
         });
 
-
-        targetComboBox.addActionListener(e->{
-            JComboBox cb = (JComboBox)e.getSource();
-            if(!cb.getSelectedItem().equals("--Target--")){
-                target = (String)cb.getSelectedItem();
-                chatFieldTXT.append("Target : " + target + "\n");
-            }
-        });
-
-        initiateTurnButton.addActionListener(e-> {
-            if (!attackButton.isEnabled() && !targetComboBox.getSelectedItem().equals("--Target--")) {
-                sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
-                if (!attackButton.isEnabled()) {
-                    sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
-                    initiateTurnButton.setEnabled(false);
-                    playerTurn = false;
-                } else {
-                    chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
-                }
-            }
-        });
-
         startGameButton.setBounds(105, 175, 300, 25);
 
-        targetComboBox.setBounds(105, 225, 300, 25);
-        initiateTurnButton.setBounds(105, 250, 300, 25);
-
         contentPane.add(startGameButton,JLayeredPane.MODAL_LAYER);
-        contentPane.add(targetComboBox,JLayeredPane.MODAL_LAYER);
-        contentPane.add(initiateTurnButton,JLayeredPane.MODAL_LAYER);
+
     }
 
     private void startGameGuiVisibility() {
@@ -266,9 +243,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     private void setupGame(){
         //Just a test//
-        ActorPresets actorPresets = new ActorPresets();
-        Actor player1 = actorPresets.playerPresets.get(playerCharacter);
-        game.addPlayer(username, player1.getType());
         game.addRandomMonster();
         //String[] nameActors = game.getNames();
         //String[] actorStats = game.getScoreboard();
@@ -276,7 +250,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         //populate Actor test
         //player1LBL.setText(username);
-        player1LBL.setIcon(createImageIcon(player1.getType()+".gif"));
+        player1LBL.setIcon(createImageIcon(playerActor.getType()+".gif"));
         player2LBL.setIcon(createImageIcon("Mage.gif")); //hard coded but you get the idea
         player3LBL.setIcon(createImageIcon("Rogue.gif")); //hard coded but you get the idea
         creature1LBL.setIcon(createImageIcon("Dragon.gif"));
