@@ -33,8 +33,9 @@ public class JSONLibrary {
         JSONObject startCommand = new JSONObject();
 
         startGame.put("type", "application");
-        startCommand.put("module", MODULE);
-        startCommand.put("action", "startNewGame");
+        startGame.put("module", MODULE);
+
+        startCommand.put("gameAction", "startNewGame");
         startGame.put("message", startCommand);
 
         return startGame.toString();
@@ -45,8 +46,9 @@ public class JSONLibrary {
         JSONObject playerCharacter = new JSONObject();
 
         sendPC.put("type", "application");
-        playerCharacter.put("module", MODULE);
-        playerCharacter.put("action", "addPlayerCharacter");
+        sendPC.put("module", MODULE);
+
+        playerCharacter.put("gameAction", "addPlayerCharacter");
         playerCharacter.put("username", username);
         playerCharacter.put("playerType", pc);
         sendPC.put("message", playerCharacter);
@@ -60,8 +62,9 @@ public class JSONLibrary {
         JSONObject initiateTurn = new JSONObject();
 
         sendInitiateTurn.put("type", "application");
-        initiateTurn.put("module", MODULE);
-        initiateTurn.put("action", "runCombat");
+        sendInitiateTurn.put("module", MODULE);
+
+        initiateTurn.put("gameAction", "runCombat");
         initiateTurn.put("attacker", attackerUsername);
         initiateTurn.put("target", targetUsername);
         initiateTurn.put("attachRoll", attackRoll);
@@ -78,8 +81,8 @@ public class JSONLibrary {
         JSONObject addCreatureMsg = new JSONObject();
 
         addCreature.put("type", "application");
+        addCreature.put("module", MODULE);
 
-        addCreatureMsg.put("module", MODULE);
         addCreatureMsg.put("gameAction", "addCreature");
 
         addCreature.put("message", addCreatureMsg);
@@ -190,8 +193,8 @@ public class JSONLibrary {
         JSONObject targetNamesMsg = new JSONObject();
 
         sendTargetNames.put("type", "application");
+        sendTargetNames.put("module", MODULE);
 
-        targetNamesMsg.put("module", MODULE);
         targetNamesMsg.put("gameAction", "targetNames");
         targetNamesMsg.put("targetNames", targetNames);
 

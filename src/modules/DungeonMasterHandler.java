@@ -17,7 +17,8 @@ public class DungeonMasterHandler extends Handler {
     @Override
     protected void handle(JSONObject message) {
         if(message.opt("module") != null || MODULE.equals(message.getString("module"))){
-            String action = message.getString("action");
+            String action = message.opt("gameAction").toString();
+            System.out.println(message.toString());
             switch(action){
                 case "addPlayerCharacter"        :   addPlayer(message);
                     break;

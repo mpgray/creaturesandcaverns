@@ -388,13 +388,18 @@ public class CCMainGUI extends JFrame implements ActionListener {
             return;
         }
 
+        if(json.opt("module").equals("")){
+            return;
+        }
+
+
         if(json.get("type").equals("chat")){
             addToChatArea(json.get("message").toString(), json.get("fromUser").toString());
             System.out.println();
             return;
         }
 
-        if(json.get("module") != null || MODULE.equals(json.get("module").toString())) {
+        if(json.opt("module") != null || MODULE.equals(json.opt("module").toString())) {
             String action = json.opt("gameAction").toString(); //change all of these to opt
             switch (action) {
                 case "startGame"        :       startGameGuiVisibility();
