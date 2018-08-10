@@ -7,16 +7,12 @@ public class JSONLibrary {
 
     public JSONLibrary(){}
 
-    public static String sendChatMessage(String username, String message){
+    public static String sendChatMessage(String message){
 
         JSONObject sendChatMessage = new JSONObject();
-        JSONObject chatMessageMsg = new JSONObject();
 
-        sendChatMessage.put("type", "chat");
-        chatMessageMsg.put("module", MODULE);
-        chatMessageMsg.put("username", username);
-        chatMessageMsg.put("chatMessage", message );
-        sendChatMessage.put("message", chatMessageMsg);
+        sendChatMessage.put("type", "application");
+        sendChatMessage.put("message", message);
 
         return sendChatMessage.toString();
     }
@@ -204,16 +200,12 @@ public class JSONLibrary {
         return sendTargetNames;
     }
 
-    public static JSONObject serverChatMessage(String username, String message){
+    public static JSONObject serverChatMessage(String message){
 
         JSONObject sendChatMessage = new JSONObject();
-        JSONObject chatMessageMsg = new JSONObject();
 
         sendChatMessage.put("type", "chat");
-        chatMessageMsg.put("module", MODULE);
-        chatMessageMsg.put("username", username);
-        chatMessageMsg.put("chatMessage", message );
-        sendChatMessage.put("message", chatMessageMsg);
+        sendChatMessage.put("message", message);
 
         return sendChatMessage;
     }

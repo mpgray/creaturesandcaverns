@@ -41,7 +41,7 @@ public class DungeonMasterHandler extends Handler {
     private void forwardChatMessage(JSONObject message) {
         String username = message.getString("username");
         String chatMsg = message.getString("message");
-        broadcast(JSONLibrary.serverChatMessage(username, chatMsg), MODULE);
+        broadcast(JSONLibrary.serverChatMessage(chatMsg), MODULE);
 
     }
 
