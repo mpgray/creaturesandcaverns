@@ -470,6 +470,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         chatFieldTXT.append(username + ": " + text + "\n");
         submitFieldTXT.selectAll();
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
+
     }
 
     public static void main(String[] args) throws IOException {
