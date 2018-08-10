@@ -27,6 +27,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JLabel imgBackground = new JLabel();
     private JLabel topBackground = new JLabel();
     private JLabel dragonIconLBL = new JLabel();
+    private JLabel messageAlert = new JLabel();
     private JLabel player1LBL = new JLabel();
     private JLabel player2LBL = new JLabel();
     private JLabel player3LBL = new JLabel();
@@ -59,12 +60,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
         contentPane.setOpaque(true);
 
         imgBackground.setOpaque(true);
+        messageAlert.setOpaque(false);
 
         imgBackground.setIcon(createImageIcon("dark_field.jpg"));
         topBackground.setIcon(createImageIcon("dragonbackground.png"));
         dragonIconLBL.setIcon(createImageIcon("dragonicon.png"));
         scoreBoardLBL.setForeground(Color.WHITE);
+        messageAlert.setFont(new Font("Arial", Font.BOLD, 32));
+        messageAlert.setForeground(Color.RED);
 
+        messageAlert.setBounds(300,200,600,100);
         topBackground.setBounds(0, 0, 905, 140);
         imgBackground.setBounds(0, 0, 905, 700);
         dragonIconLBL.setBounds(840, 102, 50, 50);
@@ -73,6 +78,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         contentPane.add(topBackground,JLayeredPane.PALETTE_LAYER);
         contentPane.add(imgBackground,JLayeredPane.DEFAULT_LAYER);
         contentPane.add(dragonIconLBL,JLayeredPane.MODAL_LAYER);
+        contentPane.add(messageAlert,JLayeredPane.MODAL_LAYER);
 
         displayChat();
         displayGameBoard();
@@ -90,7 +96,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 displayRoll(attackRoll);
                 chatFieldTXT.append("Attack Roll: " + attackRoll + "\n");
                 attackButton.setText("Roll Damage");
-
             }
             else {
                 damageRoll = playerActor.rollDamage();
@@ -435,11 +440,11 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void youAreDead() {
-        //TODO DISPLAY YOU ARE DEAD PROMPT
+        messageAlert.setText("You are dead");
     }
 
     private void yourTurn(){
-        //TODO DISPLAY YOUR TURN PROMPT
+        messageAlert.setText("Your Turn");
         targetComboBox.setEnabled(true);
         initiateTurnButton.setEnabled(true);
         attackButton.setEnabled(true);
@@ -447,9 +452,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     private void gameOver(String winner){
         if(username.equalsIgnoreCase(winner)){
-            //TODO VICTORY GUI MESSAGE
+            messageAlert.setText("You have Won!");
         } else {
-            // TODO DEFEAT GUI MESSAGE
+            messageAlert.setText("You have been Defeated");
         }
     }
 
@@ -480,11 +485,4 @@ public class CCMainGUI extends JFrame implements ActionListener {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
 }
