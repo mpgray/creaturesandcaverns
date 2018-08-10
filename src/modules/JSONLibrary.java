@@ -11,7 +11,7 @@ public class JSONLibrary {
 
         JSONObject sendChatMessage = new JSONObject();
 
-        sendChatMessage.put("type", "application");
+        sendChatMessage.put("type", "chat");
         sendChatMessage.put("message", message);
 
         return sendChatMessage.toString();
