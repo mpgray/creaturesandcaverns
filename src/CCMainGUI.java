@@ -378,6 +378,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
         if(json.get("type").equals("acknowledge")){
             return;
         }
+
+        if(json.get("type").equals("chat")){
+            addToChatArea(json.get("username").toString(), json.get("message").toString());
+            return;
+        }
+
         if(json.get("module") != null || MODULE.equals(json.get("module").toString())) {
             String action = json.get("action").toString();
             switch (action) {
@@ -397,6 +403,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
                     break;
             }
         }
+    }
+
+    private void addToChatArea(String username, String message) {
+        chatFieldTXT.append(username + ": " + message + "\n");
+        submitFieldTXT.selectAll();
+        chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
     }
 
     private void updateBattleReport(String battleReport) {
