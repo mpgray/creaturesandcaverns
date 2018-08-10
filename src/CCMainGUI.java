@@ -1,4 +1,3 @@
-
 import modules.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -349,9 +348,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         Runnable gameOn = () -> {
             JSONObject json;
+            String serverMsg;
             while(true){
                 try{
-                    json = new JSONObject(in.readLine());
+                    serverMsg = in.readLine();
+                    System.out.println(serverMsg);
+                    json = new JSONObject(serverMsg);
                     messageHandler(json);
                 } catch (IOException e){
                     e.printStackTrace();
@@ -361,6 +363,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void messageHandler(JSONObject json){
+        if(json.get("type").equals("acknowledge")){
+            return;
+        }
         if(json.get("module") != null || MODULE.equals(json.get("module").toString())) {
             String action = json.get("action").toString();
             switch (action) {
