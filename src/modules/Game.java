@@ -137,7 +137,7 @@ public class Game {
             eachActor.add(actor.toString());
         }
 
-        eachActor.toArray(colorActorStats);
+        colorActorStats = eachActor.toArray(new String[eachActor.size()]);
         return colorActorStats;
     }
 

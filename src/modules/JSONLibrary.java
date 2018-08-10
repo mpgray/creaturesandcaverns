@@ -80,7 +80,7 @@ public class JSONLibrary {
         addCreature.put("type", "application");
 
         addCreatureMsg.put("module", MODULE);
-        addCreatureMsg.put("action", "addCreature");
+        addCreatureMsg.put("gameAction", "addCreature");
 
         addCreature.put("message", addCreatureMsg);
 
@@ -97,10 +97,10 @@ public class JSONLibrary {
         gameStarted.put("type", "application");
 
         gameStartedMsg.put("module", MODULE);
-        gameStartedMsg.put("action", "startGame");
+        gameStartedMsg.put("gameAction", "startGame");
         gameStartedMsg.put("isStarted","true");
 
-        gameStarted.put("message", gameStarted);
+        gameStarted.put("message", gameStartedMsg);
 
         return gameStarted;
     }
@@ -112,7 +112,7 @@ public class JSONLibrary {
 
         sendBattleReport.put("type", "application");
         battleReportMsg.put("module", MODULE);
-        battleReportMsg.put("action", "battleReport");
+        battleReportMsg.put("gameAction", "battleReport");
         battleReportMsg.put("battleReport", battleReport);
 
         sendBattleReport.put("message", battleReportMsg);
@@ -128,7 +128,7 @@ public class JSONLibrary {
         sendScoreboard.put("type", "application");
 
         scoreboardMsg.put("module", MODULE);
-        scoreboardMsg.put("action", "scoreboard");
+        scoreboardMsg.put("gameAction", "scoreboard");
         scoreboardMsg.put("playerNames", playerNames);
         scoreboardMsg.put("colorActorStats", colorActorStats);
 
@@ -145,7 +145,7 @@ public class JSONLibrary {
         sendPlayerDeath.put("type", "application");
 
         playerDeathMsg.put("module", MODULE);
-        playerDeathMsg.put("action", "playerDeath");
+        playerDeathMsg.put("gameAction", "playerDeath");
         playerDeathMsg.put("isDead", true);
 
         sendPlayerDeath.put("message", playerDeathMsg);
@@ -161,7 +161,7 @@ public class JSONLibrary {
         sendYourTurn.put("type", "application");
 
         yourTurnMsg.put("module", MODULE);
-        yourTurnMsg.put("action", "yourTurn");
+        yourTurnMsg.put("gameAction", "yourTurn");
         yourTurnMsg.put("yourTurn", true);
 
         sendYourTurn.put("message", yourTurnMsg);
@@ -176,7 +176,7 @@ public class JSONLibrary {
         sendGameOver.put("type", "application");
 
         gameOverMsg.put("module", MODULE);
-        gameOverMsg.put("action", "gameOver");
+        gameOverMsg.put("gameAction", "gameOver");
         gameOverMsg.put("gameOver", true);
         gameOverMsg.put("winner", winner);
 
@@ -192,7 +192,7 @@ public class JSONLibrary {
         sendTargetNames.put("type", "application");
 
         targetNamesMsg.put("module", MODULE);
-        targetNamesMsg.put("action", "targetNames");
+        targetNamesMsg.put("gameAction", "targetNames");
         targetNamesMsg.put("targetNames", targetNames);
 
         sendTargetNames.put("message", targetNamesMsg);
