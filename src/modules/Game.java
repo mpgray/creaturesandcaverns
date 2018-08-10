@@ -80,8 +80,8 @@ public class Game {
     }
 
     public String[] getNames(){
-        String[] playerNames = null;
-        actors.keySet().toArray(playerNames);
+        String[] playerNames = new String[actors.keySet().size()];
+        playerNames = actors.keySet().toArray(playerNames);
         return playerNames;
     }
 
