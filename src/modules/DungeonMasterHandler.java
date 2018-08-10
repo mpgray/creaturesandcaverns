@@ -17,10 +17,6 @@ public class DungeonMasterHandler extends Handler {
 
     @Override
     protected void handle(JSONObject message) {
-        if(message.get("type").equals("chat")){
-            forwardChatMessage(message);
-            return;
-        }
         if(message.opt("module") != null || MODULE.equals(message.getString("module"))){
             String action = message.getString("action");
             switch(action){
@@ -36,13 +32,6 @@ public class DungeonMasterHandler extends Handler {
                     break;
             }
         }
-    }
-
-    private void forwardChatMessage(JSONObject message) {
-        String username = message.getString("username");
-        String chatMsg = message.getString("message");
-        broadcast(JSONLibrary.serverChatMessage(chatMsg), MODULE);
-
     }
 
     private void removePlayer(JSONObject message) {
