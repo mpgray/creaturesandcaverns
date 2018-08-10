@@ -462,15 +462,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
         }
     }
 
-
-
     @Override
     public void actionPerformed(ActionEvent e) {
         String text = submitFieldTXT.getText();
         chatFieldTXT.append(username + ": " + text + "\n");
         submitFieldTXT.selectAll();
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
-
+        sendJson(JSONLibrary.sendChatMessage(username, text));
     }
 
     public static void main(String[] args) throws IOException {
@@ -482,6 +480,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
             e.printStackTrace();
         }
     }
+
+
 
 
 
