@@ -97,7 +97,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 displayRoll(attackRoll);
                 chatFieldTXT.append("Attack Roll: " + attackRoll + "\n");
                 attackButton.setText("Roll Damage");
-
             }
             else {
                 damageRoll = playerActor.rollDamage();
