@@ -1,4 +1,3 @@
-
 import modules.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -366,9 +365,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         Runnable gameOn = () -> {
             JSONObject json;
+            String serverMsg;
             while(true){
                 try{
-                    json = new JSONObject(in.readLine());
+                    serverMsg = in.readLine();
+                    System.out.println(serverMsg);
+                    json = new JSONObject(serverMsg);
                     messageHandler(json);
                 } catch (IOException e){
                     e.printStackTrace();
@@ -378,6 +380,15 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void messageHandler(JSONObject json){
+        if(json.get("type").equals("acknowledge")){
+            return;
+        }
+
+        if(json.get("type").equals("chat")){
+            addToChatArea(json.get("username").toString(), json.get("message").toString());
+            return;
+        }
+
         if(json.get("module") != null || MODULE.equals(json.get("module").toString())) {
             String action = json.get("action").toString();
             switch (action) {
@@ -397,6 +408,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
                     break;
             }
         }
+    }
+
+    private void addToChatArea(String username, String message) {
+        chatFieldTXT.append(username + ": " + message + "\n");
+        submitFieldTXT.selectAll();
+        chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
     }
 
     private void updateBattleReport(String battleReport) {
@@ -458,6 +475,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         chatFieldTXT.append(username + ": " + text + "\n");
         submitFieldTXT.selectAll();
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
+
     }
 
     public static void main(String[] args) throws IOException {
