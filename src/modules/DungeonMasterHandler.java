@@ -6,7 +6,7 @@ public class DungeonMasterHandler extends Handler {
 
 
     static final String MODULE = "CREATURESANDCAVERNS";
-    private Game game;
+    private Game game = new Game();
     private String currentPlayer;
     private int currentPlayerIndex;
     boolean gameOver;
@@ -105,7 +105,6 @@ public class DungeonMasterHandler extends Handler {
     }
 
     private void startGame() {
-        game = new Game();
         game.startGame();
         currentPlayerIndex = 0;
         currentPlayer = game.getNames()[currentPlayerIndex];
