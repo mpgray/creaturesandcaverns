@@ -117,7 +117,12 @@ public class DungeonMasterHandler extends Handler {
         broadcast(JSONLibrary.serverGameStarted(), MODULE);
         broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
-        netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
+        if(game.getCurrentActors().get(currentPlayer).isPlayer()){
+            netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
+        } else {
+            runAICombat(currentPlayer);
+        }
+
     }
 
     private void addCreature() {

@@ -19,8 +19,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private BufferedReader in;
     private PrintWriter out;
 
-
-    private JFrame frame = new JFrame("Caverns and Creatures");
     private JLayeredPane contentPane = new JLayeredPane();
     private JTextArea chatFieldTXT;
     private JLabel scoreBoardLBL = new JLabel();
@@ -463,6 +461,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     private void yourTurn(){
         messageAlert.setText("Your Turn");
+        playerTurn = true;
         targetComboBox.setEnabled(true);
         initiateTurnButton.setEnabled(true);
         attackButton.setEnabled(true);
