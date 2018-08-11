@@ -39,7 +39,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private JButton addCreatureButton = new JButton("Add Creature");
     private JButton startGameButton;
     private JButton initiateTurnButton = new JButton("End Turn");;
-    private JComboBox<String> targetComboBox = new JComboBox<>();;
+    private DefaultComboBoxModel<String> cbModel = new DefaultComboBoxModel<>();
+    private JComboBox<String> targetComboBox = new JComboBox<>(cbModel);
     private Actor playerActor;
     private int attackRoll = 0, damageRoll = 0;
     private String username, playerCharacter, target;
@@ -138,17 +139,11 @@ public class CCMainGUI extends JFrame implements ActionListener {
             }
         });
 
-        contentPane.add(targetComboBox,JLayeredPane.MODAL_LAYER);
-        contentPane.add(initiateTurnButton,JLayeredPane.MODAL_LAYER);
-
-        targetComboBox.addItem("--Target--");
-
+        cbModel.addElement("--Target--");
 
         scoreBoardLBL.setOpaque(false);
         player1LBL.setOpaque(false);
         rollButton.setOpaque(false);
-        targetComboBox.setVisible(false);
-        initiateTurnButton.setVisible(false);
 
         attackButton.setEnabled(true);
         attackButton.setContentAreaFilled(false);
@@ -177,23 +172,25 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
         attackButton.setBounds(0,249,100,100);
         rollButton.setBounds(0,140,100,109);
-        addCreatureButton.setBounds(100,492,175,23);
+        addCreatureButton.setBounds(5,492,175,23);
         player1LBL.setBounds(440,250,240,160);
         player2LBL.setBounds(540,275,240,160);
         player3LBL.setBounds(640,300,240,160);
         creature1LBL.setBounds(200,275,240,160);
-        targetComboBox.setBounds(105, 225, 300, 25);
-        initiateTurnButton.setBounds(0, 415, 100, 100);
+        targetComboBox.setBounds(180, 492, 175, 23);
+        initiateTurnButton.setBounds(360, 492, 100, 100);
 
 
         contentPane.add(attackButton,JLayeredPane.MODAL_LAYER);
         contentPane.add(rollButton,JLayeredPane.MODAL_LAYER);
         contentPane.add(addCreatureButton,JLayeredPane.MODAL_LAYER);
+        contentPane.add(targetComboBox,JLayeredPane.MODAL_LAYER);
+        contentPane.add(initiateTurnButton,JLayeredPane.MODAL_LAYER);
         contentPane.add(player1LBL,JLayeredPane.MODAL_LAYER);
         contentPane.add(player2LBL,JLayeredPane.MODAL_LAYER);
         contentPane.add(player3LBL,JLayeredPane.MODAL_LAYER);
         contentPane.add(creature1LBL,JLayeredPane.MODAL_LAYER);
-        contentPane.add(targetComboBox, JLayeredPane.MODAL_LAYER);
+
     }
     private void displayChat(){
         chatFieldTXT = new JTextArea(20, 75);
@@ -233,13 +230,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void startGameGuiVisibility() {
-        startGameButton.setEnabled(false);
-        attackButton.setVisible(true);
-        attackButton.setEnabled(false);
-        targetComboBox.setVisible(true);
-        targetComboBox.setEnabled(false);
-        initiateTurnButton.setVisible(true);
-        initiateTurnButton.setEnabled(false);
+//        startGameButton.setEnabled(false);
+//        attackButton.setVisible(true);
+//        attackButton.setEnabled(false);
+//        targetComboBox.setVisible(true);
+//        targetComboBox.setEnabled(false);
+//        initiateTurnButton.setVisible(true);
+//        initiateTurnButton.setEnabled(false);
     }
 
     private void setupGame(){
@@ -438,6 +435,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
     }
 
+    //TODO make sure arrays are being instantiated properly
     private void updateScoreboard(JSONObject message) {
         JSONArray p = message.getJSONArray("playerNames");
         JSONArray c = message.getJSONArray("colorActorStats");
@@ -477,11 +475,14 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     private void updateComboTargetBox(JSONObject json){
         JSONArray jsonArray = json.getJSONArray("targetNames");
+        String[] newTargets = new String[jsonArray.length()];
+
         for(int i = 0; i < jsonArray.length(); i++){
-            if(((DefaultComboBoxModel)targetComboBox.getModel()).getIndexOf(jsonArray.get(i)) == -1){
-                targetComboBox.addItem(jsonArray.getString(i));
-            }
+            cbModel.addElement(jsonArray.getString(i));
         }
+
+        targetComboBox.setModel(cbModel);
+
     }
 
     @Override

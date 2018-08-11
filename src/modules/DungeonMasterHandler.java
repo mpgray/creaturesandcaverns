@@ -128,6 +128,7 @@ public class DungeonMasterHandler extends Handler {
     private void addCreature() {
         game.addRandomMonster();
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
+        broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
     }
 
     public static void main(String[] args) {
