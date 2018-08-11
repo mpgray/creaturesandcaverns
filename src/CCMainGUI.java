@@ -475,14 +475,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     private void updateComboTargetBox(JSONObject json){
         JSONArray jsonArray = json.getJSONArray("targetNames");
-        String[] newTargets = new String[jsonArray.length()];
 
         for(int i = 0; i < jsonArray.length(); i++){
-            cbModel.addElement(jsonArray.getString(i));
+            if(cbModel.getIndexOf(jsonArray.getString(i)) == -1){
+                cbModel.addElement(jsonArray.getString(i));
+            }
         }
-
         targetComboBox.setModel(cbModel);
-
     }
 
     @Override
