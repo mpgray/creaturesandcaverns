@@ -372,7 +372,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
                     serverMsg = in.readLine();
                     if(!serverMsg.equalsIgnoreCase(prevMsg)){
                         prevMsg = serverMsg;
-                        System.out.println(serverMsg);
                         json = new JSONObject(serverMsg);
                         messageHandler(json);
                     }
@@ -394,22 +393,28 @@ public class CCMainGUI extends JFrame implements ActionListener {
             return;
         }
 
-        if(json.getJSONObject("message").has("module") && json.getJSONObject("message").get("module").equals(MODULE)) {
-            String action = json.getJSONObject("message").getString("gameAction"); //change all of these to opt
+        JSONObject message = new JSONObject(json.getJSONObject("message").toString());
+        if(message.has("message")){
+            message = new JSONObject(message.getJSONObject("message").toString());
+        }
+        System.out.println(message);
+
+        if(message.has("module") && message.get("module").equals(MODULE)) {
+            String action = message.get("gameAction").toString(); //change all of these to opt
             switch (action) {
                 case "startGame"        :       startGameGuiVisibility();
                     break;
-                case "battleReport"     :       updateBattleReport(json.get("battleReport").toString());
+                case "battleReport"     :       updateBattleReport(message.get("battleReport").toString());
                     break;
-                case "scoreBoard"       :       updateScoreboard(json);
+                case "scoreBoard"       :       updateScoreboard(message);
                     break;
                 case "playerDeath"      :       youAreDead();
                     break;
                 case "yourTurn"         :       yourTurn();
                     break;
-                case "gameOver"         :       gameOver(json.get("winner").toString());
+                case "gameOver"         :       gameOver(message.get("winner").toString());
                     break;
-                case "targetNames"      :       updateComboTargetBox(json);
+                case "targetNames"      :       updateComboTargetBox(message);
                     break;
             }
         }
@@ -427,9 +432,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
     }
 
-    private void updateScoreboard(JSONObject json) {
-        JSONArray p = json.getJSONArray("playerNames");
-        JSONArray c = json.getJSONArray("colorActorStats");
+    private void updateScoreboard(JSONObject message) {
+        JSONArray p = message.getJSONArray("playerNames");
+        JSONArray c = message.getJSONArray("colorActorStats");
 
         String[] playerNames = new String[p.length()];
         String[] colorActorStats = new String[c.length()];

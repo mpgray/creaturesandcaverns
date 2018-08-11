@@ -130,8 +130,8 @@ public class JSONLibrary {
 
         scoreboardMsg.put("module", MODULE);
         scoreboardMsg.put("gameAction", "scoreboard");
-        scoreboardMsg.put("playerNames", namesArray);
-        scoreboardMsg.put("colorActorStats", colorArray);
+        scoreboardMsg.put("playerNames", playerNames);
+        scoreboardMsg.put("colorActorStats", colorActorStats);
 
         sendScoreboard.put("message", scoreboardMsg);
 
@@ -157,8 +157,6 @@ public class JSONLibrary {
         JSONObject sendYourTurn = new JSONObject();
         JSONObject yourTurnMsg = new JSONObject();
 
-        sendYourTurn.put("type", "application");
-
         yourTurnMsg.put("module", MODULE);
         yourTurnMsg.put("gameAction", "yourTurn");
         yourTurnMsg.put("yourTurn", true);
@@ -171,8 +169,6 @@ public class JSONLibrary {
     public static JSONObject serverGameOver(String winner){
         JSONObject sendGameOver = new JSONObject();
         JSONObject gameOverMsg = new JSONObject();
-
-        sendGameOver.put("type", "application");
 
         gameOverMsg.put("module", MODULE);
         gameOverMsg.put("gameAction", "gameOver");
@@ -191,21 +187,11 @@ public class JSONLibrary {
 
         targetNamesMsg.put("module", MODULE);
         targetNamesMsg.put("gameAction", "targetNames");
-        targetNamesMsg.put("targetNames", targetArray);
+        targetNamesMsg.put("targetNames", targetNames);
 
         sendTargetNames.put("message", targetNamesMsg);
 
         return sendTargetNames;
-    }
-
-    public static JSONObject serverPlayerJoined(String username){
-        JSONObject sendPlayerJoined = new JSONObject();
-
-        sendPlayerJoined.put("message", username);
-
-        return sendPlayerJoined;
-
-
     }
 
     public static JSONObject serverChatMessage(String message){
