@@ -125,8 +125,6 @@ public class JSONLibrary {
 
         JSONObject sendScoreboard = new JSONObject();
         JSONObject scoreboardMsg = new JSONObject();
-        JSONArray namesArray = new JSONArray(playerNames);
-        JSONArray colorArray = new JSONArray(colorActorStats);
 
         scoreboardMsg.put("module", MODULE);
         scoreboardMsg.put("gameAction", "scoreboard");
@@ -183,7 +181,6 @@ public class JSONLibrary {
     public static JSONObject serverTargetNames(String[] targetNames){
         JSONObject sendTargetNames = new JSONObject();
         JSONObject targetNamesMsg = new JSONObject();
-        JSONArray targetArray = new JSONArray(targetNames);
 
         targetNamesMsg.put("module", MODULE);
         targetNamesMsg.put("gameAction", "targetNames");

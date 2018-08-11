@@ -195,6 +195,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         contentPane.add(player2LBL,JLayeredPane.MODAL_LAYER);
         contentPane.add(player3LBL,JLayeredPane.MODAL_LAYER);
         contentPane.add(creature1LBL,JLayeredPane.MODAL_LAYER);
+        contentPane.add(targetComboBox, JLayeredPane.MODAL_LAYER);
     }
     private void displayChat(){
         chatFieldTXT = new JTextArea(20, 75);
@@ -220,8 +221,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         targetComboBox.addItem("--Target--");
         initiateTurnButton = new JButton("Initiate Turn");
 
-
-        targetComboBox.setVisible(false);
         initiateTurnButton.setVisible(false);
 
         startGameButton.addActionListener(e->{
@@ -373,6 +372,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
                     if(!serverMsg.equalsIgnoreCase(prevMsg)){
                         prevMsg = serverMsg;
                         json = new JSONObject(serverMsg);
+                        System.out.println("Server JSON : " + json);
                         messageHandler(json);
                     }
                 } catch (IOException e){
@@ -383,38 +383,46 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void messageHandler(JSONObject json){
-        if(json.opt("type").equals("acknowledge")){
-            return;
+        if(json.has("type")){
+            if(json.optString("type").equals("acknowledge")){
+                return;
+            }
+            if(json.optString("type").equals("chat")){
+                addToChatArea(json.get("message").toString(), json.opt("fromUser").toString());
+                System.out.println();
+                return;
+            }
         }
 
-        if(json.opt("type").equals("chat")){
-            addToChatArea(json.get("message").toString(), json.get("fromUser").toString());
-            System.out.println();
-            return;
-        }
-
-        JSONObject message = new JSONObject(json.getJSONObject("message").toString());
+        JSONObject message = new JSONObject(json.optJSONObject("message").toString());
         if(message.has("message")){
-            message = new JSONObject(message.getJSONObject("message").toString());
+            message = new JSONObject(message.optJSONObject("message").toString());
         }
-        System.out.println(message);
+        System.out.println("Extracted Message: " + message);
 
-        if(message.has("module") && message.get("module").equals(MODULE)) {
-            String action = message.get("gameAction").toString(); //change all of these to opt
+        if(message.has("module") && message.opt("module").equals(MODULE)) {
+            String action = message.opt("gameAction").toString(); //change all of these to opt
             switch (action) {
                 case "startGame"        :       startGameGuiVisibility();
+                    System.out.println("Game Started.");
                     break;
                 case "battleReport"     :       updateBattleReport(message.get("battleReport").toString());
+                    System.out.println("Battle Report Updated");
                     break;
                 case "scoreBoard"       :       updateScoreboard(message);
+                    System.out.println("Scoreboard Updated");
                     break;
                 case "playerDeath"      :       youAreDead();
+                    System.out.println("You are dead.");
                     break;
                 case "yourTurn"         :       yourTurn();
+                    System.out.println("Your Turn.");
                     break;
                 case "gameOver"         :       gameOver(message.get("winner").toString());
+                    System.out.println("Game Over.");
                     break;
                 case "targetNames"      :       updateComboTargetBox(message);
+                    System.out.println("Target List Updated.");
                     break;
             }
         }
