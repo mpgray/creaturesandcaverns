@@ -105,7 +105,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 attackButton.setText("Roll Attack");
                 player1Icon.getImage().flush(); //causes animation to continue
                 attackRoll = 0;
-
             }
         });
         rollButton.addActionListener(evt -> {
@@ -178,7 +177,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         player3LBL.setBounds(640,300,240,160);
         creature1LBL.setBounds(200,275,240,160);
         targetComboBox.setBounds(180, 492, 175, 23);
-        initiateTurnButton.setBounds(360, 492, 100, 100);
+        initiateTurnButton.setBounds(360, 492, 175, 23);
 
 
         contentPane.add(attackButton,JLayeredPane.MODAL_LAYER);
@@ -230,13 +229,10 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void startGameGuiVisibility() {
-//        startGameButton.setEnabled(false);
-//        attackButton.setVisible(true);
-//        attackButton.setEnabled(false);
-//        targetComboBox.setVisible(true);
-//        targetComboBox.setEnabled(false);
-//        initiateTurnButton.setVisible(true);
+        startGameButton.setVisible(false);
 //        initiateTurnButton.setEnabled(false);
+//        attackButton.setEnabled(false);
+//        rollButton.setEnabled(false);
     }
 
     private void setupGame(){

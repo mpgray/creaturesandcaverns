@@ -69,7 +69,7 @@ public class DungeonMasterHandler extends Handler {
         }
 
         do{
-            if(currentPlayerIndex < game.getNames().length){
+            if(currentPlayerIndex <= game.getNames().length){
                 currentPlayerIndex++;
             } else {
                 currentPlayerIndex = 0;
@@ -120,7 +120,7 @@ public class DungeonMasterHandler extends Handler {
         if(game.getCurrentActors().get(currentPlayer).isPlayer()){
             netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
         } else {
-            runAICombat(currentPlayer);
+            incrementPlayerTurn();
         }
 
     }

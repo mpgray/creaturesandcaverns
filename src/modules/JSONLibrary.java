@@ -68,7 +68,7 @@ public class JSONLibrary {
         initiateTurn.put("gameAction", "runCombat");
         initiateTurn.put("attacker", attackerUsername);
         initiateTurn.put("target", targetUsername);
-        initiateTurn.put("attachRoll", attackRoll);
+        initiateTurn.put("attackRoll", attackRoll);
         initiateTurn.put("damageRoll", damageRoll);
 
         sendInitiateTurn.put("message", initiateTurn);

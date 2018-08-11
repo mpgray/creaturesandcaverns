@@ -117,6 +117,10 @@ public class Actor implements Comparable<Actor>{
         return totalDamage;
     }
 
+    public void setInitiative(int initiative){
+        this.initiative = initiative;
+    }
+
     public ArrayList<Die> getDamageDice(){
         return damageDice;
     }
