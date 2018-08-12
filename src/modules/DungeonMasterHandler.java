@@ -9,6 +9,7 @@ public class DungeonMasterHandler extends Handler {
     private String currentPlayer;
     private int currentPlayerIndex;
     private boolean gameOver;
+   // String[] notCurrentPlayer;
 
     public DungeonMasterHandler(String portString) {
         super(portString);
@@ -35,6 +36,7 @@ public class DungeonMasterHandler extends Handler {
                     break;
                 case "quit"                      :   removePlayer(message);
                     break;
+
             }
         }
     }
@@ -63,11 +65,11 @@ public class DungeonMasterHandler extends Handler {
     }
 
     private void incrementPlayerTurn() {
+
         if(game.getGameOver()){
             broadcast(JSONLibrary.serverGameOver(game.getWinner()), MODULE);
             return;
         }
-
         do{
             if(currentPlayerIndex <= game.getNames().length){
                 currentPlayerIndex++;
@@ -75,10 +77,13 @@ public class DungeonMasterHandler extends Handler {
                 currentPlayerIndex = 0;
             }
             currentPlayer = game.getNames()[currentPlayerIndex];
+            //notCurrentPlayer = remove(currentPlayer)
         } while(game.getCurrentActors().get(currentPlayer).getIsDead());
 
         if(game.getCurrentActors().get(currentPlayer).isPlayer()){
             netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
+            // for(player : notCurrentPlayers
+           // netSend(JSONLibrary.serverNotYourTurn(), player, MODULE);
         } else {
             runAICombat(currentPlayer);
         }
