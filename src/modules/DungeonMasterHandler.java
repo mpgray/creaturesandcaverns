@@ -1,6 +1,11 @@
 package modules;
 
+import com.sun.tools.javac.util.ArrayUtils;
+import com.sun.tools.javac.util.List;
 import org.json.*;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class DungeonMasterHandler extends Handler {
 
@@ -9,7 +14,8 @@ public class DungeonMasterHandler extends Handler {
     private String currentPlayer;
     private int currentPlayerIndex;
     private boolean gameOver;
-   // String[] notCurrentPlayer;
+//    private String[] n;
+//    private ArrayList<String> notCurrentPlayers;
 
     public DungeonMasterHandler(String portString) {
         super(portString);
@@ -46,6 +52,16 @@ public class DungeonMasterHandler extends Handler {
         game.removePlayer(username);
     }
 
+//    private ArrayList<String> notCurrentPlayers(String currentPlayer){
+//        String[] n = game.getNames();
+//        final ArrayList<String> notCurrentPlayers =  new ArrayList<String>();
+//        Collections.addAll(notCurrentPlayers, n);
+//        notCurrentPlayers.remove("currentPlayer");
+//
+//        return notCurrentPlayers;
+//    }
+
+
     private void runCombat(JSONObject message) {
         String attackerUsername = message.getString("attacker");
         String targetUsername = message.getString("target");
@@ -77,13 +93,13 @@ public class DungeonMasterHandler extends Handler {
                 currentPlayerIndex = 0;
             }
             currentPlayer = game.getNames()[currentPlayerIndex];
-            //notCurrentPlayer = remove(currentPlayer)
         } while(game.getCurrentActors().get(currentPlayer).getIsDead());
 
         if(game.getCurrentActors().get(currentPlayer).isPlayer()){
             netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
-            // for(player : notCurrentPlayers
-           // netSend(JSONLibrary.serverNotYourTurn(), player, MODULE);
+//             for(String player : notCurrentPlayers(currentPlayer)){
+//             netSend(JSONLibrary.serverNotYourTurn(), player, MODULE);
+//             }
         } else {
             runAICombat(currentPlayer);
         }
