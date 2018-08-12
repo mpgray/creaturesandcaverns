@@ -14,8 +14,8 @@ public class DungeonMasterHandler extends Handler {
     private String currentPlayer;
     private int currentPlayerIndex;
     private boolean gameOver;
-//    private String[] n;
-//    private ArrayList<String> notCurrentPlayers;
+    private String[] n;
+    private ArrayList<String> notCurrentPlayers;
 
     public DungeonMasterHandler(String portString) {
         super(portString);
@@ -52,14 +52,14 @@ public class DungeonMasterHandler extends Handler {
         game.removePlayer(username);
     }
 
-//    private ArrayList<String> notCurrentPlayers(String currentPlayer){
-//        String[] n = game.getNames();
-//        final ArrayList<String> notCurrentPlayers =  new ArrayList<String>();
-//        Collections.addAll(notCurrentPlayers, n);
-//        notCurrentPlayers.remove("currentPlayer");
-//
-//        return notCurrentPlayers;
-//    }
+    private ArrayList<String> notCurrentPlayers(String currentPlayer){
+        String[] n = game.getNames();
+        final ArrayList<String> notCurrentPlayers =  new ArrayList<String>();
+        Collections.addAll(notCurrentPlayers, n);
+        notCurrentPlayers.remove(currentPlayer);
+
+        return notCurrentPlayers;
+    }
 
 
     private void runCombat(JSONObject message) {
@@ -97,11 +97,13 @@ public class DungeonMasterHandler extends Handler {
 
         if(game.getCurrentActors().get(currentPlayer).isPlayer()){
             netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
-//             for(String player : notCurrentPlayers(currentPlayer)){
-//             netSend(JSONLibrary.serverNotYourTurn(), player, MODULE);
-//             }
         } else {
             runAICombat(currentPlayer);
+        }
+
+        for(String player : notCurrentPlayers(currentPlayer)){
+            netSend(JSONLibrary.serverNotYourTurn(), player, MODULE);
+            System.out.println(player);
         }
 
     }

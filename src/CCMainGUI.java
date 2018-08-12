@@ -415,9 +415,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 case "targetNames"      :       updateComboTargetBox(message);
                     System.out.println("Target List Updated.");
                     break;
-//                case "notYourTurn"      :       notYourTurn();
-//                    System.out.println("Not Your Turn.");
-//                    break;
+                case "notYourTurn"      :       notYourTurn();
+                    System.out.println("Not Your Turn.");
+                    break;
             }
         }
     }
@@ -464,13 +464,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
         attackButton.setEnabled(true);
     }
 
-//    private void notYourTurn(){
-//        messageAlert.setText("Not Your Turn");
-//        playerTurn = false;
-//        targetComboBox.setEnabled(false);
-//        initiateTurnButton.setEnabled(false);
-//        attackButton.setEnabled(false);
-//    }
+    private void notYourTurn(){
+        messageAlert.setText("Not Your Turn");
+        playerTurn = false;
+        targetComboBox.setEnabled(false);
+        initiateTurnButton.setEnabled(false);
+        attackButton.setEnabled(false);
+    }
 
     private void gameOver(String winner){
         if(username.equalsIgnoreCase(winner)){

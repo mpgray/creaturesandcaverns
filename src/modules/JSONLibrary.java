@@ -162,19 +162,19 @@ public class JSONLibrary {
         return sendYourTurn;
     }
 
-//    public static JSONObject serverNotYourTurn(){
-//
-//        JSONObject sendNotYourTurn = new JSONObject();
-//        JSONObject notYourTurnMsg = new JSONObject();
-//
-//        notYourTurnMsg.put("module", MODULE);
-//        notYourTurnMsg.put("gameAction", "yourTurn");
-//        notYourTurnMsg.put("yourTurn", false);
-//
-//        sendNotYourTurn.put("message", notYourTurnMsg);
-//
-//        return sendNotYourTurn;
-//    }
+    public static JSONObject serverNotYourTurn(){
+
+        JSONObject sendNotYourTurn = new JSONObject();
+        JSONObject notYourTurnMsg = new JSONObject();
+
+        notYourTurnMsg.put("module", MODULE);
+        notYourTurnMsg.put("gameAction", "notYourTurn");
+        notYourTurnMsg.put("yourTurn", false);
+
+        sendNotYourTurn.put("message", notYourTurnMsg);
+
+        return sendNotYourTurn;
+    }
 
 
     public static JSONObject serverGameOver(String winner){
