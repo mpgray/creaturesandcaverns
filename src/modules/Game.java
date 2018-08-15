@@ -6,11 +6,12 @@ public class Game {
     private HashMap<String, Actor> creaturePresets;
     private HashMap<String, Actor> playerPresets;
     private TreeMap<String, Actor> actors;
+    private ArrayList<String> playerTurnList;
     private Actor currentActor;
     private Actor currentTarget;
     private boolean hit, gameStarted, gameOver;
-    private int damage, numDead;
-    private String battleReport, winner;
+    private int damage, numDead, turnIndex;
+    private String currentTurnName, battleReport, winner;
 
     public Game(){
         creaturePresets = new ActorPresets().creatures;
@@ -24,6 +25,24 @@ public class Game {
         gameStarted = true;
         gameOver = false;
         numDead = 0;
+        turnIndex = 0;
+        playerTurnList = new ArrayList<>(Arrays.asList(this.getNames()));
+        currentTurnName = playerTurnList.get(turnIndex);
+        while(!actors.get(currentTurnName).isPlayer()){
+            this.incrementTurn();
+        }
+    }
+
+    public String getWhosTurn(){
+        return currentTurnName;
+    }
+
+    public void incrementTurn(){
+        if(turnIndex == currentTurnName.length()-1){
+            turnIndex = 0;
+        }
+        currentTurnName = playerTurnList.get(turnIndex);
+        turnIndex++;
     }
 
     public void endGame(){

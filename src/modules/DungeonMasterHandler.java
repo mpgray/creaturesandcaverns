@@ -4,6 +4,7 @@ package modules;
 import org.json.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class DungeonMasterHandler extends Handler {
@@ -11,10 +12,7 @@ public class DungeonMasterHandler extends Handler {
     static final String MODULE = "CREATURESANDCAVERNS";
     private Game game = new Game();
     private String currentPlayer;
-    private int currentPlayerIndex;
     private boolean gameOver;
-    private String[] n;
-    private ArrayList<String> notCurrentPlayers;
 
     public DungeonMasterHandler(String portString) {
         super(portString);
@@ -79,41 +77,13 @@ public class DungeonMasterHandler extends Handler {
         incrementPlayerTurn();
     }
 
-    private void incrementPlayerTurn() {
-
-        if(game.getGameOver()){
-            broadcast(JSONLibrary.serverGameOver(game.getWinner()), MODULE);
-            return;
-        }
-        do{
-            if(currentPlayerIndex <= game.getNames().length){
-                currentPlayerIndex++;
-            } else {
-                currentPlayerIndex = 0;
-            }
-            currentPlayer = game.getNames()[currentPlayerIndex];
-        } while(game.getCurrentActors().get(currentPlayer).getIsDead());
-
-        if(game.getCurrentActors().get(currentPlayer).isPlayer()){
-            netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
-        } else {
-            runAICombat(currentPlayer);
-        }
-
-        for(String player : notCurrentPlayers(currentPlayer)){
-            netSend(JSONLibrary.serverNotYourTurn(), player, MODULE);
-            System.out.println(player);
-        }
-
-    }
-
     private void runAICombat(String creatureName){
         String attackerUsername = creatureName;
         String targetUsername = game.aiTargetSelect(creatureName);
         int attackRoll = game.getCurrentActors().get(creatureName).rollAttack();
         int damageRoll = game.getCurrentActors().get(creatureName).rollDamage();
         String battleReport = game.runCombat(attackerUsername, targetUsername, attackRoll, damageRoll);
-
+        System.out.println(battleReport);
         if(game.getCurrentTarget().getIsDead()){
             netSend(JSONLibrary.serverPlayerDeath(), targetUsername, MODULE);
         }
@@ -121,8 +91,6 @@ public class DungeonMasterHandler extends Handler {
         broadcast(JSONLibrary.serverBattleReport(battleReport), MODULE);
         broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
-
-        incrementPlayerTurn();
     }
 
     private void addPlayer(JSONObject message) {
@@ -133,18 +101,23 @@ public class DungeonMasterHandler extends Handler {
 
     private void startGame() {
         game.startGame();
-        currentPlayerIndex = 0;
-        currentPlayer = game.getNames()[currentPlayerIndex];
         gameOver = false;
+        currentPlayer = game.getWhosTurn();
         broadcast(JSONLibrary.serverGameStarted(), MODULE);
         broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
-        if(game.getCurrentActors().get(currentPlayer).isPlayer()){
-            netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
-        } else {
-            incrementPlayerTurn();
-        }
+        netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
+    }
 
+    private void incrementPlayerTurn(){
+        game.incrementTurn();
+        currentPlayer = game.getWhosTurn();
+        while(!game.getCurrentActors().get(currentPlayer).isPlayer()){
+            runAICombat(currentPlayer);
+            game.incrementTurn();
+            currentPlayer = game.getWhosTurn();
+        }
+        netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
     }
 
     private void addCreature() {

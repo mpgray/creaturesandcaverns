@@ -126,16 +126,17 @@ public class CCMainGUI extends JFrame implements ActionListener {
         });
 
         initiateTurnButton.addActionListener(e-> {
-            if (!attackButton.isEnabled() && !targetComboBox.getSelectedItem().equals("--Target--")) {
-                sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
-                if (!attackButton.isEnabled()) {
-                    sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
-                    initiateTurnButton.setEnabled(false);
-                    playerTurn = false;
-                } else {
-                    chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
-                }
-            }
+            sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
+//            if (!attackButton.isEnabled() && !targetComboBox.getSelectedItem().equals("--Target--")) {
+//                sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
+//                if (!attackButton.isEnabled()) {
+//                    sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
+//                    initiateTurnButton.setEnabled(false);
+//                    playerTurn = false;
+//                } else {
+//                    chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
+//                }
+//            }
         });
 
         cbModel.addElement("--Target--");
