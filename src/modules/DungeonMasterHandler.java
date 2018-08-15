@@ -20,7 +20,6 @@ public class DungeonMasterHandler extends Handler {
 
     @Override
     protected void handle(JSONObject message) {
-
         if(message.has("action") && message.opt("action").equals("broadcast")){
             return;
         }
