@@ -89,6 +89,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         contentPane.add(imgBackground,JLayeredPane.DEFAULT_LAYER);
         contentPane.add(dragonIconLBL,JLayeredPane.MODAL_LAYER);
         contentPane.add(messageAlert,JLayeredPane.MODAL_LAYER);
+        contentPane.add(scoreBoardLBL,JLayeredPane.MODAL_LAYER);
     }
 
     private void createChat(){
