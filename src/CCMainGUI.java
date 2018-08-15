@@ -45,14 +45,11 @@ public class CCMainGUI extends JFrame implements ActionListener {
         createChat();
         displayGameBoard();
 
-
         this.setTitle("Caverns and Creatures");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(10, 10, 905, 700);
         this.setIconImage((createImageIcon("dragonicon.png")).getImage());
         this.setContentPane(contentPane);
-
-
     }
 
     private void createContentPane() {
@@ -495,9 +492,14 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     private void youAreDead() {
         messageAlert.setText("You are dead");
+        playerDeath = true;
     }
 
     private void yourTurn(){
+        if(playerDeath){
+            sendJson(JSONLibrary.sendPassTurn());
+            return;
+        }
         messageAlert.setText("Your Turn");
         playerTurn = true;
         targetComboBox.setEnabled(true);

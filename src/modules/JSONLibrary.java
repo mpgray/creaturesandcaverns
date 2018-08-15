@@ -74,6 +74,20 @@ public class JSONLibrary {
         return sendInitiateTurn.toString();
     }
 
+    public static String sendPassTurn(){
+        JSONObject sendPassTurn = new JSONObject();
+        JSONObject passTurn = new JSONObject();
+
+        sendPassTurn.put("type", "application");
+
+        passTurn.put("module", MODULE);
+        passTurn.put("gameAction", "passTurn");
+
+        sendPassTurn.put("message", passTurn);
+
+        return sendPassTurn.toString();
+    }
+
     public static String sendAddCreature( ){
 
         JSONObject addCreature = new JSONObject();

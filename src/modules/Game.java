@@ -31,18 +31,22 @@ public class Game {
         while(!actors.get(currentTurnName).isPlayer()){
             this.incrementTurn();
         }
+        System.out.println(actors.values());
     }
 
     public String getWhosTurn(){
+        System.out.println("getWhosTurn" + currentTurnName);
         return currentTurnName;
     }
 
     public void incrementTurn(){
-        if(turnIndex == currentTurnName.length()-1){
+        turnIndex++;
+        playerTurnList = new ArrayList<>(Arrays.asList(this.getNames()));
+        if(turnIndex >= playerTurnList.size()){
             turnIndex = 0;
         }
         currentTurnName = playerTurnList.get(turnIndex);
-        turnIndex++;
+        System.out.println("Current Turn Name: " + currentTurnName);
     }
 
     public void endGame(){
@@ -80,6 +84,7 @@ public class Game {
 
         if(currentTarget.getIsDead()){
             battleReport = (playerName + "'s attack roll of " + attackRoll + " hit and killed " + targetName + " with " + attackName + " for " + damage + "!");
+            this.removePlayer(targetName);
         } else {
             battleReport = hit ? (playerName + "'s attack roll of " + attackRoll + " hit " + targetName + " with " + attackName + " for " + damage + "!") :
                     (targetName + " avoided damage from " + playerName + "'s attack roll of " + attackRoll + " with " + defenseName + "!");

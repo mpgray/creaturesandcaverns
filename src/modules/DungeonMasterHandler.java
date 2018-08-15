@@ -38,6 +38,8 @@ public class DungeonMasterHandler extends Handler {
                     break;
                 case "quit"                      :   removePlayer(message);
                     break;
+                case "passTurn"                  :   incrementPlayerTurn();
+                    break;
 
             }
         }
@@ -54,7 +56,7 @@ public class DungeonMasterHandler extends Handler {
             }
         }
         game.endGame();
-        //game = new Game();
+        game = new Game();
         System.out.println("All players quit. Game Ended.");
     }
 
@@ -112,9 +114,14 @@ public class DungeonMasterHandler extends Handler {
         game.incrementTurn();
         currentPlayer = game.getWhosTurn();
         while(!game.getCurrentActors().get(currentPlayer).isPlayer()){
-            runAICombat(currentPlayer);
-            game.incrementTurn();
-            currentPlayer = game.getWhosTurn();
+            if(game.getCurrentActors().get(currentPlayer).getIsDead()){
+                game.incrementTurn();
+                currentPlayer = game.getWhosTurn();
+            } else {
+                runAICombat(currentPlayer);
+                game.incrementTurn();
+                currentPlayer = game.getWhosTurn();
+            }
         }
         netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
     }
