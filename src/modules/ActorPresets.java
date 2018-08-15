@@ -1,11 +1,12 @@
 package modules;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ActorPresets {
 
     public HashMap<String, Actor> playerPresets = new HashMap<>();
-    public HashMap<String, Actor> creatures = new HashMap<>();
+    public LinkedHashMap<String, Actor> creatures = new LinkedHashMap<>();
 
     private String type;
     private int level;
@@ -22,9 +23,9 @@ public class ActorPresets {
         fighter();
         rogue();
         mage();
-        lion();
-        bear();
-        wolf();
+        drake();
+        wyvern();
+        basalisk();
         dragon();
     }
 
@@ -76,36 +77,36 @@ public class ActorPresets {
         playerPresets.put(type, mage);
     }
 
-    private void lion(){
-        type = "Lion";
+    private void drake(){
+        type = "Drake";
         level = 1;
         hitPoints = 26;
         armorClass = 11;
-        damageDie = 8;
+        damageDie = 4;
         numDamageDice = 1;
         attackName = "Bite";
         defenseName = "Natural Armor";
         proficiencyBonus = 5;
         abilityModifier = 3;
-        Actor lion = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        lion.setIsPlayer(false);
-        creatures.put(type, lion);
+        Actor drake = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        drake.setIsPlayer(false);
+        creatures.put(type, drake);
     }
 
-    private void bear(){
-        type = "Bear";
+    private void wyvern(){
+        type = "Wyvern";
         level = 1;
         hitPoints = 34;
         armorClass = 11;
-        damageDie = 8;
+        damageDie = 6;
         numDamageDice = 1;
         attackName = "Slash";
         defenseName = "Natural Armor";
         proficiencyBonus = 5;
         abilityModifier = 4;
-        Actor bear = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        bear.setIsPlayer(false);
-        creatures.put(type, bear);
+        Actor wyvern = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        wyvern.setIsPlayer(false);
+        creatures.put(type, wyvern);
     }
 
     private void dragon(){
@@ -124,8 +125,8 @@ public class ActorPresets {
         creatures.put(type, dragon);
     }
 
-    private void wolf(){
-        type = "Wolf";
+    private void basalisk(){
+        type = "Basalisk";
         level = 1;
         hitPoints = 37;
         armorClass = 11;
@@ -135,9 +136,9 @@ public class ActorPresets {
         defenseName = "Natural Armor";
         proficiencyBonus = 5;
         abilityModifier = 3;
-        Actor wolf = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
-        wolf.setIsPlayer(false);
-        creatures.put(type, wolf);
+        Actor basalisk = new Actor(type, level, hitPoints, armorClass, damageDie, numDamageDice, attackName, defenseName, proficiencyBonus, abilityModifier);
+        basalisk.setIsPlayer(false);
+        creatures.put(type, basalisk);
     }
 
 }

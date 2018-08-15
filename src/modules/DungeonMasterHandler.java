@@ -126,8 +126,18 @@ public class DungeonMasterHandler extends Handler {
         netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
     }
 
+    private void endGame(){
+        for(String winner : game.getNames()){
+            netSend(JSONLibrary.serverGameOver(winner), winner, MODULE);
+        }
+    }
+
     private void addCreature() {
-        String addedCreature = game.addRandomMonster();
+        String addedCreature = game.addNextMonster();
+        if(addedCreature.equalsIgnoreCase("Game Over")){
+            endGame();
+            return;
+        }
         broadcast(JSONLibrary.serverAddedCreature(addedCreature), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
         broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);

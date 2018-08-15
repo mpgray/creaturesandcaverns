@@ -3,20 +3,21 @@ package modules;
 import java.util.*;
 
 public class Game {
-    private HashMap<String, Actor> creaturePresets;
+    private LinkedHashMap<String, Actor> creaturePresets;
     private HashMap<String, Actor> playerPresets;
     private TreeMap<String, Actor> actors;
-    private ArrayList<String> playerTurnList;
+    private ArrayList<String> playerTurnList, monsterOrderList;
     private Actor currentActor;
     private Actor currentTarget;
     private boolean hit, gameStarted, gameOver;
-    private int damage, numDead, turnIndex;
+    private int damage, numDead, turnIndex, currentMonsterIndex;
     private String currentTurnName, battleReport, winner;
 
     public Game(){
         creaturePresets = new ActorPresets().creatures;
         playerPresets = new ActorPresets().playerPresets;
         actors = new TreeMap<>();
+
         gameStarted = false;
         winner = null;
     }
@@ -26,6 +27,8 @@ public class Game {
         gameOver = false;
         numDead = 0;
         turnIndex = 0;
+        currentMonsterIndex = 0;
+        this.addNextMonster();
         playerTurnList = new ArrayList<>(Arrays.asList(this.getNames()));
         currentTurnName = playerTurnList.get(turnIndex);
         while(!actors.get(currentTurnName).isPlayer()){
@@ -84,6 +87,9 @@ public class Game {
 
         if(currentTarget.getIsDead()){
             battleReport = (playerName + "'s attack roll of " + attackRoll + " hit and killed " + targetName + " with " + attackName + " for " + damage + "!");
+            if(!currentTarget.isPlayer()){
+                addNextMonster();
+            }
             this.removePlayer(targetName);
         } else {
             battleReport = hit ? (playerName + "'s attack roll of " + attackRoll + " hit " + targetName + " with " + attackName + " for " + damage + "!") :
@@ -91,6 +97,20 @@ public class Game {
         }
 
         return battleReport;
+    }
+
+    public String addNextMonster(){
+        if(currentMonsterIndex >= creaturePresets.size()-1){
+            gameOver = true;
+            return "Game Over";
+        }
+        Object[] creatureKeys = creaturePresets.keySet().toArray();
+        Object key = creatureKeys[currentMonsterIndex];
+        String creatureName = creaturePresets.get(key).getType();
+        actors.put(creaturePresets.get(key).getType(), creaturePresets.get(key));
+        currentMonsterIndex++;
+        return creatureName;
+
     }
 
     public String addRandomMonster(){

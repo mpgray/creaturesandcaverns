@@ -18,8 +18,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private BufferedReader in;
     private PrintWriter out;
 
-    private Game game;
-
     private JLayeredPane contentPane;
     private JTextArea chatFieldTXT;
     private JLabel scoreBoardLBL, imgBackground, topBackground, dragonIconLBL, messageAlert, player1LBL, player2LBL, player3LBL, creature1LBL;
@@ -35,7 +33,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
     private boolean playerDeath, playerTurn;
 
     public CCMainGUI(){
-        game = new Game();
         attackRoll = 0;
         damageRoll = 0;
         playerDeath = false;
@@ -81,6 +78,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
         messageAlert.setFont(new Font("Arial", Font.BOLD, 32));
         messageAlert.setForeground(Color.RED);
         messageAlert.setBounds(300,200,600,100);
+
+        player1LBL = new JLabel();
+        player2LBL = new JLabel();
+        player3LBL = new JLabel();
+        creature1LBL = new JLabel();
+
+        contentPane.add(player1LBL);
+        contentPane.add(player2LBL);
+        contentPane.add(player3LBL);
+        contentPane.add(creature1LBL);
 
         contentPane.add(topBackground,JLayeredPane.PALETTE_LAYER);
         contentPane.add(imgBackground,JLayeredPane.DEFAULT_LAYER);
@@ -172,7 +179,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     private void createAddCreatureButton() {
         addCreatureButton = new JButton("Add Creature");
-        addCreatureButton.setEnabled(true);
+        addCreatureButton.setVisible(false);
         addCreatureButton.setBounds(5,492,175,23);
         addCreatureButton.addActionListener(evt -> {
             sendJson(JSONLibrary.sendAddCreature());
@@ -271,19 +278,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         addCreatureButton.setEnabled(false);
     }
 
-    private void setupGame(){
-        //Just a test//
-        game.addRandomMonster();
-        //String[] nameActors = game.getNames();
-        //String[] actorStats = game.getScoreboard();
-        //displayScoreboard(nameActors,actorStats);
-
-        //populate Actor test
-        //player1LBL.setText(username);
-        player1LBL = new JLabel();
-        player2LBL = new JLabel();
-        player3LBL = new JLabel();
-        creature1LBL = new JLabel();
+    private void createGifs(){
         player1Icon = createImageIcon(playerActor.getType()+".gif");
         player2Icon = createImageIcon("Mage.gif");
         player3Icon = createImageIcon("Rogue.gif");
@@ -292,6 +287,12 @@ public class CCMainGUI extends JFrame implements ActionListener {
         player3LBL.setIcon(player3Icon); //hard coded but you get the idea
         creature1LBL.setIcon(createImageIcon("Dragon.gif"));
 
+    }
+
+    private void replayGifs(){
+        player1Icon.getImage().flush(); //causes animation to continue
+        player2Icon.getImage().flush();
+        player3Icon.getImage().flush();
     }
 
     /** Returns an ImageIcon, or null if the path was invalid. */
@@ -391,8 +392,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
         playerCharacter = getPlayerCharacter();
         sendJson(JSONLibrary.sendPlayerCharacter(playerCharacter, username));
 
-        setupGame();
-
         Runnable gameOn = () -> {
             JSONObject json;
             String serverMsg;
@@ -433,7 +432,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         if(message.has("module") && message.opt("module").equals(MODULE)) {
             String action = message.opt("gameAction").toString(); //change all of these to opt
             switch (action) {
-                case "startGame"        :       startGameGuiVisibility();
+                case "startGame"        :       startGameGuiVisibility(); createGifs();
                     System.out.println("Game Started.");
                     break;
                 case "battleReport"     :       updateBattleReport(message.get("battleReport").toString());
@@ -468,6 +467,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
     }
 
     private void updateBattleReport(String battleReport) {
+        replayGifs();
         chatFieldTXT.append("Battle Report: " + battleReport + "\n");
         submitFieldTXT.selectAll();
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
