@@ -456,8 +456,16 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 case "addedCreature"    :       chatFieldTXT.append(message.get("creatureName").toString() + " was added to the game.\n");
                     System.out.println("Creature added.");
                     break;
+                case "playerRemoved"    :       removeFromTargetList(message.get("playerName").toString());
+                    System.out.println(message.get("playerName").toString() + " left the game.");
+                    break;
             }
         }
+    }
+
+    private void removeFromTargetList(String playerName) {
+        cbModel.removeElement(playerName);
+        targetComboBox.setModel(cbModel);
     }
 
     private void addToChatArea(String message, String fromUser) {
@@ -518,7 +526,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
 
     private void updateComboTargetBox(JSONObject json){
         JSONArray jsonArray = json.getJSONArray("targetNames");
-
         for(int i = 0; i < jsonArray.length(); i++){
             if(cbModel.getIndexOf(jsonArray.getString(i)) == -1){
                 cbModel.addElement(jsonArray.getString(i));

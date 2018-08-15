@@ -52,6 +52,7 @@ public class DungeonMasterHandler extends Handler {
         for(Actor a : game.getCurrentActors().values()){
             if(a.isPlayer()){
                 System.out.println(a.getType() + " is still in the game.");
+                broadcast(JSONLibrary.serverPlayerRemoved(username), MODULE);
                 return;
             }
         }
@@ -68,6 +69,7 @@ public class DungeonMasterHandler extends Handler {
         String battleReport = game.runCombat(attackerUsername, targetUsername, attackRoll, damageRoll);
 
         if(game.getCurrentTarget().getIsDead()){
+            broadcast(JSONLibrary.serverPlayerRemoved(targetUsername), MODULE);
             netSend(JSONLibrary.serverPlayerDeath(), targetUsername, MODULE);
         }
 
@@ -84,8 +86,11 @@ public class DungeonMasterHandler extends Handler {
         int attackRoll = game.getCurrentActors().get(creatureName).rollAttack();
         int damageRoll = game.getCurrentActors().get(creatureName).rollDamage();
         String battleReport = game.runCombat(attackerUsername, targetUsername, attackRoll, damageRoll);
-        System.out.println(battleReport);
+        if(game.getCurrentTarget().equals(game.getCurrentActors().get(creatureName))){
+            endGame();
+        }
         if(game.getCurrentTarget().getIsDead()){
+            broadcast(JSONLibrary.serverPlayerRemoved(targetUsername), MODULE);
             netSend(JSONLibrary.serverPlayerDeath(), targetUsername, MODULE);
         }
 
@@ -113,7 +118,14 @@ public class DungeonMasterHandler extends Handler {
     private void incrementPlayerTurn(){
         game.incrementTurn();
         currentPlayer = game.getWhosTurn();
+        if(game.getCurrentActors().size() == 1){
+            endGame();
+        }
         while(!game.getCurrentActors().get(currentPlayer).isPlayer()){
+            if(game.getCurrentActors().size() == 1){
+                endGame();
+                return;
+            }
             if(game.getCurrentActors().get(currentPlayer).getIsDead()){
                 game.incrementTurn();
                 currentPlayer = game.getWhosTurn();
@@ -128,6 +140,7 @@ public class DungeonMasterHandler extends Handler {
 
     private void endGame(){
         for(String winner : game.getNames()){
+            System.out.println("Winner: " + winner);
             netSend(JSONLibrary.serverGameOver(winner), winner, MODULE);
         }
     }

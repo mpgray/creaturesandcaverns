@@ -46,6 +46,9 @@ public class Game {
     public void incrementTurn(){
         turnIndex++;
         playerTurnList = new ArrayList<>(Arrays.asList(this.getNames()));
+        if(playerTurnList.size() == 1){
+            return;
+        }
         if(turnIndex >= playerTurnList.size()){
             turnIndex = 0;
         }
@@ -107,6 +110,7 @@ public class Game {
         Object[] creatureKeys = creaturePresets.keySet().toArray();
         Object key = creatureKeys[currentMonsterIndex];
         String creatureName = creaturePresets.get(key).getType();
+        System.out.println("Added Creature: " + creatureName);
         actors.put(creaturePresets.get(key).getType(), creaturePresets.get(key));
         currentMonsterIndex++;
         return creatureName;

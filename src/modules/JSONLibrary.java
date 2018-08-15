@@ -176,14 +176,14 @@ public class JSONLibrary {
         return sendYourTurn;
     }
 
-    public static JSONObject serverAddedCreature(String creaturName){
+    public static JSONObject serverAddedCreature(String creatureName){
 
         JSONObject sendAddedCreature = new JSONObject();
         JSONObject addedCreatureMsg = new JSONObject();
 
         addedCreatureMsg.put("module", MODULE);
         addedCreatureMsg.put("gameAction", "addedCreature");
-        addedCreatureMsg.put("creatureName", creaturName);
+        addedCreatureMsg.put("creatureName", creatureName);
 
         sendAddedCreature.put("message", addedCreatureMsg);
 
@@ -216,6 +216,19 @@ public class JSONLibrary {
         sendTargetNames.put("message", targetNamesMsg);
 
         return sendTargetNames;
+    }
+
+    public static JSONObject serverPlayerRemoved(String playerName){
+        JSONObject sendPlayerRemoved = new JSONObject();
+        JSONObject playerRemovedMsg = new JSONObject();
+
+        playerRemovedMsg.put("module", MODULE);
+        playerRemovedMsg.put("gameAction", "playerRemoved");
+        playerRemovedMsg.put("playerName", playerName);
+
+        sendPlayerRemoved.put("message", playerRemovedMsg);
+
+        return sendPlayerRemoved;
     }
 
     public static JSONObject serverChatMessage(String message){
