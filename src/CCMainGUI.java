@@ -225,14 +225,13 @@ public class CCMainGUI extends JFrame implements ActionListener {
         startGameButton.setBounds(105, 175, 300, 25);
 
         contentPane.add(startGameButton,JLayeredPane.MODAL_LAYER);
-
     }
 
     private void startGameGuiVisibility() {
         startGameButton.setVisible(false);
-//        initiateTurnButton.setEnabled(false);
-//        attackButton.setEnabled(false);
-//        rollButton.setEnabled(false);
+        initiateTurnButton.setEnabled(false);
+        attackButton.setEnabled(false);
+        addCreatureButton.setVisible(false);
     }
 
     private void setupGame(){
@@ -363,7 +362,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
                     if(!serverMsg.equalsIgnoreCase(prevMsg)){
                         prevMsg = serverMsg;
                         json = new JSONObject(serverMsg);
-                        System.out.println("Server JSON : " + json);
+//                        System.out.println("Server JSON : " + json);
                         messageHandler(json);
                     }
                 } catch (IOException e){

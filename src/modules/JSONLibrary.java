@@ -125,7 +125,7 @@ public class JSONLibrary {
         JSONObject scoreboardMsg = new JSONObject();
 
         scoreboardMsg.put("module", MODULE);
-        scoreboardMsg.put("gameAction", "scoreboard");
+        scoreboardMsg.put("gameAction", "scoreBoard");
         scoreboardMsg.put("playerNames", playerNames);
         scoreboardMsg.put("colorActorStats", colorActorStats);
 
