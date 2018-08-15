@@ -79,10 +79,10 @@ public class Game {
         String defenseName = currentTarget.getDefenseName();
 
         if(currentTarget.getIsDead()){
-            battleReport = (playerName + " killed " + targetName + " with " + attackName + " for " + damage + "!");
+            battleReport = (playerName + "'s attack roll of " + attackRoll + " hit and killed " + targetName + " with " + attackName + " for " + damage + "!");
         } else {
-            battleReport = hit ? (playerName + " hit " + targetName + " with " + attackName + " for " + damage + "!") :
-                    (targetName + " avoided damage from " + playerName + " with " + defenseName + "!");
+            battleReport = hit ? (playerName + "'s attack roll of " + attackRoll + " hit " + targetName + " with " + attackName + " for " + damage + "!") :
+                    (targetName + " avoided damage from " + playerName + "'s attack roll of " + attackRoll + " with " + defenseName + "!");
         }
 
         return battleReport;

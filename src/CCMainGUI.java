@@ -155,6 +155,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
             }else if(!attackButton.isEnabled() && !targetComboBox.getSelectedItem().equals("--Target--")) {
                 sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
                 playerTurn = false;
+                attackRoll = 0;
                 } else {
                     chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
                 }
@@ -260,7 +261,6 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 attackButton.setEnabled(false);
                 attackButton.setText("Roll Attack");
                 player1Icon.getImage().flush(); //causes animation to continue
-                attackRoll = 0;
             }
         });
     }
