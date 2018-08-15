@@ -80,7 +80,7 @@ public class ActorPresets {
         type = "Lion";
         level = 1;
         hitPoints = 26;
-        armorClass = 12;
+        armorClass = 11;
         damageDie = 8;
         numDamageDice = 1;
         attackName = "Bite";
@@ -97,8 +97,8 @@ public class ActorPresets {
         level = 1;
         hitPoints = 34;
         armorClass = 11;
-        damageDie = 6;
-        numDamageDice = 2;
+        damageDie = 8;
+        numDamageDice = 1;
         attackName = "Slash";
         defenseName = "Natural Armor";
         proficiencyBonus = 5;
@@ -114,7 +114,7 @@ public class ActorPresets {
         hitPoints = 50;
         armorClass = 14;
         damageDie = 6;
-        numDamageDice = 3;
+        numDamageDice = 2;
         attackName = "Fire Breath";
         defenseName = "Scale Armor";
         proficiencyBonus = 5;
@@ -128,9 +128,9 @@ public class ActorPresets {
         type = "Wolf";
         level = 1;
         hitPoints = 37;
-        armorClass = 14;
-        damageDie = 6;
-        numDamageDice = 2;
+        armorClass = 11;
+        damageDie = 8;
+        numDamageDice = 1;
         attackName = "Bite";
         defenseName = "Natural Armor";
         proficiencyBonus = 5;
