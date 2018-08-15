@@ -162,18 +162,18 @@ public class JSONLibrary {
         return sendYourTurn;
     }
 
-    public static JSONObject serverNotYourTurn(){
+    public static JSONObject serverAddedCreature(String creaturName){
 
-        JSONObject sendNotYourTurn = new JSONObject();
-        JSONObject notYourTurnMsg = new JSONObject();
+        JSONObject sendAddedCreature = new JSONObject();
+        JSONObject addedCreatureMsg = new JSONObject();
 
-        notYourTurnMsg.put("module", MODULE);
-        notYourTurnMsg.put("gameAction", "notYourTurn");
-        notYourTurnMsg.put("yourTurn", false);
+        addedCreatureMsg.put("module", MODULE);
+        addedCreatureMsg.put("gameAction", "addedCreature");
+        addedCreatureMsg.put("creatureName", creaturName);
 
-        sendNotYourTurn.put("message", notYourTurnMsg);
+        sendAddedCreature.put("message", addedCreatureMsg);
 
-        return sendNotYourTurn;
+        return sendAddedCreature;
     }
 
 

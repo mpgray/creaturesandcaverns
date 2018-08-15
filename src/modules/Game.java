@@ -47,8 +47,8 @@ public class Game {
 
     public void endGame(){
         gameStarted = false;
-        for(String user : actors.keySet()){
-            actors.remove(user);
+        for(String a : actors.keySet()){
+            actors.remove(a);
         }
     }
 
@@ -88,10 +88,12 @@ public class Game {
         return battleReport;
     }
 
-    public void addRandomMonster(){
+    public String addRandomMonster(){
         Object[] creatureKeys = creaturePresets.keySet().toArray();
         Object key = creatureKeys[new Random().nextInt(creatureKeys.length)];
+        String creatureName = creaturePresets.get(key).getType();
         actors.put(creaturePresets.get(key).getType(), creaturePresets.get(key));
+        return creatureName;
     }
 
     public TreeMap<String, Actor> getCurrentActors(){

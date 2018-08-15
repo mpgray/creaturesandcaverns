@@ -26,7 +26,7 @@ public class DungeonMasterHandler extends Handler {
 
         System.out.println("Client Says: " + message.toString());
         if(message.opt("module") != null || MODULE.equals(message.get("module"))){
-            String action = message.optString("gameAction");
+            String action = message.has("gameAction") ? message.optString("gameAction") : message.optString("action");
             switch(action){
                 case "addPlayerCharacter"        :   addPlayer(message);
                     break;
@@ -46,17 +46,17 @@ public class DungeonMasterHandler extends Handler {
     private void removePlayer(JSONObject message) {
         String username = message.getString("username");
         game.removePlayer(username);
+        System.out.println(username + " left the game.");
+        for(Actor a : game.getCurrentActors().values()){
+            if(a.isPlayer()){
+                System.out.println(a.getType() + " is still in the game.");
+                return;
+            }
+        }
+        game.endGame();
+        //game = new Game();
+        System.out.println("All players quit. Game Ended.");
     }
-
-    private ArrayList<String> notCurrentPlayers(String currentPlayer){
-        String[] n = game.getNames();
-        final ArrayList<String> notCurrentPlayers =  new ArrayList<String>();
-        Collections.addAll(notCurrentPlayers, n);
-        notCurrentPlayers.remove(currentPlayer);
-
-        return notCurrentPlayers;
-    }
-
 
     private void runCombat(JSONObject message) {
         String attackerUsername = message.getString("attacker");
@@ -120,7 +120,8 @@ public class DungeonMasterHandler extends Handler {
     }
 
     private void addCreature() {
-        game.addRandomMonster();
+        String addedCreature = game.addRandomMonster();
+        broadcast(JSONLibrary.serverAddedCreature(addedCreature), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
         broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
     }

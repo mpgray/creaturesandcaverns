@@ -455,6 +455,9 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 case "targetNames"      :       updateComboTargetBox(message);
                     System.out.println("Target List Updated.");
                     break;
+                case "addedCreature"    :       chatFieldTXT.append(message.get("creatureName").toString() + " was added to the game.");
+                    System.out.println("Creature added.");
+                    break;
             }
         }
     }
