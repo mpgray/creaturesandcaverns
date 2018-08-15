@@ -31,11 +31,12 @@ public class Game {
         while(!actors.get(currentTurnName).isPlayer()){
             this.incrementTurn();
         }
-        System.out.println(actors.values());
+        for(Actor a : actors.values()){
+            System.out.println("Initiative: " + a.getInitiative());
+        }
     }
 
     public String getWhosTurn(){
-        System.out.println("getWhosTurn" + currentTurnName);
         return currentTurnName;
     }
 
@@ -46,7 +47,6 @@ public class Game {
             turnIndex = 0;
         }
         currentTurnName = playerTurnList.get(turnIndex);
-        System.out.println("Current Turn Name: " + currentTurnName);
     }
 
     public void endGame(){

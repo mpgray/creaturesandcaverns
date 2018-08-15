@@ -154,6 +154,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 sendJson(JSONLibrary.sendInitiateTurn(username, target, attackRoll, damageRoll));
                 playerTurn = false;
                 attackRoll = 0;
+                messageAlert.setText("");
                 } else {
                     chatFieldTXT.append("You must roll attack and damage and select a target to initiate combat.\n");
                 }
@@ -453,7 +454,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 case "targetNames"      :       updateComboTargetBox(message);
                     System.out.println("Target List Updated.");
                     break;
-                case "addedCreature"    :       chatFieldTXT.append(message.get("creatureName").toString() + " was added to the game.");
+                case "addedCreature"    :       chatFieldTXT.append(message.get("creatureName").toString() + " was added to the game.\n");
                     System.out.println("Creature added.");
                     break;
             }
