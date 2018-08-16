@@ -22,9 +22,9 @@ public class ActorPresets {
         rogue();
         mage();
         drake();
-        //wyvern();
-        //basalisk();
-        //dragon();
+        wyvern();
+        basalisk();
+        dragon();
     }
 
     private void fighter(){
