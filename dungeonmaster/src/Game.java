@@ -1,5 +1,3 @@
-package modules;
-
 import java.util.*;
 
 public class Game {
