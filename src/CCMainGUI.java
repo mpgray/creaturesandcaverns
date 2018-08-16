@@ -46,6 +46,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         this.setBounds(10, 10, 905, 700);
         this.setIconImage((createImageIcon("dragonicon.png")).getImage());
         this.setContentPane(contentPane);
+        
     }
 
     private void createContentPane() {
