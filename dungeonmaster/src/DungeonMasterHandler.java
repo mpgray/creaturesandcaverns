@@ -28,8 +28,8 @@ public class DungeonMasterHandler extends Handler {
                     break;
                 case "runCombat"                 :   runCombat(message);
                     break;
-                case "addCreature"               :   addCreature();
-                    break;
+//                case "addCreature"               :   addCreature();
+//                    break;
                 case "quit"                      :   removePlayer(message);
                     break;
                 case "passTurn"                  :   incrementPlayerTurn();
@@ -62,6 +62,14 @@ public class DungeonMasterHandler extends Handler {
         int damageRoll = message.getInt("damageRoll");
         String battleReport = game.runCombat(attackerUsername, targetUsername, attackRoll, damageRoll);
 
+        if(game.getCurrentCreatureName().equalsIgnoreCase("Win")){
+            broadcast(JSONLibrary.serverBattleReport(battleReport), MODULE);
+            broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
+            broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
+            endGame("You Win!");
+            return;
+        }
+
         if(game.getCurrentTarget().getIsDead()){
             broadcast(JSONLibrary.serverPlayerRemoved(targetUsername), MODULE);
             netSend(JSONLibrary.serverPlayerDeath(), targetUsername, MODULE);
@@ -81,7 +89,7 @@ public class DungeonMasterHandler extends Handler {
         int damageRoll = game.getCurrentActors().get(creatureName).rollDamage();
         String battleReport = game.runCombat(attackerUsername, targetUsername, attackRoll, damageRoll);
         if(game.getCurrentTarget().equals(game.getCurrentActors().get(creatureName))){
-            endGame();
+            endGame("You Lose!");
         }
         if(game.getCurrentTarget().getIsDead()){
             broadcast(JSONLibrary.serverPlayerRemoved(targetUsername), MODULE);
@@ -112,12 +120,13 @@ public class DungeonMasterHandler extends Handler {
     private void incrementPlayerTurn(){
         game.incrementTurn();
         currentPlayer = game.getWhosTurn();
-        if(game.getCurrentActors().size() == 1){
-            endGame();
+        if(game.getCurrentActors().size() == 1 && game.getCurrentActors().get(currentPlayer).isPlayer()){
+            endGame("You Win!");
+            return;
         }
         while(!game.getCurrentActors().get(currentPlayer).isPlayer()){
             if(game.getCurrentActors().size() == 1){
-                endGame();
+                endGame("You Lose!");
                 return;
             }
             if(game.getCurrentActors().get(currentPlayer).getIsDead()){
@@ -132,23 +141,24 @@ public class DungeonMasterHandler extends Handler {
         netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
     }
 
-    private void endGame(){
-        for(String winner : game.getNames()){
-            System.out.println("Winner: " + winner);
-            netSend(JSONLibrary.serverGameOver(winner), winner, MODULE);
-        }
+    private void endGame(String winMsg){
+        gameOver = true;
+        broadcast(JSONLibrary.serverGameOver(winMsg), MODULE);
+        game = new Game();
+        System.out.println("Game Ended.");
     }
 
-    private void addCreature() {
-        String addedCreature = game.addNextMonster();
-        if(addedCreature.equalsIgnoreCase("Game Over")){
-            endGame();
-            return;
-        }
-        broadcast(JSONLibrary.serverAddedCreature(addedCreature), MODULE);
-        broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
-        broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
-    }
+    @Deprecated
+//    private void addCreature() {
+//        String addedCreature = game.addNextMonster();
+//        if(addedCreature.equalsIgnoreCase("Game Over")){
+////            endGame();
+//            return;
+//        }
+//        broadcast(JSONLibrary.serverAddedCreature(addedCreature), MODULE);
+//        broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
+//        broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
+//    }
 
     public static void main(String[] args) {
         String portString = "8990";

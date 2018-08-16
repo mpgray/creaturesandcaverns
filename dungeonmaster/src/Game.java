@@ -90,6 +90,10 @@ public class Game {
             battleReport = (playerName + "'s attack roll of " + attackRoll + " hit and killed " + targetName + " with " + attackName + " for " + damage + "!");
             if(!currentTarget.isPlayer()){
                 addNextMonster();
+                if(currentCreatureName.equalsIgnoreCase("Win")){
+                    battleReport += "\nYou win!";
+                    return battleReport;
+                }
                 battleReport += "\n" + currentCreatureName + " joined the game!";
                 turnIndex = 0;
             }
@@ -102,10 +106,15 @@ public class Game {
         return battleReport;
     }
 
-    public String addNextMonster(){
-        if(currentMonsterIndex >= creaturePresets.size()-1){
+    public String getCurrentCreatureName(){
+        return currentCreatureName;
+    }
+
+    public void addNextMonster(){
+        if(currentMonsterIndex >= creaturePresets.size()){
             gameOver = true;
-            return "Game Over";
+            currentCreatureName = "Win";
+            return;
         }
         Object[] creatureKeys = creaturePresets.keySet().toArray();
         Object key = creatureKeys[currentMonsterIndex];
@@ -113,8 +122,6 @@ public class Game {
         System.out.println("Added Creature: " + currentCreatureName);
         actors.put(creaturePresets.get(key).getType(), creaturePresets.get(key));
         currentMonsterIndex++;
-        return currentCreatureName;
-
     }
 
     public String addRandomMonster(){

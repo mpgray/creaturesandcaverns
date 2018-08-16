@@ -190,14 +190,14 @@ public class JSONLibrary {
     }
 
 
-    public static JSONObject serverGameOver(String winner){
+    public static JSONObject serverGameOver(String winMsg){
         JSONObject sendGameOver = new JSONObject();
         JSONObject gameOverMsg = new JSONObject();
 
         gameOverMsg.put("module", MODULE);
         gameOverMsg.put("gameAction", "gameOver");
         gameOverMsg.put("gameOver", true);
-        gameOverMsg.put("winner", winner);
+        gameOverMsg.put("winMsg", winMsg);
 
         sendGameOver.put("message", gameOverMsg);
 

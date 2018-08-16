@@ -446,7 +446,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
                 case "yourTurn"         :       yourTurn();
                     System.out.println("Your Turn.");
                     break;
-                case "gameOver"         :       gameOver(message.get("winner").toString());
+                case "gameOver"         :       gameOver(message.get("winMsg").toString());
                     System.out.println("Game Over.");
                     break;
                 case "targetNames"      :       updateComboTargetBox(message);
@@ -480,7 +480,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         chatFieldTXT.setCaretPosition(chatFieldTXT.getDocument().getLength());
     }
 
-    //TODO make sure arrays are being instantiated properly
+    //TODO duplicate playerTypes appear to share stats on scoreboard.
     private void updateScoreboard(JSONObject message) {
         JSONArray p = message.getJSONArray("playerNames");
         JSONArray c = message.getJSONArray("colorActorStats");
@@ -515,12 +515,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
         attackButton.setEnabled(true);
     }
 
-    private void gameOver(String winner){
-        if(username.equalsIgnoreCase(winner)){
-            messageAlert.setText("You have Won!");
-        } else {
-            messageAlert.setText("You have been Defeated");
-        }
+    private void gameOver(String winMsg){
+        messageAlert.setText(winMsg);
     }
 
     private void updateComboTargetBox(JSONObject json){
