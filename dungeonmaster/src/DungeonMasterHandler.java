@@ -151,7 +151,7 @@ public class DungeonMasterHandler extends Handler {
     }
 
     public static void main(String[] args) {
-        String portString = "8990";
+        String portString = "8989";
         new Thread(new DungeonMasterHandler(portString)).start();
     }
 
