@@ -30,7 +30,7 @@ public class ActorPresets {
     private void fighter(){
         type = "Fighter";
         level = 1;
-        hitPoints = 13;
+        hitPoints = 15;
         armorClass = 16;
         damageDie = 12;
         numDamageDice = 1;
@@ -46,7 +46,7 @@ public class ActorPresets {
     private void rogue(){
         type = "Rogue";
         level = 1;
-        hitPoints = 10;
+        hitPoints = 12;
         armorClass = 14;
         damageDie = 6;
         numDamageDice = 2;
@@ -62,7 +62,7 @@ public class ActorPresets {
     private void mage(){
         type = "Mage";
         level = 1;
-        hitPoints = 8;
+        hitPoints = 10;
         armorClass = 12;
         damageDie = 4;
         numDamageDice = 3;
@@ -78,7 +78,7 @@ public class ActorPresets {
     private void drake(){
         type = "Drake";
         level = 1;
-        hitPoints = 26;
+        hitPoints = 24;
         armorClass = 11;
         damageDie = 4;
         numDamageDice = 1;
@@ -94,7 +94,7 @@ public class ActorPresets {
     private void wyvern(){
         type = "Wyvern";
         level = 1;
-        hitPoints = 34;
+        hitPoints = 32;
         armorClass = 11;
         damageDie = 6;
         numDamageDice = 1;
@@ -110,7 +110,7 @@ public class ActorPresets {
     private void dragon(){
         type = "Dragon";
         level = 2;
-        hitPoints = 50;
+        hitPoints = 45;
         armorClass = 14;
         damageDie = 6;
         numDamageDice = 2;
@@ -126,7 +126,7 @@ public class ActorPresets {
     private void basalisk(){
         type = "Basalisk";
         level = 1;
-        hitPoints = 37;
+        hitPoints = 35;
         armorClass = 11;
         damageDie = 8;
         numDamageDice = 1;

@@ -9,7 +9,7 @@ public class Game {
     private Actor currentTarget;
     private boolean hit, gameStarted, gameOver;
     private int damage, numDead, turnIndex, currentMonsterIndex;
-    private String currentTurnName, battleReport, winner;
+    private String currentTurnName, currentCreatureName, battleReport, winner;
 
     public Game(){
         creaturePresets = new ActorPresets().creatures;
@@ -90,6 +90,8 @@ public class Game {
             battleReport = (playerName + "'s attack roll of " + attackRoll + " hit and killed " + targetName + " with " + attackName + " for " + damage + "!");
             if(!currentTarget.isPlayer()){
                 addNextMonster();
+                battleReport += "\n" + currentCreatureName + " joined the game!";
+                turnIndex = 0;
             }
             this.removePlayer(targetName);
         } else {
@@ -107,11 +109,11 @@ public class Game {
         }
         Object[] creatureKeys = creaturePresets.keySet().toArray();
         Object key = creatureKeys[currentMonsterIndex];
-        String creatureName = creaturePresets.get(key).getType();
-        System.out.println("Added Creature: " + creatureName);
+        currentCreatureName = creaturePresets.get(key).getType();
+        System.out.println("Added Creature: " + currentCreatureName);
         actors.put(creaturePresets.get(key).getType(), creaturePresets.get(key));
         currentMonsterIndex++;
-        return creatureName;
+        return currentCreatureName;
 
     }
 
