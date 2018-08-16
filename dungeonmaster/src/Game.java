@@ -51,6 +51,7 @@ public class Game {
             turnIndex = 0;
         }
         currentTurnName = playerTurnList.get(turnIndex);
+        System.out.println(currentTurnName + "'s turn.");
     }
 
     public void endGame(){

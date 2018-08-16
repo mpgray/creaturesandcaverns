@@ -18,7 +18,6 @@ public class DungeonMasterHandler extends Handler {
             return;
         }
 
-        System.out.println("Client Says: " + message.toString());
         if(message.opt("module") != null || MODULE.equals(message.get("module"))){
             String action = message.has("gameAction") ? message.optString("gameAction") : message.optString("action");
             switch(action){
@@ -56,6 +55,7 @@ public class DungeonMasterHandler extends Handler {
     }
 
     private void runCombat(JSONObject message) {
+        System.out.println("Running player combat.");
         String attackerUsername = message.getString("attacker");
         String targetUsername = message.getString("target");
         int attackRoll = message.getInt("attackRoll");
@@ -83,6 +83,7 @@ public class DungeonMasterHandler extends Handler {
     }
 
     private void runAICombat(String creatureName){
+        System.out.println("Running AI combat.");
         String attackerUsername = creatureName;
         String targetUsername = game.aiTargetSelect(creatureName);
         int attackRoll = game.getCurrentActors().get(creatureName).rollAttack();
@@ -105,6 +106,7 @@ public class DungeonMasterHandler extends Handler {
         String username = message.getString("username");
         String playerType = message.getString("playerType");
         game.addPlayer(username, playerType);
+        System.out.println(username + " joined the game.");
     }
 
     private void startGame() {
@@ -115,6 +117,7 @@ public class DungeonMasterHandler extends Handler {
         broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
         broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
         netSend(JSONLibrary.serverYourTurn(), currentPlayer, MODULE);
+        System.out.println("Game started.");
     }
 
     private void incrementPlayerTurn(){
