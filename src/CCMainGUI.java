@@ -172,7 +172,7 @@ public class CCMainGUI extends JFrame implements ActionListener {
         startGameButton = new JButton("Start Game");
         startGameButton.setBounds(105, 175, 300, 25);
         startGameButton.addActionListener(e->{
-            sendJson(JSONLibrary.sendStartGame());
+            sendJson(JSONLibrary.sendStartGame(username));
             startGameGuiVisibility();
         });
     }
@@ -458,6 +458,8 @@ public class CCMainGUI extends JFrame implements ActionListener {
                     break;
                 case "playerRemoved"    :       removeFromTargetList(message.get("playerName").toString());
                     System.out.println(message.get("playerName").toString() + " left the game.");
+                    break;
+                case "gameInProgress"   :       chatFieldTXT.append("Game already in progress. Restart and try again later.");
                     break;
             }
         }

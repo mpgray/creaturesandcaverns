@@ -26,7 +26,7 @@ public class JSONLibrary {
         return loginMessage.toString();
     }
 
-    public static String sendStartGame(){
+    public static String sendStartGame(String username){
         JSONObject startGame = new JSONObject();
         JSONObject startCommand = new JSONObject();
 
@@ -34,6 +34,7 @@ public class JSONLibrary {
 
         startCommand.put("module", MODULE);
         startCommand.put("gameAction", "startNewGame");
+        startCommand.put("username", username);
         startGame.put("message", startCommand);
 
         return startGame.toString();
@@ -230,14 +231,15 @@ public class JSONLibrary {
         return sendPlayerRemoved;
     }
 
-    public static JSONObject serverChatMessage(String message){
+    public static JSONObject serverGameInProgress(){
+        JSONObject gameInProgress = new JSONObject();
+        JSONObject gameInProgressMsg = new JSONObject();
 
-        JSONObject sendChatMessage = new JSONObject();
+        gameInProgressMsg.put("module", MODULE);
+        gameInProgressMsg.put("gameAction", "gameInProgress");
+        gameInProgress.put("message", gameInProgressMsg);
 
-        sendChatMessage.put("type", "chat");
-        sendChatMessage.put("message", message);
-
-        return sendChatMessage;
+        return gameInProgress;
     }
 
 }

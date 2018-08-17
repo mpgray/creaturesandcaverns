@@ -6,7 +6,7 @@ public class DungeonMasterHandler extends Handler {
     static final String MODULE = "CREATURESANDCAVERNS";
     private Game game = new Game();
     private String currentPlayer;
-    private boolean gameOver;
+    private boolean gameStarted;
 
     public DungeonMasterHandler(String portString) {
         super(portString);
@@ -23,12 +23,10 @@ public class DungeonMasterHandler extends Handler {
             switch(action){
                 case "addPlayerCharacter"        :   addPlayer(message);
                     break;
-                case "startNewGame"              :   startGame();
+                case "startNewGame"              :   startGame(message.opt("username").toString());
                     break;
                 case "runCombat"                 :   runCombat(message);
                     break;
-//                case "addCreature"               :   addCreature();
-//                    break;
                 case "quit"                      :   removePlayer(message);
                     break;
                 case "passTurn"                  :   incrementPlayerTurn();
@@ -104,14 +102,25 @@ public class DungeonMasterHandler extends Handler {
 
     private void addPlayer(JSONObject message) {
         String username = message.getString("username");
-        String playerType = message.getString("playerType");
-        game.addPlayer(username, playerType);
-        System.out.println(username + " joined the game.");
+        if(!gameStarted){
+            String playerType = message.getString("playerType");
+            game.addPlayer(username, playerType);
+            System.out.println(username + " joined the game.");
+        }else{
+            netSend(JSONLibrary.serverGameInProgress(), username, MODULE);
+            System.out.println("Cannot join game. Game already in progress.");
+        }
+
     }
 
-    private void startGame() {
+    private void startGame(String username) {
+        if(gameStarted){
+            netSend(JSONLibrary.serverGameInProgress(), username, MODULE);
+            System.out.println("Cannot start game. Game already in progress.");
+            return;
+        }
         game.startGame();
-        gameOver = false;
+        gameStarted = true;
         currentPlayer = game.getWhosTurn();
         broadcast(JSONLibrary.serverGameStarted(), MODULE);
         broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
@@ -145,23 +154,11 @@ public class DungeonMasterHandler extends Handler {
     }
 
     private void endGame(String winMsg){
-        gameOver = true;
+        gameStarted = false;
         broadcast(JSONLibrary.serverGameOver(winMsg), MODULE);
         game = new Game();
         System.out.println("Game Ended.");
     }
-
-    @Deprecated
-//    private void addCreature() {
-//        String addedCreature = game.addNextMonster();
-//        if(addedCreature.equalsIgnoreCase("Game Over")){
-////            endGame();
-//            return;
-//        }
-//        broadcast(JSONLibrary.serverAddedCreature(addedCreature), MODULE);
-//        broadcast(JSONLibrary.serverScoreboard(game.getNames(), game.getScoreboard()), MODULE);
-//        broadcast(JSONLibrary.serverTargetNames(game.getNames()), MODULE);
-//    }
 
     public static void main(String[] args) {
         String portString = "8990";

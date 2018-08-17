@@ -4,25 +4,20 @@ public class Game {
     private LinkedHashMap<String, Actor> creaturePresets;
     private HashMap<String, Actor> playerPresets;
     private TreeMap<String, Actor> actors;
-    private ArrayList<String> playerTurnList, monsterOrderList;
+    private ArrayList<String> playerTurnList;
     private Actor currentActor;
     private Actor currentTarget;
-    private boolean hit, gameStarted, gameOver;
+    private boolean hit;
     private int damage, numDead, turnIndex, currentMonsterIndex;
-    private String currentTurnName, currentCreatureName, battleReport, winner;
+    private String currentTurnName, currentCreatureName, battleReport;
 
     public Game(){
         creaturePresets = new ActorPresets().creatures;
         playerPresets = new ActorPresets().playerPresets;
         actors = new TreeMap<>();
-
-        gameStarted = false;
-        winner = null;
     }
 
     public void startGame(){
-        gameStarted = true;
-        gameOver = false;
         numDead = 0;
         turnIndex = 0;
         currentMonsterIndex = 0;
@@ -31,9 +26,6 @@ public class Game {
         currentTurnName = playerTurnList.get(turnIndex);
         while(!actors.get(currentTurnName).isPlayer()){
             this.incrementTurn();
-        }
-        for(Actor a : actors.values()){
-            System.out.println("Initiative: " + a.getInitiative());
         }
     }
 
@@ -55,7 +47,6 @@ public class Game {
     }
 
     public void endGame(){
-        gameStarted = false;
         for(String a : actors.keySet()){
             actors.remove(a);
         }
@@ -113,7 +104,6 @@ public class Game {
 
     public void addNextMonster(){
         if(currentMonsterIndex >= creaturePresets.size()){
-            gameOver = true;
             currentCreatureName = "Win";
             return;
         }
@@ -199,24 +189,4 @@ public class Game {
         return colorActorStats;
     }
 
-    public boolean getGameOver(){
-        numDead = 0;
-
-        for(String actor : actors.keySet()){
-            if(actors.get(actor).getIsDead()){
-                numDead++;
-            } else {
-                winner = actor;
-            }
-        }
-        if(numDead == this.getNames().length - 1){
-            gameOver = true;
-        }
-
-        return gameOver;
-    }
-
-    public String getWinner(){
-        return winner;
-    }
 }
