@@ -18,7 +18,7 @@ public class DungeonMasterHandler extends Handler {
             return;
         }
 
-        if(message.opt("module") != null || MODULE.equals(message.get("module"))){
+        if(message.opt("module") != null && MODULE.equals(message.get("module"))){
             String action = message.has("gameAction") ? message.optString("gameAction") : message.optString("action");
             switch(action){
                 case "addPlayerCharacter"        :   addPlayer(message);
